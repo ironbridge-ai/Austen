@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 *.pyo
 .venv/
+austen_*.html
+austen_*.txt
+feedback_log.json

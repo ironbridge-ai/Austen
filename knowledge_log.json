@@ -1,0 +1,102 @@
+{
+  "terms": [
+    {
+      "term": "AI agent",
+      "definition": "A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently.",
+      "first_seen": "2026-06-17",
+      "story": "Salesforce Acquires AI Customer Service Platform Fin for $3.6 Billion",
+      "teach_count": 1
+    },
+    {
+      "term": "Data isolation",
+      "definition": "The principle that different users' information should be kept completely separate within a system, so one person's data can never accidentally appear in another person's results. Like having separate locked filing cabinets rather than one shared drawer. AI models struggle with this because they process everything through the same underlying system.",
+      "first_seen": "2026-06-17",
+      "story": "Critical Copilot Vulnerability Let Hackers Steal Two-Factor Authentication Codes",
+      "teach_count": 1
+    },
+    {
+      "term": "prompt injection",
+      "definition": "A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to do. Think of it like slipping a forged note into a stack of legitimate paperwork so the person processing it follows the fake instructions without realising.",
+      "first_seen": "2026-06-17",
+      "story": "Critical Copilot Vulnerability Let Hackers Steal Two-Factor Authentication Codes",
+      "teach_count": 1
+    },
+    {
+      "term": "multi-agent interaction",
+      "definition": "When multiple AI agents, each built by different companies or teams with different goals, communicate and transact with each other without a human in the middle. Imagine hundreds of personal assistants from different households all trying to book the same restaurant at once, each following their own boss's instructions but creating chaos together.",
+      "first_seen": "2026-06-17",
+      "story": "DeepMind Warns Millions of Interacting AI Agents Could Create Systemic Risks",
+      "teach_count": 1
+    },
+    {
+      "term": "emergent behaviour",
+      "definition": "When a system does something that nobody explicitly programmed it to do, simply because of how its individual parts interact. Like how a traffic jam appears even though no single driver decided to create one. In AI, it means agents or models producing unexpected results that arise from scale and complexity rather than design.",
+      "first_seen": "2026-06-17",
+      "story": "DeepMind Warns Millions of Interacting AI Agents Could Create Systemic Risks",
+      "teach_count": 1
+    },
+    {
+      "term": "frontier model",
+      "definition": "The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again.",
+      "first_seen": "2026-06-17",
+      "story": "Anthropic's Claude Fable 5 So Capable the US Government Ordered It Offline",
+      "teach_count": 1
+    },
+    {
+      "term": "token consumption",
+      "definition": "A measure of how much AI processing you use. AI models break text into small pieces called tokens, roughly one token per word. Every question you ask and answer you receive costs tokens. Token consumption is like a meter running on your AI usage, and it determines your bill under usage-based pricing.",
+      "first_seen": "2026-06-17",
+      "story": "Microsoft Copilot Cowork Shifts to Usage-Based Billing and Eyes DeepSeek Integration",
+      "teach_count": 1
+    },
+    {
+      "term": "SearchLeak",
+      "definition": "The name given to a specific security flaw in Microsoft Copilot that allowed attackers to trick the AI assistant into revealing sensitive information like login codes. Think of it like a con artist asking a helpful receptionist just the right question to get them to hand over confidential files without realising.",
+      "first_seen": "2026-06-17",
+      "story": "Critical Copilot Vulnerability Let Hackers Steal Two-Factor Codes",
+      "teach_count": 1
+    },
+    {
+      "term": "multi-model architectures",
+      "definition": "Instead of using one single AI brain for everything, a system uses different AI models for different tasks, like having a specialist doctor for complex problems and a GP for routine questions. This lets companies balance quality and cost by routing simple tasks to cheaper models and hard tasks to expensive ones.",
+      "first_seen": "2026-06-17",
+      "story": "Microsoft Copilot Cowork Shifts to Usage-Based Billing and May Use DeepSeek",
+      "teach_count": 1
+    },
+    {
+      "term": "diffusion-based generation",
+      "definition": "A technique where AI creates output by starting with random noise and gradually refining it into a finished result, like a sculptor revealing a statue from a block of marble. Instead of building an answer one word at a time, the AI generates everything at once and sharpens it in a few quick passes. This makes output dramatically faster.",
+      "first_seen": "2026-06-17",
+      "story": "Google DeepMind Releases DiffusionGemma: AI Text Generation 4x Faster",
+      "teach_count": 1
+    },
+    {
+      "term": "search-grounding",
+      "definition": "When an AI assistant looks through your actual files, emails, and documents to base its answers on real information rather than just its general training knowledge. It is what makes Copilot useful for work, because it answers questions about your specific data rather than giving generic responses.",
+      "first_seen": "2026-06-17",
+      "story": "Critical Copilot Vulnerability Allowed Hackers to Steal 2FA Codes via SearchLeak Exploit",
+      "teach_count": 1
+    },
+    {
+      "term": "open-weight model",
+      "definition": "An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of it like a recipe being made public: you can cook the dish yourself in your own kitchen instead of only buying it at the restaurant.",
+      "first_seen": "2026-06-17",
+      "story": "Microsoft Copilot Cowork Shifts to Usage-Based Billing and Eyes DeepSeek Integration",
+      "teach_count": 1
+    },
+    {
+      "term": "DiffusionGemma",
+      "definition": "A specific AI model from Google DeepMind that generates text using a technique borrowed from image creation. Instead of writing one word at a time like traditional AI, it refines the entire answer all at once, like developing a photograph. The result is text produced four times faster than normal.",
+      "first_seen": "2026-06-17",
+      "story": "Google DeepMind Releases DiffusionGemma: Text Generation 4x Faster",
+      "teach_count": 1
+    },
+    {
+      "term": "AI agent governance",
+      "definition": "The rules and monitoring a business puts in place to control what its AI agents are allowed to do on their own. It answers questions like: can this agent spend money, send emails, or share data without a human approving first? Think of it as setting boundaries for a new employee who works at superhuman speed.",
+      "first_seen": "2026-06-17",
+      "story": "Google DeepMind Warns About Millions of AI Agents Interacting Online",
+      "teach_count": 1
+    }
+  ]
+}
