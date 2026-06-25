@@ -4,33 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Glossary — RAMSAC</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #faf3f0; font-family: Manrope, Arial, sans-serif; color: #181b1a; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  body { background: #faf3f0; font-family: Geist, Arial, sans-serif; color: #181b1a; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   a { color: inherit; text-decoration: none; }
   
   .site-nav { background: #181b1a; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid #9e0b11; }
-  .nav-brand { font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
-  .nav-link { font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .nav-brand { font-family: Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
   .nav-link:hover { color: #fff; }
   .nav-link.active { color: #ffffff; border-bottom-color: #9e0b11; }
   .workspace { display: flex; flex: 1; overflow: hidden; }
   .graph-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
   .toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #ead9d3; flex-shrink: 0; }
   .search-wrap { position: relative; flex: 1; max-width: 300px; }
-  .search-wrap input { width: 100%; padding: 8px 12px 8px 32px; border: 1px solid #ead9d3; border-radius: 20px; font-size: 13px; font-family: Manrope, Arial, sans-serif; outline: none; color: #181b1a; background: #faf3f0; transition: border-color 0.15s; }
+  .search-wrap input { width: 100%; padding: 8px 12px 8px 32px; border: 1px solid #ead9d3; border-radius: 20px; font-size: 13px; font-family: Geist, Arial, sans-serif; outline: none; color: #181b1a; background: #faf3f0; transition: border-color 0.15s; }
   .search-wrap input:focus { border-color: #9e0b11; }
   .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.5; pointer-events: none; }
-  .legend-intro { font-size: 11px; color: #6b5f5a; font-family: Manrope, Arial, sans-serif; margin-right: 4px; align-self: center; }
+  .legend-intro { font-size: 11px; color: #6b5f5a; font-family: Geist, Arial, sans-serif; margin-right: 4px; align-self: center; }
   .legend { display: flex; gap: 14px; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: flex-start; gap: 6px; cursor: pointer; transition: opacity 0.15s; }
   .legend-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
   .legend-text { display: flex; flex-direction: column; line-height: 1.25; }
-  .legend-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #181b1a; font-family: Montserrat, Arial, sans-serif; }
-  .legend-desc { font-size: 10px; color: #6b5f5a; font-family: Manrope, Arial, sans-serif; white-space: nowrap; }
+  .legend-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #181b1a; font-family: Geist, Arial, sans-serif; }
+  .legend-desc { font-size: 10px; color: #6b5f5a; font-family: Geist, Arial, sans-serif; white-space: nowrap; }
   .trending-bar { font-size: 11px; color: #6b5f5a; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .trending-bar span { font-family: Montserrat, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #9e0b11; }
+  .trending-bar span { font-family: Geist, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #9e0b11; }
   .trending-chip { display: inline-block; background: rgba(158,11,17,0.1); color: #181b1a; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(158,11,17,0.3); }
   .trending-chip:hover { background: #9e0b11; color: #ffffff; }
   #graph-svg { flex: 1; width: 100%; display: block; cursor: grab; }
@@ -40,14 +40,14 @@
   .detail-empty .hint-icon { font-size: 36px; margin-bottom: 12px; }
   .detail-empty p { font-size: 13px; color: #6b5f5a; line-height: 1.6; }
   .detail-content { flex: 1; overflow-y: auto; padding: 28px 24px; display: none; }
-  .detail-category { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
-  .detail-term { font-family: Montserrat, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #181b1a; margin-bottom: 16px; line-height: 1.2; }
+  .detail-category { font-family: Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .detail-term { font-family: Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #181b1a; margin-bottom: 16px; line-height: 1.2; }
   .detail-def { font-size: 14px; line-height: 1.75; color: #181b1a; margin-bottom: 24px; }
-  .detail-section-label { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #9e0b11; font-weight: 700; margin-bottom: 8px; border-top: 1px solid #ead9d3; padding-top: 16px; }
+  .detail-section-label { font-family: Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #9e0b11; font-weight: 700; margin-bottom: 8px; border-top: 1px solid #ead9d3; padding-top: 16px; }
   .related-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .related-chip { display: inline-block; background: #faf3f0; border: 1px solid #ead9d3; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: Montserrat, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .related-chip { display: inline-block; background: #faf3f0; border: 1px solid #ead9d3; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: Geist, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .related-chip:hover { border-color: #9e0b11; background: rgba(158,11,17,0.1); }
-  .bc-link { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #faf3f0; border: 1px solid #ead9d3; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: #181b1a; font-family: Montserrat, Arial, sans-serif; transition: border-color 0.15s; }
+  .bc-link { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #faf3f0; border: 1px solid #ead9d3; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: #181b1a; font-family: Geist, Arial, sans-serif; transition: border-color 0.15s; }
   .bc-link:hover { border-color: #9e0b11; }
   .bc-link-arrow { margin-left: auto; color: #9e0b11; }
 </style>
@@ -229,7 +229,7 @@
       label.setAttribute('y', '5');
       label.setAttribute('font-size', isActive ? '13' : '12');
       label.setAttribute('font-weight', isActive ? '700' : '600');
-      label.setAttribute('font-family', 'Montserrat, Arial, sans-serif');
+      label.setAttribute('font-family', 'Geist, Arial, sans-serif');
       label.setAttribute('fill', isActive ? '#181b1a' : '#444');
       label.setAttribute('stroke', '#faf3f0');
       label.setAttribute('stroke-width', '3.5');
