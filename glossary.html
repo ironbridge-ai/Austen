@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Glossary — RAMSAC</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f5fbff; font-family: Manrope, Arial, sans-serif; color: #373c46; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+  
+  .site-nav { background: #152230; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid #4ddcc3; }
+  .nav-brand { font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .nav-link:hover { color: #fff; }
+  .nav-link.active { color: #4ddcc3; border-bottom-color: #4ddcc3; }
+  .workspace { display: flex; flex: 1; overflow: hidden; }
+  .graph-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #c7e6ff; flex-shrink: 0; }
+  .search-wrap { position: relative; flex: 1; max-width: 300px; }
+  .search-wrap input { width: 100%; padding: 8px 12px 8px 32px; border: 1px solid #c7e6ff; border-radius: 20px; font-size: 13px; font-family: Manrope, Arial, sans-serif; outline: none; color: #373c46; background: #f5fbff; transition: border-color 0.15s; }
+  .search-wrap input:focus { border-color: #4ddcc3; }
+  .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.5; pointer-events: none; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5a5a5a; font-family: Montserrat, Arial, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .trending-bar { font-size: 11px; color: #5a5a5a; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .trending-bar span { font-family: Montserrat, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #4ddcc3; }
+  .trending-chip { display: inline-block; background: rgba(77,220,195,0.1); color: #152230; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(77,220,195,0.3); }
+  .trending-chip:hover { background: #4ddcc3; color: #152230; }
+  #graph-svg { flex: 1; width: 100%; display: block; cursor: grab; }
+  #graph-svg:active { cursor: grabbing; }
+  .detail-col { width: 320px; flex-shrink: 0; border-left: 1px solid #c7e6ff; background: #ffffff; display: flex; flex-direction: column; overflow: hidden; }
+  .detail-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; opacity: 0.5; }
+  .detail-empty .hint-icon { font-size: 36px; margin-bottom: 12px; }
+  .detail-empty p { font-size: 13px; color: #5a5a5a; line-height: 1.6; }
+  .detail-content { flex: 1; overflow-y: auto; padding: 28px 24px; display: none; }
+  .detail-category { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .detail-term { font-family: Montserrat, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #152230; margin-bottom: 16px; line-height: 1.2; }
+  .detail-def { font-size: 14px; line-height: 1.75; color: #373c46; margin-bottom: 24px; }
+  .detail-section-label { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4ddcc3; font-weight: 700; margin-bottom: 8px; border-top: 1px solid #c7e6ff; padding-top: 16px; }
+  .related-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .related-chip { display: inline-block; background: #f5fbff; border: 1px solid #c7e6ff; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: Montserrat, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .related-chip:hover { border-color: #4ddcc3; background: rgba(77,220,195,0.1); }
+  .bc-link { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #f5fbff; border: 1px solid #c7e6ff; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: #152230; font-family: Montserrat, Arial, sans-serif; transition: border-color 0.15s; }
+  .bc-link:hover { border-color: #4ddcc3; }
+  .bc-link-arrow { margin-left: auto; color: #4ddcc3; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link active">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a></nav>
+<div class="workspace">
+  <div class="graph-col">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="search-input" placeholder="Search concepts..." autocomplete="off">
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="toolbar" style="padding-top:8px;padding-bottom:8px;border-top:none">
+      <div class="trending-bar" id="trending-bar"><span>Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
+    </div>
+    <svg id="graph-svg"></svg>
+  </div>
+  <div class="detail-col">
+    <div class="detail-empty" id="detail-empty">
+      <div class="hint-icon">&#10024;</div>
+      <p>Click any concept to explore its definition and connections.</p>
+    </div>
+    <div class="detail-content" id="detail-content">
+      <div class="detail-category" id="d-cat"></div>
+      <div class="detail-term" id="d-term"></div>
+      <div class="detail-def" id="d-def"></div>
+      <div id="d-related-wrap" style="display:none">
+        <div class="detail-section-label">Related concepts</div>
+        <div class="related-chips" id="d-related"></div>
+      </div>
+      <div id="d-bc-wrap" style="display:none">
+        <div class="detail-section-label" style="margin-top:16px">See in battle cards</div>
+        <div id="d-bc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  var NODES = [{"label": "LLM", "definition": "Large Language Model. An AI trained on vast amounts of text that can understand and generate human language. Think of it as an extremely well-read assistant that has absorbed billions of documents and can write, summarise, answer questions, and hold a conversation.", "category": "foundation", "from_log": false, "battlecards": [{"name": "OpenAI", "id": "openai"}, {"name": "xAI", "id": "xai"}, {"name": "Meta AI", "id": "meta"}]}, {"label": "Transformer", "definition": "The architecture that powers most modern AI models. Invented by Google in 2017, it lets AI process entire paragraphs at once and understand how words relate to each other, rather than reading one word at a time. It is the engine inside GPT, Claude, Gemini, and nearly every other AI you use today.", "category": "foundation", "from_log": false, "battlecards": []}, {"label": "Neural Network", "definition": "The basic building block of modern AI. Loosely inspired by the human brain, it is a layered system that learns patterns by adjusting millions of tiny connections based on examples. Train it on enough data and it learns to recognise faces, translate languages, or generate code.", "category": "foundation", "from_log": false, "battlecards": []}, {"label": "Context Window", "definition": "The maximum amount of text an AI can see and work with at one time. Think of it like the AI's short-term memory. A small context window limits the AI to a few pages; a large one can handle an entire book. Bigger context windows mean the AI can work on longer, more complex tasks.", "category": "deployment", "from_log": false, "battlecards": [{"name": "Anthropic", "id": "anthropic"}]}, {"label": "RAG", "definition": "Retrieval-Augmented Generation. A technique where an AI first searches a database of documents to find relevant information, then writes its answer based on what it found. This stops the AI from making things up and keeps answers grounded in your actual company data.", "category": "deployment", "from_log": false, "battlecards": [{"name": "Google / DeepMind", "id": "google"}]}, {"label": "Hallucination", "definition": "When an AI confidently states something that is factually wrong. Like a student who does not know the answer but writes something plausible-sounding anyway. Hallucination is one of the main risks of using AI output without human review.", "category": "safety", "from_log": false, "battlecards": []}, {"label": "RLHF", "definition": "Reinforcement Learning from Human Feedback. A training method where humans rate the AI's responses as good or bad, and the AI learns to produce more of what got positive ratings. This is how ChatGPT and Claude became helpful and conversational.", "category": "safety", "from_log": false, "battlecards": [{"name": "Anthropic", "id": "anthropic"}]}, {"label": "Multimodal", "definition": "An AI that can work with more than one type of input or output \u2014 text, images, audio, and video. A multimodal model can describe a photograph, read a chart, listen to a voice recording, or analyse a document without switching tools.", "category": "generation", "from_log": false, "battlecards": [{"name": "OpenAI", "id": "openai"}, {"name": "Google / DeepMind", "id": "google"}, {"name": "xAI", "id": "xai"}]}, {"label": "Agentic workflow", "definition": "A process where an AI takes a series of actions over time to complete a goal, rather than just answering a single question. An AI told to book a meeting might check calendars, draft an email, send it, and update a spreadsheet \u2014 all in sequence without human prompting at each step.", "category": "deployment", "from_log": false, "battlecards": [{"name": "OpenAI", "id": "openai"}, {"name": "Microsoft", "id": "microsoft"}]}, {"label": "Alignment", "definition": "The challenge of making AI systems do what humans actually want, safely and reliably. An aligned AI follows instructions without harmful side effects, respects rules, and does not pursue goals that conflict with human values. It is the difference between a helpful assistant and an unpredictable one.", "category": "safety", "from_log": false, "battlecards": [{"name": "Anthropic", "id": "anthropic"}]}, {"label": "Autoregressive model", "definition": "An AI that generates text one word at a time, where each word is predicted based on everything that came before it. This is how GPT models work. It is like autocomplete on your phone, but applied thousands of times in sequence at extraordinary speed.", "category": "generation", "from_log": false, "battlecards": [{"name": "OpenAI", "id": "openai"}]}, {"label": "AI agent", "definition": "A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently.", "category": "deployment", "from_log": true, "battlecards": [{"name": "Anthropic", "id": "anthropic"}]}, {"label": "Data isolation", "definition": "The principle that different users' information should be kept completely separate within a system, so one person's data can never accidentally appear in another person's results. Like having separate locked filing cabinets rather than one shared drawer. AI models struggle with this because they process everything through the same underlying system.", "category": "safety", "from_log": true, "battlecards": [{"name": "Microsoft", "id": "microsoft"}]}, {"label": "prompt injection", "definition": "A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to do. Think of it like slipping a forged note into a stack of legitimate paperwork so the person processing it follows the fake instructions without realising.", "category": "safety", "from_log": true, "battlecards": [{"name": "Microsoft", "id": "microsoft"}]}, {"label": "multi-agent interaction", "definition": "When multiple AI agents, each built by different companies or teams with different goals, communicate and transact with each other without a human in the middle. Imagine hundreds of personal assistants from different households all trying to book the same restaurant at once, each following their own boss's instructions but creating chaos together.", "category": "deployment", "from_log": true, "battlecards": []}, {"label": "emergent behaviour", "definition": "When a system does something that nobody explicitly programmed it to do, simply because of how its individual parts interact. Like how a traffic jam appears even though no single driver decided to create one. In AI, it means agents or models producing unexpected results that arise from scale and complexity rather than design.", "category": "safety", "from_log": true, "battlecards": []}, {"label": "frontier model", "definition": "The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again.", "category": "foundation", "from_log": true, "battlecards": [{"name": "Anthropic", "id": "anthropic"}, {"name": "OpenAI", "id": "openai"}, {"name": "Google / DeepMind", "id": "google"}, {"name": "xAI", "id": "xai"}, {"name": "Meta AI", "id": "meta"}]}, {"label": "token consumption", "definition": "A measure of how much AI processing you use. AI models break text into small pieces called tokens, roughly one token per word. Every question you ask and answer you receive costs tokens. Token consumption is like a meter running on your AI usage, and it determines your bill under usage-based pricing.", "category": "business", "from_log": true, "battlecards": []}, {"label": "SearchLeak", "definition": "The name given to a specific security flaw in Microsoft Copilot that allowed attackers to trick the AI assistant into revealing sensitive information like login codes. Think of it like a con artist asking a helpful receptionist just the right question to get them to hand over confidential files without realising.", "category": "safety", "from_log": true, "battlecards": []}, {"label": "multi-model architectures", "definition": "Instead of using one single AI brain for everything, a system uses different AI models for different tasks, like having a specialist doctor for complex problems and a GP for routine questions. This lets companies balance quality and cost by routing simple tasks to cheaper models and hard tasks to expensive ones.", "category": "business", "from_log": true, "battlecards": [{"name": "Microsoft", "id": "microsoft"}]}, {"label": "diffusion-based generation", "definition": "A technique where AI creates output by starting with random noise and gradually refining it into a finished result, like a sculptor revealing a statue from a block of marble. Instead of building an answer one word at a time, the AI generates everything at once and sharpens it in a few quick passes. This makes output dramatically faster.", "category": "generation", "from_log": true, "battlecards": [{"name": "Google / DeepMind", "id": "google"}]}, {"label": "search-grounding", "definition": "When an AI assistant looks through your actual files, emails, and documents to base its answers on real information rather than just its general training knowledge. It is what makes Copilot useful for work, because it answers questions about your specific data rather than giving generic responses.", "category": "deployment", "from_log": true, "battlecards": [{"name": "Microsoft", "id": "microsoft"}, {"name": "Google / DeepMind", "id": "google"}]}, {"label": "open-weight model", "definition": "An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of it like a recipe being made public: you can cook the dish yourself in your own kitchen instead of only buying it at the restaurant.", "category": "foundation", "from_log": true, "battlecards": [{"name": "xAI", "id": "xai"}, {"name": "Meta AI", "id": "meta"}]}, {"label": "DiffusionGemma", "definition": "A specific AI model from Google DeepMind that generates text using a technique borrowed from image creation. Instead of writing one word at a time like traditional AI, it refines the entire answer all at once, like developing a photograph. The result is text produced four times faster than normal.", "category": "generation", "from_log": true, "battlecards": []}, {"label": "AI agent governance", "definition": "The rules and monitoring a business puts in place to control what its AI agents are allowed to do on their own. It answers questions like: can this agent spend money, send emails, or share data without a human approving first? Think of it as setting boundaries for a new employee who works at superhuman speed.", "category": "business", "from_log": true, "battlecards": []}, {"label": "model diversification", "definition": "The practice of using multiple AI models from different providers rather than relying on a single one. It is like buying insurance from several companies instead of one. If one model goes down, gets too expensive, or gets banned, your business keeps running on the others.", "category": "business", "from_log": true, "battlecards": [{"name": "Meta AI", "id": "meta"}]}, {"label": "Record and Replay", "definition": "A feature where AI watches you perform a task on your computer once, learns the steps, and then repeats that exact task on its own whenever you ask. Think of it as showing a new employee how to do something once, except the employee has perfect memory and never gets bored.", "category": "deployment", "from_log": true, "battlecards": []}];
+  var EDGES = [[0, 1], [0, 16], [0, 3], [0, 5], [0, 19], [0, 10], [1, 20], [1, 10], [11, 8], [11, 14], [11, 24], [11, 26], [13, 18], [13, 12], [13, 5], [21, 18], [21, 4], [4, 3], [25, 19], [25, 22], [20, 23], [14, 15], [14, 24], [16, 22], [17, 3], [6, 9], [6, 16], [7, 20], [8, 24], [2, 1], [2, 0]];
+  var CAT_COLORS = {"foundation": "#f97316", "generation": "#8b5cf6", "deployment": "#3b82f6", "safety": "#ef4444", "business": "#10b981"};
+  var SEARCH_URL = "https://dev-rvelasquez.tailc35de4.ts.net";
+
+  var svg = document.getElementById('graph-svg');
+  var W, H;
+  var simNodes = [], simEdges = [];
+  var dragging = null, dragOffX = 0, dragOffY = 0;
+  var activeIdx = -1;
+  var filterCat = null;
+  var searchQuery = '';
+
+  function resize() {
+    W = svg.clientWidth; H = svg.clientHeight;
+  }
+
+  function initNodes() {
+    var n = NODES.length;
+    simNodes = NODES.map(function(nd, i) {
+      var angle = (2 * Math.PI * i / n) - Math.PI / 2;
+      var r = Math.min(W, H) * 0.32;
+      return { x: W/2 + r * Math.cos(angle), y: H/2 + r * Math.sin(angle),
+               vx: 0, vy: 0, data: nd, idx: i };
+    });
+    simEdges = EDGES.map(function(e) { return { s: e[0], t: e[1] }; });
+  }
+
+  var REPULSION = 2800, SPRING_LEN = 130, SPRING_K = 0.04;
+  var DAMPING = 0.82, GRAVITY = 0.025, CAT_PULL = 0.012;
+
+  function tick() {
+    var cx = W/2, cy = H/2;
+    for (var i = 0; i < simNodes.length; i++) {
+      for (var j = i+1; j < simNodes.length; j++) {
+        var a = simNodes[i], b = simNodes[j];
+        var dx = b.x - a.x, dy = b.y - a.y;
+        var dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        var f = REPULSION / (dist * dist);
+        var fx = f * dx/dist, fy = f * dy/dist;
+        a.vx -= fx; a.vy -= fy;
+        b.vx += fx; b.vy += fy;
+      }
+    }
+    for (var k = 0; k < simEdges.length; k++) {
+      var e = simEdges[k];
+      var a = simNodes[e.s], b = simNodes[e.t];
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      var f = SPRING_K * (dist - SPRING_LEN);
+      var fx = f * dx/dist, fy = f * dy/dist;
+      a.vx += fx; a.vy += fy;
+      b.vx -= fx; b.vy -= fy;
+    }
+    for (var i = 0; i < simNodes.length; i++) {
+      var n = simNodes[i];
+      if (n === dragging) continue;
+      n.vx += (cx - n.x) * GRAVITY;
+      n.vy += (cy - n.y) * GRAVITY;
+      n.vx *= DAMPING; n.vy *= DAMPING;
+      n.x += n.vx; n.y += n.vy;
+      n.x = Math.max(50, Math.min(W - 50, n.x));
+      n.y = Math.max(50, Math.min(H - 50, n.y));
+    }
+    render();
+    requestAnimationFrame(tick);
+  }
+
+  function nodeVisible(n) {
+    var nd = n.data;
+    if (filterCat && nd.category !== filterCat) return false;
+    if (searchQuery) {
+      var q = searchQuery.toLowerCase();
+      return nd.label.toLowerCase().indexOf(q) >= 0 || nd.definition.toLowerCase().indexOf(q) >= 0;
+    }
+    return true;
+  }
+
+  function render() {
+    svg.innerHTML = '';
+    var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    var filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+    filter.setAttribute('id', 'glow');
+    var feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+    feGaussianBlur.setAttribute('stdDeviation', '3'); feGaussianBlur.setAttribute('result', 'coloredBlur');
+    var feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+    var feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+    feMergeNode1.setAttribute('in', 'coloredBlur');
+    var feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+    feMergeNode2.setAttribute('in', 'SourceGraphic');
+    feMerge.appendChild(feMergeNode1); feMerge.appendChild(feMergeNode2);
+    filter.appendChild(feGaussianBlur); filter.appendChild(feMerge);
+    defs.appendChild(filter); svg.appendChild(defs);
+
+    // Draw edges
+    for (var k = 0; k < simEdges.length; k++) {
+      var e = simEdges[k];
+      var a = simNodes[e.s], b = simNodes[e.t];
+      if (!nodeVisible(a) || !nodeVisible(b)) continue;
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      var isActive = (activeIdx === e.s || activeIdx === e.t);
+      line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+      line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+      line.setAttribute('stroke', isActive ? '#4ddcc3' : '#c7e6ff');
+      line.setAttribute('stroke-width', isActive ? '2' : '1');
+      line.setAttribute('opacity', isActive ? '0.8' : '0.5');
+      svg.appendChild(line);
+    }
+
+    // Draw nodes
+    for (var i = 0; i < simNodes.length; i++) {
+      var n = simNodes[i]; var nd = n.data;
+      var visible = nodeVisible(n);
+      var isActive = (activeIdx === i);
+      var color = CAT_COLORS[nd.category] || '#888';
+      var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('transform', 'translate(' + n.x + ',' + n.y + ')');
+      g.setAttribute('data-idx', i);
+      g.style.opacity = visible ? '1' : '0.15';
+      g.style.cursor = 'pointer';
+
+      var r = isActive ? 10 : 8;
+      var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', r);
+      circle.setAttribute('fill', color);
+      circle.setAttribute('stroke', isActive ? '#fff' : 'rgba(255,255,255,0.6)');
+      circle.setAttribute('stroke-width', isActive ? '2.5' : '1.5');
+      if (isActive) circle.setAttribute('filter', 'url(#glow)');
+
+      var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('x', r + 6); label.setAttribute('y', '5');
+      label.setAttribute('font-size', isActive ? '13' : '12');
+      label.setAttribute('font-weight', isActive ? '700' : '600');
+      label.setAttribute('font-family', 'Montserrat, Arial, sans-serif');
+      label.setAttribute('fill', isActive ? '#152230' : '#444');
+      label.setAttribute('pointer-events', 'none');
+      label.textContent = nd.label;
+
+      var hitbox = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hitbox.setAttribute('r', '20'); hitbox.setAttribute('fill', 'transparent');
+
+      g.appendChild(circle); g.appendChild(label); g.appendChild(hitbox);
+      svg.appendChild(g);
+    }
+  }
+
+  function showDetail(idx) {
+    activeIdx = idx;
+    var nd = simNodes[idx].data;
+    document.getElementById('detail-empty').style.display = 'none';
+    var dc = document.getElementById('detail-content');
+    dc.style.display = 'block';
+    var catEl = document.getElementById('d-cat');
+    catEl.textContent = nd.category;
+    catEl.style.color = CAT_COLORS[nd.category] || '#4ddcc3';
+    document.getElementById('d-term').textContent = nd.label;
+    document.getElementById('d-def').textContent = nd.definition;
+
+    var relWrap = document.getElementById('d-related-wrap');
+    var relDiv = document.getElementById('d-related');
+    relDiv.innerHTML = '';
+    var neighbors = [];
+    for (var k = 0; k < simEdges.length; k++) {
+      var e = simEdges[k];
+      if (e.s === idx) neighbors.push(e.t);
+      else if (e.t === idx) neighbors.push(e.s);
+    }
+    if (neighbors.length > 0) {
+      relWrap.style.display = 'block';
+      neighbors.forEach(function(ni) {
+        var chip = document.createElement('span');
+        chip.className = 'related-chip';
+        chip.textContent = simNodes[ni].data.label;
+        chip.style.borderColor = CAT_COLORS[simNodes[ni].data.category] || '#c7e6ff';
+        chip.addEventListener('click', function() { showDetail(ni); });
+        relDiv.appendChild(chip);
+      });
+    } else {
+      relWrap.style.display = 'none';
+    }
+
+    var bcWrap = document.getElementById('d-bc-wrap');
+    var bcDiv = document.getElementById('d-bc');
+    bcDiv.innerHTML = '';
+    if (nd.battlecards && nd.battlecards.length > 0) {
+      bcWrap.style.display = 'block';
+      nd.battlecards.forEach(function(bc) {
+        var a = document.createElement('a');
+        a.className = 'bc-link';
+        a.href = 'battlecards.html#bc-' + bc.id;
+        a.innerHTML = bc.name + '<span class="bc-link-arrow">&#8599;</span>';
+        bcDiv.appendChild(a);
+      });
+    } else {
+      bcWrap.style.display = 'none';
+    }
+  }
+
+  // Interaction
+  svg.addEventListener('mousedown', function(e) {
+    var g = e.target.closest('g[data-idx]');
+    if (!g) return;
+    var idx = parseInt(g.getAttribute('data-idx'));
+    dragging = simNodes[idx];
+    var rect = svg.getBoundingClientRect();
+    dragOffX = e.clientX - rect.left - dragging.x;
+    dragOffY = e.clientY - rect.top - dragging.y;
+    dragging._startX = dragging.x; dragging._startY = dragging.y;
+    e.preventDefault();
+  });
+
+  svg.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    var rect = svg.getBoundingClientRect();
+    dragging.x = e.clientX - rect.left - dragOffX;
+    dragging.y = e.clientY - rect.top - dragOffY;
+    dragging.vx = 0; dragging.vy = 0;
+  });
+
+  window.addEventListener('mouseup', function(e) {
+    if (!dragging) return;
+    var moved = Math.abs(dragging.x - dragging._startX) + Math.abs(dragging.y - dragging._startY);
+    var idx = dragging.idx;
+    dragging = null;
+    if (moved < 5) showDetail(idx);
+  });
+
+  // Search
+  var searchTimer;
+  document.getElementById('search-input').addEventListener('input', function(e) {
+    searchQuery = e.target.value.trim();
+    clearTimeout(searchTimer);
+    if (searchQuery.length >= 2) {
+      searchTimer = setTimeout(function() {
+        logSearch(searchQuery);
+      }, 800);
+    }
+  });
+
+  // Legend
+  var legendEl = document.getElementById('legend');
+  Object.keys(CAT_COLORS).forEach(function(cat) {
+    var item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = '<div class="legend-dot" style="background:' + CAT_COLORS[cat] + '"></div>' + cat;
+    item.addEventListener('click', function() {
+      filterCat = (filterCat === cat) ? null : cat;
+      document.querySelectorAll('.legend-item').forEach(function(li) {
+        li.style.opacity = (filterCat && li.textContent.trim() !== filterCat) ? '0.35' : '1';
+      });
+    });
+    legendEl.appendChild(item);
+  });
+
+  // Trending
+  function logSearch(term) {
+    var key = 'austen_searches';
+    var arr = JSON.parse(localStorage.getItem(key) || '[]');
+    arr.push({term: term.toLowerCase(), ts: Date.now()});
+    if (arr.length > 200) arr = arr.slice(-200);
+    localStorage.setItem(key, JSON.stringify(arr));
+    if (SEARCH_URL) {
+      fetch(SEARCH_URL + '/api/search', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({term: term, page: 'glossary', ts: Date.now()/1000})
+      }).catch(function(){});
+    }
+  }
+
+  function loadTrending() {
+    function display(items) {
+      var el = document.getElementById('trending-chips');
+      el.innerHTML = '';
+      items.slice(0, 6).forEach(function(item) {
+        var chip = document.createElement('span');
+        chip.className = 'trending-chip';
+        chip.textContent = item.term;
+        chip.addEventListener('click', function() {
+          document.getElementById('search-input').value = item.term;
+          searchQuery = item.term;
+          var found = simNodes.find(function(n) {
+            return n.data.label.toLowerCase() === item.term.toLowerCase();
+          });
+          if (found) showDetail(found.idx);
+        });
+        el.appendChild(chip);
+      });
+    }
+
+    if (SEARCH_URL) {
+      fetch(SEARCH_URL + '/api/trending').then(function(r) { return r.json(); })
+        .then(function(d) { if (d.trending && d.trending.length) display(d.trending); else loadTrendingLocal(); })
+        .catch(loadTrendingLocal);
+    } else {
+      loadTrendingLocal();
+    }
+  }
+
+  function loadTrendingLocal() {
+    var arr = JSON.parse(localStorage.getItem('austen_searches') || '[]');
+    var cutoff = Date.now() - 7 * 86400000;
+    var counts = {};
+    arr.filter(function(s) { return s.ts >= cutoff; }).forEach(function(s) {
+      counts[s.term] = (counts[s.term] || 0) + 1;
+    });
+    var sorted = Object.entries(counts).sort(function(a,b) { return b[1]-a[1]; });
+    if (sorted.length) display(sorted.slice(0,6).map(function(e) { return {term:e[0], count:e[1]}; }));
+  }
+
+  // URL param: focus a specific node on load
+  var params = new URLSearchParams(window.location.search);
+  var focusTerm = params.get('focus');
+
+  resize();
+  window.addEventListener('resize', function() { resize(); });
+  initNodes();
+  loadTrending();
+  requestAnimationFrame(tick);
+
+  if (focusTerm) {
+    setTimeout(function() {
+      var found = simNodes.find(function(n) {
+        return n.data.label.toLowerCase() === focusTerm.toLowerCase();
+      });
+      if (found) showDetail(found.idx);
+    }, 400);
+  }
+})();
+</script>
+</body>
+</html>

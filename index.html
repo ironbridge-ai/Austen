@@ -3,52 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Austen — Weekly AI Briefing by RAMSAC</title>
+<title>Austen — AI Briefing Hub by RAMSAC</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #f5fbff; font-family: Manrope, Arial, sans-serif; color: #373c46; min-height: 100vh; padding: 40px 16px 60px; }
-  .container { max-width: 640px; margin: 0 auto; }
-  .header { background: linear-gradient(135deg, #152230 0%, #11383f 100%); border-radius: 12px 12px 0 0; padding: 36px 36px 32px; border-bottom: 3px solid #4ddcc3; display: flex; align-items: flex-end; justify-content: space-between; }
-  .header h1 { font-family: Montserrat, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }
-  .header h1 span { color: #4ddcc3; }
-  .header-sub { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4ddcc3; font-weight: 600; margin-bottom: 8px; }
-  .header-brand { font-family: Montserrat, Arial, sans-serif; font-size: 20px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.03em; }
-  .body { background: #f5fbff; border-left: 1px solid #c7e6ff; border-right: 1px solid #c7e6ff; padding: 28px 32px 32px; }
+  body { background: #f5fbff; font-family: Manrope, Arial, sans-serif; color: #373c46; min-height: 100vh; }
+  a { color: inherit; text-decoration: none; }
+  
+  .site-nav { background: #152230; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid #4ddcc3; }
+  .nav-brand { font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .nav-link:hover { color: #fff; }
+  .nav-link.active { color: #4ddcc3; border-bottom-color: #4ddcc3; }
+  .page-body { max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }
+  .hub-hero { background: linear-gradient(135deg, #152230 0%, #11383f 100%); border-radius: 12px; padding: 36px 36px 32px; border-bottom: 3px solid #4ddcc3; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .hub-hero h1 { font-family: Montserrat, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }
+  .hub-hero h1 span { color: #4ddcc3; }
+  .hub-hero-sub { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4ddcc3; font-weight: 600; margin-bottom: 8px; }
+  .hub-hero-brand { font-family: Montserrat, Arial, sans-serif; font-size: 20px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.03em; }
+  .hub-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .hub-tile { background: #ffffff; border: 1px solid #c7e6ff; border-left: 3px solid #4ddcc3; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; transition: box-shadow 0.15s; }
+  .hub-tile:hover { box-shadow: 0 4px 20px rgba(21,34,48,0.08); }
+  .hub-tile-label { font-family: Montserrat, Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: #4ddcc3; }
+  .hub-tile-title { font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #152230; }
+  .hub-tile-desc { font-size: 13px; color: #5a5a5a; line-height: 1.6; flex: 1; }
+  .hub-tile-btn { display: inline-block; background: #4ddcc3; color: #152230; font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }
+  .hub-tile-btn:hover { opacity: 0.85; }
   .section-label { font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4ddcc3; font-weight: 700; border-top: 1px solid #c7e6ff; padding-top: 24px; margin-bottom: 20px; }
-  .edition-card { background: #fff; border: 1px solid #c7e6ff; border-left: 3px solid #4ddcc3; border-radius: 8px; padding: 18px 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .edition-card { background: #ffffff; border: 1px solid #c7e6ff; border-left: 3px solid #4ddcc3; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
   .edition-date { font-family: Montserrat, Arial, sans-serif; font-size: 14px; font-weight: 700; color: #152230; }
   .view-btn { display: inline-block; background: #4ddcc3; color: #152230; font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }
   .view-btn:hover { opacity: 0.85; }
-  .footer { background: #152230; border-radius: 0 0 12px 12px; border: 1px solid #152230; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .footer { background: #152230; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }
   .footer p { font-size: 12px; color: rgba(255,255,255,0.5); font-family: Manrope, Arial, sans-serif; }
   .footer-brand { font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.02em; }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link active">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a></nav>
+<div class="page-body">
+  <div class="hub-hero">
     <div>
-      <p class="header-sub">Austen &nbsp;&middot;&nbsp; Weekly AI Briefing</p>
+      <p class="hub-hero-sub">Austen &middot; AI Knowledge Hub</p>
       <h1><span>This Week</span> in AI</h1>
     </div>
-    <div class="header-brand">ramsac</div>
+    <div class="hub-hero-brand">ramsac</div>
   </div>
-  <div class="body">
-    <p class="section-label">All Editions</p>
+  <div class="hub-tiles">
+    <a class="hub-tile" href="glossary.html">
+      <div class="hub-tile-label">Explore</div>
+      <div class="hub-tile-title">AI Glossary</div>
+      <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
+      <span class="hub-tile-btn">Open glossary &rarr;</span>
+    </a>
+    <a class="hub-tile" href="battlecards.html">
+      <div class="hub-tile-label">Know your landscape</div>
+      <div class="hub-tile-title">Battle Cards</div>
+      <div class="hub-tile-desc">Understand the major AI players, what they offer, and how RAMSAC positions against them in client conversations.</div>
+      <span class="hub-tile-btn">View battle cards &rarr;</span>
+    </a>
+  </div>
+  <p class="section-label">All Editions</p>
     <div class="edition-card">
-      <div>
-        <div class="edition-date">June 22, 2026</div>
-      </div>
+      <div class="edition-date">June 22, 2026</div>
       <a class="view-btn" href="austen_2026-06-22.html">View &rarr;</a>
     </div>
     <div class="edition-card">
-      <div>
-        <div class="edition-date">June 17, 2026</div>
-      </div>
+      <div class="edition-date">June 17, 2026</div>
       <a class="view-btn" href="austen_2026-06-17.html">View &rarr;</a>
     </div>
-  </div>
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
     <div class="footer-brand">ramsac</div>
