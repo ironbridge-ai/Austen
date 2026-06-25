@@ -356,23 +356,23 @@ def render_text(data, today):
 
 TOOLTIP_CSS = """
   .ai-term {
-    color: #3bb2b7;
+    color: #7a0d0f;
     font-weight: 700;
-    border-bottom: 2px dashed #4ddcc3;
+    border-bottom: 2px dashed #9e0b11;
     cursor: help;
   }
   #ai-tooltip {
     position: fixed;
     display: none;
-    background: #152230;
+    background: #181b1a;
     color: #ffffff;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
     border-radius: 8px;
     padding: 10px 14px;
-    border: 1px solid #4ddcc3;
-    box-shadow: 0 4px 20px rgba(21,34,48,0.4);
+    border: 1px solid #9e0b11;
+    box-shadow: 0 4px 20px rgba(24,27,26,0.4);
     max-width: 260px;
     width: 260px;
     z-index: 9999;
@@ -381,7 +381,7 @@ TOOLTIP_CSS = """
   }
   .fb-btn {
     background: none;
-    border: 1px solid #c7e6ff;
+    border: 1px solid #ead9d3;
     border-radius: 6px;
     color: #93979f;
     cursor: pointer;
@@ -390,16 +390,16 @@ TOOLTIP_CSS = """
     margin-left: 6px;
     transition: border-color 0.15s, color 0.15s, background 0.15s;
   }
-  .fb-btn:hover { border-color: #4ddcc3; color: #152230; }
-  .fb-btn.active-up { background: rgba(77,220,195,0.12); border-color: #4ddcc3; color: #11383f; }
-  .fb-btn.active-dn { background: rgba(253,185,19,0.12); border-color: #fdb913; color: #7a5c00; }
+  .fb-btn:hover { border-color: #9e0b11; color: #181b1a; }
+  .fb-btn.active-up { background: rgba(158,11,17,0.12); border-color: #9e0b11; color: #000000; }
+  .fb-btn.active-dn { background: rgba(158,11,17,0.12); border-color: #9e0b11; color: #7a0d0f; }
   #fb-section textarea {
     width: 100%;
     box-sizing: border-box;
     background: #ffffff;
-    border: 1px solid #c7e6ff;
+    border: 1px solid #ead9d3;
     border-radius: 8px;
-    color: #373c46;
+    color: #181b1a;
     font-size: 13px;
     font-family: "Manrope", Arial, sans-serif;
     line-height: 1.6;
@@ -408,13 +408,13 @@ TOOLTIP_CSS = """
     outline: none;
     transition: border-color 0.15s;
   }
-  #fb-section textarea:focus { border-color: #4ddcc3; }
+  #fb-section textarea:focus { border-color: #9e0b11; }
   #fb-submit {
     margin-top: 10px;
-    background: #fdb913;
+    background: #9e0b11;
     border: none;
     border-radius: 8px;
-    color: #152230;
+    color: #181b1a;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
@@ -427,22 +427,23 @@ TOOLTIP_CSS = """
     display: none;
     margin-top: 10px;
     font-size: 13px;
-    color: #3bb2b7;
+    color: #7a0d0f;
     font-family: "Manrope", Arial, sans-serif;
   }"""
 
 FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://dev-rvelasquez.tailc35de4.ts.net")
 
-ACCENT   = "#4ddcc3"   # RAMSAC mint teal — primary brand accent
-PURPLE   = "#3bb2b7"   # RAMSAC fresh teal — secondary / metadata
-BG_MAIN  = "#f5fbff"   # RAMSAC light blue — page surface
+ACCENT   = "#9e0b11"   # Thoughtspark deep red — primary brand accent
+PURPLE   = "#7a0d0f"   # Thoughtspark dark red — secondary / metadata
+BG_MAIN  = "#faf3f0"   # Warm cream — page surface
 BG_CARD  = "#ffffff"   # White — card surface
 BG_CARD2 = "#ffffff"   # White — modal surface
-TEXT     = "#373c46"   # RAMSAC contrast — primary text
-MUTED    = "#5a5a5a"   # Secondary text
-BORDER   = "#c7e6ff"   # RAMSAC light blue — hairlines
-NAVY     = "#152230"   # RAMSAC dark navy — header/footer
-DARK_TEAL = "#11383f"  # RAMSAC dark teal — header gradient end
+TEXT     = "#181b1a"   # Charcoal — primary text
+MUTED    = "#6b5f5a"   # Warm grey — secondary text
+BORDER   = "#ead9d3"   # Warm sand — hairlines
+NAVY     = "#181b1a"   # Charcoal black — header/footer
+DARK_TEAL = "#000000"  # Black — header gradient end
+ON_DARK  = "#ffffff"   # Text/accents on dark surfaces (red is too dark on charcoal)
 
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
@@ -596,8 +597,8 @@ BATTLE_CARDS = [
 def story_number_badge(n):
     return (
         f'<td width="48" valign="top" style="padding:0 14px 0 0">'
-        f'<div style="width:36px;height:36px;border-radius:50%;background:#4ddcc3;'
-        f'text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#152230;font-family:Montserrat,Arial,sans-serif">'
+        f'<div style="width:36px;height:36px;border-radius:50%;background:#9e0b11;'
+        f'text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:Montserrat,Arial,sans-serif">'
         f'{n}</div></td>'
     )
 
@@ -673,7 +674,7 @@ def render_html(data, today, date_slug):
     terms_section = new_terms_section(data.get("new_terms", []))
 
     return f"""<!DOCTYPE html>
-<html lang="en" style="color-scheme:light only;background-color:#f5fbff">
+<html lang="en" style="color-scheme:light only;background-color:#faf3f0">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -683,8 +684,8 @@ def render_html(data, today, date_slug):
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {{ color-scheme: light only; }}
-  html {{ background-color: #f5fbff !important; }}
-  body {{ background-color: #f5fbff !important; color: #373c46 !important; }}
+  html {{ background-color: #faf3f0 !important; }}
+  body {{ background-color: #faf3f0 !important; color: #181b1a !important; }}
 {TOOLTIP_CSS}
   .modal {{
     display: none;
@@ -707,7 +708,7 @@ def render_html(data, today, date_slug):
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0 20px 48px -12px rgba(21,34,48,0.3);
+    box-shadow: 0 20px 48px -12px rgba(24,27,26,0.3);
   }}
   .modal-close {{
     position: absolute;
@@ -723,10 +724,10 @@ def render_html(data, today, date_slug):
   .modal-close:hover {{ color: {TEXT}; }}
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f5fbff !important;font-family:Manrope,Arial,Helvetica,sans-serif;color:#373c46 !important">
+<body style="margin:0;padding:0;background-color:#faf3f0 !important;font-family:Manrope,Arial,Helvetica,sans-serif;color:#181b1a !important">
 
 <!-- Outer wrapper -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5fbff;min-height:100vh">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#faf3f0;min-height:100vh">
 <tr><td align="center" style="padding:32px 16px">
 
 <!-- Email container -->
@@ -734,18 +735,18 @@ def render_html(data, today, date_slug):
 
   <!-- ── HEADER ── -->
   <tr>
-    <td style="background:linear-gradient(135deg,#152230 0%,#11383f 100%);border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #4ddcc3">
+    <td style="background:linear-gradient(135deg,#181b1a 0%,#000000 100%);border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #9e0b11">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
-            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#4ddcc3;font-family:Montserrat,Arial,sans-serif;font-weight:600">Weekly Briefing &nbsp;·&nbsp; {today}</p>
+            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ffffff;font-family:Montserrat,Arial,sans-serif;font-weight:600">Weekly Briefing &nbsp;·&nbsp; {today}</p>
             <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;font-family:Montserrat,Arial,sans-serif;line-height:1.2">
-              <span style="color:#4ddcc3">This Week</span> in AI
+              <span style="color:#ffffff;border-bottom:3px solid #9e0b11;padding-bottom:2px">This Week</span> in AI
             </h1>
             <p style="margin:12px 0 0 0;font-size:14px;color:rgba(255,255,255,0.75);font-family:Manrope,Arial,sans-serif;line-height:1.6">{data['intro']}</p>
           </td>
           <td width="80" align="right" valign="top">
-            <p style="margin:0;font-size:22px;font-weight:800;color:#4ddcc3;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.03em;line-height:1">ramsac</p>
+            <p style="margin:0;font-size:22px;font-weight:800;color:#ffffff;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.03em;line-height:1">ramsac</p>
           </td>
         </tr>
       </table>
@@ -785,7 +786,7 @@ def render_html(data, today, date_slug):
             <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);font-family:Manrope,Arial,sans-serif">See you next week.</p>
           </td>
           <td align="right">
-            <p style="margin:0;font-size:11px;font-weight:800;color:#4ddcc3;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.02em">ramsac</p>
+            <p style="margin:0;font-size:11px;font-weight:800;color:#ffffff;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.02em">ramsac</p>
             <p style="margin:2px 0 0 0;font-size:10px;color:rgba(255,255,255,0.4);font-family:Manrope,Arial,sans-serif">Weekly AI Briefing</p>
           </td>
         </tr>
@@ -898,10 +899,10 @@ def render_html(data, today, date_slug):
 def _nav_css():
     return f"""
   .site-nav {{ background: {NAVY}; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid {ACCENT}; }}
-  .nav-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {ACCENT}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
+  .nav-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
   .nav-link {{ font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }}
   .nav-link:hover {{ color: #fff; }}
-  .nav-link.active {{ color: {ACCENT}; border-bottom-color: {ACCENT}; }}"""
+  .nav-link.active {{ color: {ON_DARK}; border-bottom-color: {ACCENT}; }}"""
 
 
 def _nav_html(active):
@@ -995,8 +996,8 @@ def render_glossary_html(knowledge_log):
   .legend-desc {{ font-size: 10px; color: {MUTED}; font-family: Manrope, Arial, sans-serif; white-space: nowrap; }}
   .trending-bar {{ font-size: 11px; color: {MUTED}; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }}
   .trending-bar span {{ font-family: Montserrat, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: {ACCENT}; }}
-  .trending-chip {{ display: inline-block; background: rgba(77,220,195,0.1); color: {NAVY}; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(77,220,195,0.3); }}
-  .trending-chip:hover {{ background: {ACCENT}; color: {NAVY}; }}
+  .trending-chip {{ display: inline-block; background: rgba(158,11,17,0.1); color: {NAVY}; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(158,11,17,0.3); }}
+  .trending-chip:hover {{ background: {ACCENT}; color: {ON_DARK}; }}
   #graph-svg {{ flex: 1; width: 100%; display: block; cursor: grab; }}
   #graph-svg:active {{ cursor: grabbing; }}
   .detail-col {{ width: 320px; flex-shrink: 0; border-left: 1px solid {BORDER}; background: {BG_CARD}; display: flex; flex-direction: column; overflow: hidden; }}
@@ -1010,7 +1011,7 @@ def render_glossary_html(knowledge_log):
   .detail-section-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 8px; border-top: 1px solid {BORDER}; padding-top: 16px; }}
   .related-chips {{ display: flex; flex-wrap: wrap; gap: 6px; }}
   .related-chip {{ display: inline-block; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: Montserrat, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }}
-  .related-chip:hover {{ border-color: {ACCENT}; background: rgba(77,220,195,0.1); }}
+  .related-chip:hover {{ border-color: {ACCENT}; background: rgba(158,11,17,0.1); }}
   .bc-link {{ display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; transition: border-color 0.15s; }}
   .bc-link:hover {{ border-color: {ACCENT}; }}
   .bc-link-arrow {{ margin-left: auto; color: {ACCENT}; }}
@@ -1160,7 +1161,7 @@ def render_glossary_html(knowledge_log):
       var isActive = (activeIdx === e.s || activeIdx === e.t);
       line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
       line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
-      line.setAttribute('stroke', isActive ? '#4ddcc3' : '{BORDER}');
+      line.setAttribute('stroke', isActive ? '#9e0b11' : '{BORDER}');
       line.setAttribute('stroke-width', isActive ? '2' : '1');
       line.setAttribute('opacity', isActive ? '0.8' : '0.5');
       svg.appendChild(line);
@@ -1477,7 +1478,7 @@ def render_battlecards_html():
   .page-title {{ font-family: Montserrat, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 6px; }}
   .page-sub {{ font-size: 14px; color: {MUTED}; margin-bottom: 32px; line-height: 1.6; }}
   .ramsac-diff {{ background: {NAVY}; border-radius: 10px; padding: 20px 24px; margin-bottom: 36px; }}
-  .ramsac-diff-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 8px; }}
+  .ramsac-diff-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 700; margin-bottom: 8px; }}
   .ramsac-diff p {{ font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }}
   .bc-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }}
   .bc-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-radius: 10px; overflow: hidden; }}
@@ -1493,12 +1494,12 @@ def render_battlecards_html():
   .bc-section ul li {{ font-size: 13px; line-height: 1.65; color: {MUTED}; margin-bottom: 2px; }}
   .bc-watch {{ background: #fff8f0; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
   .bc-watch .bc-section-label {{ color: #d97706; }}
-  .bc-ramsac {{ background: #f0fdf8; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
-  .bc-ramsac .bc-section-label {{ color: #059669; }}
-  .bc-ramsac p {{ color: #065f46; }}
+  .bc-ramsac {{ background: #fdf2f1; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid {ACCENT}; }}
+  .bc-ramsac .bc-section-label {{ color: {ACCENT}; }}
+  .bc-ramsac p {{ color: #7a0d0f; }}
   .bc-terms {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }}
-  .term-chip {{ display: inline-block; background: rgba(77,220,195,0.12); color: #11383f; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid {ACCENT}; font-family: Montserrat, Arial, sans-serif; cursor: pointer; transition: background 0.15s; }}
-  .term-chip:hover {{ background: {ACCENT}; color: {NAVY}; }}
+  .term-chip {{ display: inline-block; background: rgba(158,11,17,0.12); color: #000000; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid {ACCENT}; font-family: Montserrat, Arial, sans-serif; cursor: pointer; transition: background 0.15s; }}
+  .term-chip:hover {{ background: {ACCENT}; color: {ON_DARK}; }}
 </style>
 </head>
 <body>
@@ -1544,32 +1545,32 @@ def render_email_html(data, today, date_slug, digest_url):
         <tr>
           <td style="padding:0 0 12px 0">
             <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#ffffff;border-radius:8px;border:1px solid #c7e6ff;border-left:3px solid #4ddcc3">
+                   style="background:#ffffff;border-radius:8px;border:1px solid #ead9d3;border-left:3px solid #9e0b11">
               <tr>
                 <td style="padding:20px 22px" bgcolor="#ffffff">
                   <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr>
                       <td width="48" valign="top" style="padding:0 14px 0 0">
                         <table cellpadding="0" cellspacing="0" border="0">
-                          <tr><td width="36" height="36" align="center" bgcolor="#4ddcc3"
-                                  style="width:36px;height:36px;border-radius:50%;background:#4ddcc3;text-align:center;line-height:36px">
-                            <font color="#152230" face="Montserrat,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
+                          <tr><td width="36" height="36" align="center" bgcolor="#9e0b11"
+                                  style="width:36px;height:36px;border-radius:50%;background:#9e0b11;text-align:center;line-height:36px">
+                            <font color="#ffffff" face="Montserrat,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
                           </td></tr>
                         </table>
                       </td>
                       <td valign="middle">
                         <p style="margin:0;font-size:15px;font-weight:700;font-family:Montserrat,Arial,sans-serif;line-height:1.3">
-                          <font color="#152230"><b>{s['title']}</b></font>
+                          <font color="#181b1a"><b>{s['title']}</b></font>
                         </p>
                         <p style="margin:4px 0 0 0;font-size:11px;font-family:Montserrat,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
-                          <font color="#4ddcc3">{s['source']}</font>
+                          <font color="#9e0b11">{s['source']}</font>
                         </p>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2" style="padding-top:10px">
                         <p style="margin:0;font-size:14px;font-family:Manrope,Arial,sans-serif;line-height:1.6">
-                          <font color="#5a5a5a">{s['glance']}</font>
+                          <font color="#6b5f5a">{s['glance']}</font>
                         </p>
                       </td>
                     </tr>
@@ -1591,22 +1592,22 @@ def render_email_html(data, today, date_slug, digest_url):
 <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
 <style>:root {{ color-scheme: light only; }}</style>
 </head>
-<body style="margin:0;padding:0;background-color:#f5fbff;font-family:Manrope,Arial,Helvetica,sans-serif" bgcolor="#f5fbff">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5fbff" style="background-color:#f5fbff">
-<tr><td align="center" style="padding:32px 16px;background-color:#f5fbff">
+<body style="margin:0;padding:0;background-color:#faf3f0;font-family:Manrope,Arial,Helvetica,sans-serif" bgcolor="#faf3f0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#faf3f0" style="background-color:#faf3f0">
+<tr><td align="center" style="padding:32px 16px;background-color:#faf3f0">
   <table width="620" cellpadding="0" cellspacing="0" border="0" style="max-width:620px;width:100%">
 
     <!-- HEADER -->
     <tr>
-      <td style="background:#152230;border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #4ddcc3" bgcolor="#152230">
+      <td style="background:#181b1a;border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #9e0b11" bgcolor="#181b1a">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
               <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:Montserrat,Arial,sans-serif;font-weight:600">
-                <font color="#4ddcc3">Weekly Briefing &nbsp;·&nbsp; {today}</font>
+                <font color="#ffffff">Weekly Briefing &nbsp;·&nbsp; {today}</font>
               </p>
               <p style="margin:0;font-size:28px;font-weight:800;font-family:Montserrat,Arial,sans-serif;line-height:1.2">
-                <font color="#4ddcc3"><b>This Week</b></font><font color="#ffffff"><b> in AI</b></font>
+                <font color="#ffffff"><b>This Week</b></font><font color="#cccccc"><b> in AI</b></font>
               </p>
               <p style="margin:12px 0 0 0;font-size:14px;font-family:Manrope,Arial,sans-serif;line-height:1.6">
                 <font color="#cccccc">{data['intro']}</font>
@@ -1614,7 +1615,7 @@ def render_email_html(data, today, date_slug, digest_url):
             </td>
             <td width="80" align="right" valign="top">
               <p style="margin:0;font-size:22px;font-weight:800;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.03em;line-height:1">
-                <font color="#4ddcc3"><b>ramsac</b></font>
+                <font color="#ffffff"><b>ramsac</b></font>
               </p>
             </td>
           </tr>
@@ -1624,12 +1625,12 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- BODY -->
     <tr>
-      <td style="background:#f5fbff;padding:28px 32px 8px;border-left:1px solid #c7e6ff;border-right:1px solid #c7e6ff" bgcolor="#f5fbff">
+      <td style="background:#faf3f0;padding:28px 32px 8px;border-left:1px solid #ead9d3;border-right:1px solid #ead9d3" bgcolor="#faf3f0">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:28px 0 20px 0;border-top:1px solid #c7e6ff">
+            <td style="padding:28px 0 20px 0;border-top:1px solid #ead9d3">
               <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:Montserrat,Arial,sans-serif;font-weight:700">
-                <font color="#4ddcc3">Top 5 at a Glance — click to read the full edition online</font>
+                <font color="#9e0b11">Top 5 at a Glance — click to read the full edition online</font>
               </p>
             </td>
           </tr>
@@ -1640,13 +1641,13 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- READ ONLINE BUTTON -->
     <tr>
-      <td style="background:#f5fbff;padding:0 32px 24px;border-left:1px solid #c7e6ff;border-right:1px solid #c7e6ff" bgcolor="#f5fbff">
+      <td style="background:#faf3f0;padding:0 32px 24px;border-left:1px solid #ead9d3;border-right:1px solid #ead9d3" bgcolor="#faf3f0">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tr>
             <td align="center">
               <a href="{digest_url}" target="_blank"
-                 style="display:inline-block;background:#4ddcc3;color:#152230;font-family:Montserrat,Arial,sans-serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px">
-                <font color="#152230"><b>Read full edition online &rarr;</b></font>
+                 style="display:inline-block;background:#9e0b11;color:#ffffff;font-family:Montserrat,Arial,sans-serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px">
+                <font color="#ffffff"><b>Read full edition online &rarr;</b></font>
               </a>
             </td>
           </tr>
@@ -1656,7 +1657,7 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- FOOTER -->
     <tr>
-      <td style="background:#152230;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #152230" bgcolor="#152230">
+      <td style="background:#181b1a;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #181b1a" bgcolor="#181b1a">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
@@ -1669,7 +1670,7 @@ def render_email_html(data, today, date_slug, digest_url):
             </td>
             <td align="right">
               <p style="margin:0;font-size:11px;font-weight:800;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.02em">
-                <font color="#4ddcc3"><b>ramsac</b></font>
+                <font color="#ffffff"><b>ramsac</b></font>
               </p>
               <p style="margin:2px 0 0 0;font-size:10px;font-family:Manrope,Arial,sans-serif">
                 <font color="#666666">Weekly AI Briefing</font>
@@ -1744,25 +1745,25 @@ def write_index(directory, html_files):
   .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
   .hub-hero {{ background: linear-gradient(135deg, {NAVY} 0%, {DARK_TEAL} 100%); border-radius: 12px; padding: 36px 36px 32px; border-bottom: 3px solid {ACCENT}; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; }}
   .hub-hero h1 {{ font-family: Montserrat, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }}
-  .hub-hero h1 span {{ color: {ACCENT}; }}
-  .hub-hero-sub {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 600; margin-bottom: 8px; }}
-  .hub-hero-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 20px; font-weight: 800; color: {ACCENT}; letter-spacing: -0.03em; }}
+  .hub-hero h1 span {{ color: {ON_DARK}; border-bottom: 3px solid {ACCENT}; padding-bottom: 2px; }}
+  .hub-hero-sub {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 600; margin-bottom: 8px; }}
+  .hub-hero-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 20px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.03em; }}
   .hub-tiles {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }}
   .hub-tile {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; transition: box-shadow 0.15s; }}
-  .hub-tile:hover {{ box-shadow: 0 4px 20px rgba(21,34,48,0.08); }}
+  .hub-tile:hover {{ box-shadow: 0 4px 20px rgba(24,27,26,0.08); }}
   .hub-tile-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: {ACCENT}; }}
   .hub-tile-title {{ font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {NAVY}; }}
   .hub-tile-desc {{ font-size: 13px; color: {MUTED}; line-height: 1.6; flex: 1; }}
-  .hub-tile-btn {{ display: inline-block; background: {ACCENT}; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }}
+  .hub-tile-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }}
   .hub-tile-btn:hover {{ opacity: 0.85; }}
   .section-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; border-top: 1px solid {BORDER}; padding-top: 24px; margin-bottom: 20px; }}
   .edition-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
   .edition-date {{ font-family: Montserrat, Arial, sans-serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
-  .view-btn {{ display: inline-block; background: {ACCENT}; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
+  .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
   .view-btn:hover {{ opacity: 0.85; }}
   .footer {{ background: {NAVY}; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }}
   .footer p {{ font-size: 12px; color: rgba(255,255,255,0.5); font-family: Manrope, Arial, sans-serif; }}
-  .footer-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {ACCENT}; letter-spacing: -0.02em; }}
+  .footer-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; }}
 </style>
 </head>
 <body>
