@@ -447,12 +447,14 @@ ON_DARK  = "#ffffff"   # Text/accents on dark surfaces (red is too dark on charc
 
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
+# Sampled from Rob's Thoughtspark palette (thoughtspark-ignite.lovable.app) —
+# five distinct hue families in his warm, muted register, readable on cream.
 CATEGORY_COLORS = {
-    "foundation": "#f97316",
-    "generation":  "#8b5cf6",
-    "deployment":  "#3b82f6",
-    "safety":      "#ef4444",
-    "business":    "#10b981",
+    "foundation": "#b66d3b",   # terracotta
+    "generation": "#5c5167",   # plum
+    "deployment": "#8b9ac2",   # slate blue
+    "safety":     "#9e0b11",   # brand deep red
+    "business":   "#b0832f",   # ochre / gold
 }
 
 TERM_CATEGORIES = {
@@ -1183,7 +1185,7 @@ def render_glossary_html(knowledge_log):
       var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('r', r);
       circle.setAttribute('fill', color);
-      circle.setAttribute('stroke', isActive ? '#fff' : 'rgba(255,255,255,0.6)');
+      circle.setAttribute('stroke', isActive ? '#181b1a' : 'rgba(24,27,26,0.22)');
       circle.setAttribute('stroke-width', isActive ? '2.5' : '1.5');
       if (isActive) circle.setAttribute('filter', 'url(#glow)');
 
