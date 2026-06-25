@@ -431,7 +431,7 @@ TOOLTIP_CSS = """
     font-family: "Manrope", Arial, sans-serif;
   }"""
 
-FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://dev-rvelasquez.tailc35de4.ts.net")
+FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://ramsac-austen.ironbridge.tech")
 
 ACCENT   = "#4ddcc3"   # RAMSAC mint teal — primary brand accent
 PURPLE   = "#3bb2b7"   # RAMSAC fresh teal — secondary / metadata

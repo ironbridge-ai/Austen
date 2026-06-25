@@ -1,20 +1,39 @@
 #!/usr/bin/env python3
 """
 Combined server for Austen — AI News Digest by RAMSAC.
-- Serves static files from this directory (replaces python3 -m http.server)
-- Accepts POST /api/feedback  →  appends to feedback_log.json
-- Sends one daily summary email at DIGEST_SEND_TIME (default 17:00) covering
-  all feedback received since the previous send.
 
-Required env vars for email:
-  SMTP_USER         your M365 address  e.g. renato.velasquez@ironbridgesg.com
-  SMTP_PASSWORD     your M365 password or app password
-  DIGEST_SEND_TIME  HH:MM in 24h format to send the daily email (default 17:00)
+Deployed in the ai-guild-infra fleet at https://ramsac-austen.ironbridge.tech.
 
-Usage:
-  SMTP_USER=you@ironbridgesg.com SMTP_PASSWORD=xxx python3 feedback_server.py
+- Serves static files (the published digest pages + a landing page) from
+  AUSTEN_WEB_ROOT.
+- POST /api/feedback  ->  appends to <AUSTEN_DATA_DIR>/feedback_log.json
+- POST /api/search    ->  appends to <AUSTEN_DATA_DIR>/search_log.json
+- GET  /api/trending  ->  top search terms over the last 7 days
+- GET  /health        ->  200 readiness probe (the deploy health gate hits this)
+- Sends one daily summary email at DIGEST_SEND_TIME covering all feedback
+  received since the previous send.
+
+Configuration — env vars, or podman secrets mounted at /run/secrets/<name>:
+
+  REQUIRED (the server EXITS at startup if either is missing — we fail fast
+  rather than run half-configured):
+    smtp_user      / SMTP_USER       M365 sender, e.g. someone@ironbridgesg.com
+    smtp_password  / SMTP_PASSWORD   M365 password or app password
+
+  Optional (sane defaults):
+    PORT                       listen port (default 4097; argv[1] also accepted)
+    HOST                       bind address (default 0.0.0.0 — container needs this)
+    AUSTEN_WEB_ROOT            static-file root (default: this script's dir)
+    AUSTEN_DATA_DIR            feedback/search log dir (default: this script's dir)
+    SMTP_SERVER                SMTP host (default smtp.office365.com)
+    DIGEST_SEND_TIME           HH:MM 24h, default 17:00
+    AUSTEN_FEEDBACK_RECIPIENT  daily-digest recipient
+
+Local dev:
+    SMTP_USER=you@ironbridgesg.com SMTP_PASSWORD=xxx python3 feedback_server.py
 """
 
+import functools
 import json
 import os
 import smtplib
@@ -27,13 +46,46 @@ from email.mime.text import MIMEText
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
-FEEDBACK_LOG = os.path.join(SCRIPT_DIR, "feedback_log.json")
-SEARCH_LOG   = os.path.join(SCRIPT_DIR, "search_log.json")
-SMTP_SERVER  = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
+WEB_ROOT     = os.environ.get("AUSTEN_WEB_ROOT", SCRIPT_DIR)
+DATA_DIR     = os.environ.get("AUSTEN_DATA_DIR", SCRIPT_DIR)
+FEEDBACK_LOG = os.path.join(DATA_DIR, "feedback_log.json")
+SEARCH_LOG   = os.path.join(DATA_DIR, "search_log.json")
+SMTP_SERVER  = os.environ.get("SMTP_SERVER", "smtp.office365.com")
 SMTP_PORT    = 587
-RECIPIENT    = "renato.velasquez@ironbridgesg.com"
+RECIPIENT    = os.environ.get("AUSTEN_FEEDBACK_RECIPIENT", "renato.velasquez@ironbridgesg.com")
 STORY_LABELS = {1: "Story 1", 2: "Story 2", 3: "Story 3", 4: "Story 4", 5: "Story 5"}
 SEND_TIME    = os.environ.get("DIGEST_SEND_TIME", "17:00")  # HH:MM, 24h
+
+# Resolved once at startup in __main__ (fail-fast). Read by send_daily_digest().
+SMTP_USER     = None
+SMTP_PASSWORD = None
+
+
+def read_secret(name, env_name=None):
+    """Read a podman file-secret at /run/secrets/<name>; fall back to an env var.
+
+    Same code path locally (env var) and in the container (mounted file)."""
+    path = os.path.join("/run/secrets", name)
+    if os.path.exists(path):
+        with open(path) as f:
+            return f.read().strip()
+    return os.environ.get(env_name or name.upper())
+
+
+def require_secret(name, env_name):
+    """Resolve a required secret or exit non-zero with a clear message.
+
+    Fail-fast: a missing required secret aborts startup so the deploy's
+    post-restart health gate fails (and alerts) rather than the service
+    silently running without email."""
+    val = read_secret(name, env_name)
+    if not val:
+        sys.exit(
+            f"FATAL: required secret '{name}' is not set — mount it at "
+            f"/run/secrets/{name} or set ${env_name}. Add austen_{name} to "
+            f"ai-guild-infra deployment/secrets.enc.yaml (production tier)."
+        )
+    return val
 
 
 def load_log():
@@ -74,10 +126,11 @@ def save_log(log):
 
 
 def send_daily_digest():
-    user     = os.environ.get("SMTP_USER")
-    password = os.environ.get("SMTP_PASSWORD")
+    user     = SMTP_USER
+    password = SMTP_PASSWORD
     if not user or not password:
-        print("  Daily email skipped — set SMTP_USER and SMTP_PASSWORD to enable.")
+        # Should not happen — require_secret() guarantees these at startup.
+        print("  Daily email skipped — SMTP credentials not resolved.")
         return
 
     log      = load_log()
@@ -130,6 +183,8 @@ def send_daily_digest():
             entry["emailed"] = True
         save_log(log)
     except Exception as e:
+        # A send failure (e.g. SMTP egress blocked) must NOT kill feedback
+        # collection — log loudly and keep serving; unsent entries retry tomorrow.
         print(f"  Daily email failed: {e}")
 
 
@@ -146,7 +201,11 @@ def _daily_sender_loop():
 
 
 class DigestHandler(SimpleHTTPRequestHandler):
-    """Extends SimpleHTTPRequestHandler to intercept API endpoints."""
+    """Extends SimpleHTTPRequestHandler to intercept API + health endpoints.
+
+    Static files are served from the `directory=` passed at construction
+    (AUSTEN_WEB_ROOT) — deliberately NOT the app source dir, so the feedback
+    log and the Python source are never exposed over HTTP."""
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -154,7 +213,15 @@ class DigestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path.startswith("/api/trending"):
+        if self.path in ("/health", "/healthz"):
+            body = b'{"ok":true}'
+            self.send_response(200)
+            self._cors()
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        elif self.path.startswith("/api/trending"):
             trending = get_trending()
             body = json.dumps({"trending": trending}).encode()
             self.send_response(200)
@@ -240,18 +307,33 @@ class DigestHandler(SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
     def log_message(self, fmt, *args):
-        if "POST" in (args[0] if args else ""):
-            print(f"  {self.address_string()} {args[0] if args else ''}")
+        # Quiet logging: only echo POST request lines. Guard the type — on
+        # error responses (404, etc.) BaseHTTPRequestHandler.log_error() calls
+        # this with args[0] being the numeric status code, not the request
+        # line, and `"POST" in <HTTPStatus>` would raise TypeError.
+        msg = args[0] if args else ""
+        if isinstance(msg, str) and "POST" in msg:
+            print(f"  {self.address_string()} {msg}")
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 4097
-    os.chdir(SCRIPT_DIR)  # serve files from the digest directory
-    smtp_ready = bool(os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASSWORD"))
-    print(f"Digest server on 127.0.0.1:{port}  →  https://dev-rvelasquez.tailc35de4.ts.net/")
-    print(f"Email: {'daily summary at ' + SEND_TIME + ' → ' + RECIPIENT if smtp_ready else 'NOT configured (set SMTP_USER + SMTP_PASSWORD)'}")
+    # Fail-fast: required secrets must be present or we refuse to start.
+    SMTP_USER     = require_secret("smtp_user", "SMTP_USER")
+    SMTP_PASSWORD = require_secret("smtp_password", "SMTP_PASSWORD")
+
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT") or (sys.argv[1] if len(sys.argv) > 1 else 4097))
+
+    os.makedirs(WEB_ROOT, exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+    print(f"Austen feedback server listening on {host}:{port}")
+    print(f"  web root : {WEB_ROOT}")
+    print(f"  data dir : {DATA_DIR}")
+    print(f"  email    : daily summary at {SEND_TIME} → {RECIPIENT} via {SMTP_SERVER}:{SMTP_PORT}")
 
     sender = threading.Thread(target=_daily_sender_loop, daemon=True)
     sender.start()
 
-    HTTPServer(("127.0.0.1", port), DigestHandler).serve_forever()
+    handler = functools.partial(DigestHandler, directory=WEB_ROOT)
+    HTTPServer((host, port), handler).serve_forever()

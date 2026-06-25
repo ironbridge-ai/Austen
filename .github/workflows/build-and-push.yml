@@ -1,0 +1,49 @@
+name: build-and-push
+
+# Builds the Containerfile and pushes the image to ghcr.io on every merge to
+# main, then pins the exact @sha256 digest back into deploy/austen.container
+# so git history is the deployment record. The VM's ib-build-apps pulls that
+# digest on the next reconcile and restarts the service if it moved.
+#
+# Image name is forced to lowercase `austen` (the GitHub repo is `Austen`,
+# but ghcr package names + the ib-validate name regex are lowercase-only).
+#
+# Pushed tags:
+#   ghcr.io/ironbridge-ai/austen:main           (rolling)
+#   ghcr.io/ironbridge-ai/austen:main-<sha>     (immutable — for rollback)
+#   ghcr.io/ironbridge-ai/austen@sha256:...     (digest, written to the Quadlet)
+on:
+  push:
+    branches: [main]
+    # The digest-pin commit edits deploy/austen.container; ignore it here so
+    # the write-back doesn't re-trigger an endless build loop.
+    paths-ignore:
+      - 'deploy/*.container'
+  workflow_dispatch:
+
+concurrency:
+  group: build-and-push-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # digest-pin commit (Quadlet write-back)
+      packages: write        # ghcr.io image push
+      pull-requests: write   # open + auto-merge the deploy-pin PR
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ironbridge-ai/ai-guild-infra/.github/actions/build-and-push-app@main
+        with:
+          image-name: austen
+          # Branch protection on main blocks direct bot pushes; route the
+          # digest pin through a short-lived auto-merging PR instead. Requires
+          # repo Settings → "Allow auto-merge" to be enabled.
+          auto-merge-deploy-pin: true
+          # The digest-pin commit + auto-merge use GITHUB_TOKEN (the job
+          # permissions below grant it write). If your org hard-caps
+          # GITHUB_TOKEN to read-only, releases will 403 on the pin push —
+          # in that case pass a PAT with Contents+PR write, e.g.:
+          #   push-token: ${{ secrets.INTERNAL_REPOS_TOKEN }}
+          # (ensure that PAT is read+write, not the read-only validate token).

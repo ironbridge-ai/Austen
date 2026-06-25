@@ -1,0 +1,43 @@
+name: austen
+tenant_id: ramsac
+hostname: ramsac-austen.ironbridge.tech
+
+upstream:
+  port: 4097
+  # GET /health returns 200 unconditionally (the process is up = ready).
+  # ib-install-quadlets probes this after every (re)start and fails the
+  # deploy (with a Slack alert) if it doesn't 2xx within startup_timeout.
+  health_check: /health
+
+# Single-process file-backed store (feedback_log.json / search_log.json on
+# /apps/storage). `direct` restarts in place so there is never a second
+# writer racing the same files or the same Azure Blob container — opting
+# out of canary-by-default on purpose.
+deploy:
+  strategy: direct
+  # rclone pulls the workspace from Azure Blob on boot before the server
+  # binds; 60s leaves headroom for a cold VM + a non-trivial bucket.
+  startup_timeout: 60s
+
+expose:
+  via: public
+
+# Fully public: the feedback/search widget is embedded in the public digest
+# pages and must be reachable by every recipient with no login. No Cloudflare
+# Access, no app-level auth.
+auth:
+  mode: app
+
+# Outbound is default-deny (tinyproxy). The container needs:
+#   - storage_azure  : rclone HTTPS to *.blob.core.windows.net (persistence)
+#   - office365_smtp : smtp.office365.com:587 for the daily digest email
+# NOTE: office365_smtp is STARTTLS on :587, not HTTP — tinyproxy filters
+# HTTP/HTTPS hostnames, so this entry only helps if tinyproxy also tunnels
+# port-587 CONNECT traffic. If the daily email can't connect, a direct VM
+# firewall allowance (or switching email to Microsoft Graph over HTTPS) is
+# the fix. Persistence (rclone/HTTPS) is unaffected.
+egress:
+  default: deny
+  allow:
+    - storage_azure
+    - office365_smtp

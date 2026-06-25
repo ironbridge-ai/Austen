@@ -1,0 +1,25 @@
+# Keep the build context small + never bake runtime state or local junk into
+# the image. deploy/ is NOT ignored — the Containerfile COPYs the entrypoint
+# and seed/ from it.
+.git
+.github
+.claude
+.venv
+__pycache__/
+*.pyc
+*.pyo
+
+# Runtime state — lives on /apps/storage at runtime, never in the image.
+feedback_log.json
+search_log.json
+
+# Generated digest artifacts (published to GitHub Pages, not served here).
+austen_*.html
+austen_*.txt
+austen_*.eml
+austen_*.command
+
+# Local-only.
+.env
+.env.*
+.mise.toml

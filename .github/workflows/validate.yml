@@ -1,0 +1,108 @@
+name: validate
+
+# Runs the SAME gate as ai-guild-infra's reconcile — `cue vet` against the
+# manifest schema + `ib-validate` for the cross-cutting rules (Quadlet content,
+# secret namespacing, per-app volume isolation, hostname format).
+#
+# This is inlined rather than using the `validate-app` composite action because
+# that action currently:
+#   (a) checks out the PRIVATE ai-guild-infra repo with the default
+#       GITHUB_TOKEN, which 404s ("repository not found"); and
+#   (b) sets IB_STORAGE_DIR to a temp path that doesn't match the runner's `%h`
+#       expansion, false-positiving the per-app Volume= isolation check for any
+#       app that mounts %h/storage/<app>.
+# We clone ai-guild-infra with INTERNAL_REPOS_TOKEN (the org PAT with Contents:
+# Read — Austen must be on its repo-access list) and leave IB_STORAGE_DIR at its
+# default ($HOME/storage) so %h aligns. Switch back to the one-liner action once
+# both are fixed upstream.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CUE_VERSION: '0.16.1'      # must match ai-guild-infra CI
+  INFRA_REF: main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out app
+        uses: actions/checkout@v6
+
+      - name: Ensure INTERNAL_REPOS_TOKEN is available
+        env:
+          TOKEN: ${{ secrets.INTERNAL_REPOS_TOKEN }}
+        run: |
+          if [[ -z "$TOKEN" ]]; then
+            echo "::error::INTERNAL_REPOS_TOKEN is not available to this repo, so the private" \
+                 "ai-guild-infra repo (schema + ib-validate) can't be cloned. Add Austen to" \
+                 "the org PAT's repository-access list (GitHub org → Settings → Secrets and" \
+                 "variables → Actions → INTERNAL_REPOS_TOKEN → Repository access). See deploy/README.md."
+            exit 1
+          fi
+
+      - name: Check out ai-guild-infra (schema + validator)
+        uses: actions/checkout@v6
+        with:
+          repository: ironbridge-ai/ai-guild-infra
+          ref: ${{ env.INFRA_REF }}
+          path: .ai-guild-infra
+          token: ${{ secrets.INTERNAL_REPOS_TOKEN }}
+
+      - name: Install cue
+        run: |
+          curl -sSL "https://github.com/cue-lang/cue/releases/download/v${CUE_VERSION}/cue_v${CUE_VERSION}_linux_amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin cue
+          cue version | head -1
+
+      - name: Install python deps for ib-validate
+        run: python3 -m pip install --quiet pyyaml
+
+      - name: cue vet (manifest schema)
+        run: |
+          cue vet -d '#Manifest' \
+            .ai-guild-infra/deployment/schema/manifest.cue \
+            deploy/ironbridge.yaml
+
+      - name: ib-validate (Quadlet content, secrets, volume isolation)
+        run: |
+          set -euo pipefail
+          infra="$PWD/.ai-guild-infra"
+          name=$(python3 -c "import yaml; print(yaml.safe_load(open('deploy/ironbridge.yaml'))['name'])")
+          work="$RUNNER_TEMP/ibval"
+          rm -rf "$work"
+          mkdir -p "$work/repo/deployment" "$work/platform" "$work/apps/$name"
+          cp -a deploy "$work/apps/$name/deploy"
+
+          # Stub the central secrets file with the names this app references.
+          # sops keeps keys+tiers in plaintext, so ib-validate cross-checks
+          # names without decrypting; CI supplies a name-only stub.
+          names=$(grep -rhoE '^[[:space:]]*Secret[[:space:]]*=[[:space:]]*[A-Za-z0-9_-]+' "$work/apps" \
+                  | sed -E 's/^[[:space:]]*Secret[[:space:]]*=[[:space:]]*//' | sort -u)
+          {
+            echo "schema_version: 2"
+            echo "secrets:"
+            for n in $names; do echo "  $n: { tier: production, value: ci-stub }"; done
+          } > "$work/repo/deployment/secrets.enc.yaml"
+
+          # IB_STORAGE_DIR is deliberately UNSET → defaults to $HOME/storage,
+          # which is exactly where %h expands in the Quadlet. Empty platform dir
+          # so only THIS app is validated.
+          out=$(IB_REPO_DIR="$work/repo" \
+                IB_APPS_DIR="$work/apps" \
+                IB_PLATFORM_DIR="$work/platform" \
+                IB_PLATFORM_YAML="$infra/deployment/config/platform.yaml" \
+                python3 "$infra/deployment/bin/ib-validate" 2>&1) || true
+          echo "$out"
+          if echo "$out" | grep -F "$work/apps" | grep -vi 'WARN' | grep -q .; then
+            echo "::error::ib-validate reported app-tree problems (see log above)."
+            exit 1
+          fi
+          echo "ib-validate: OK"

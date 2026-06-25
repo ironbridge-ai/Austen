@@ -1,0 +1,53 @@
+[Unit]
+Description=Austen — AI News Digest feedback + analytics server (RAMSAC)
+After=network-online.target
+
+[Container]
+# Built + pushed by .github/workflows/build-and-push.yml on every merge to
+# main. CI rewrites this line to ghcr.io/ironbridge-ai/austen@sha256:<digest>
+# (the :main tag below is the ib new-app scaffold default; CI pins the digest
+# on first push). On the VM, ib-build-apps pulls this ref every reconcile and
+# restarts the service when the digest moves. ghcr pull is gated by the
+# ghcr_pull_token secret in ai-guild-infra.
+Image=ghcr.io/ironbridge-ai/austen:main
+# Runtime container name — what Caddy dials on apps.network. MUST match the
+# unit basename (austen); without it podman defaults to systemd-austen and
+# Caddy can't resolve the upstream.
+ContainerName=austen
+Network=apps.network
+
+# Non-secret runtime config.
+Environment=PORT=4097
+Environment=HOST=0.0.0.0
+Environment=AUSTEN_WEB_ROOT=/apps/storage/public
+Environment=AUSTEN_DATA_DIR=/apps/storage/data
+Environment=SMTP_SERVER=smtp.office365.com
+Environment=DIGEST_SEND_TIME=17:00
+Environment=AUSTEN_FEEDBACK_RECIPIENT=renato.velasquez@ironbridgesg.com
+
+# Durable workspace: feedback_log.json, search_log.json, and the served
+# public/ pages. The bind mount survives container replacement on this host;
+# the entrypoint syncs it to Azure Blob (AZ_STORAGE_* below) for durability
+# across host rebuilds. Per-app isolation: only ~/storage/austen is mountable.
+Volume=%h/storage/austen:/apps/storage:Z
+
+# Azure Blob persistence — REQUIRED. The entrypoint aborts (exit 1) if any of
+# the three is unset, so the deploy fails loudly rather than running with a
+# non-replicated local-only workspace.
+Secret=austen_az_storage_account,type=env,target=AZ_STORAGE_ACCOUNT
+Secret=austen_az_storage_key,type=env,target=AZ_STORAGE_KEY
+Secret=austen_az_storage_container,type=env,target=AZ_STORAGE_CONTAINER
+
+# M365 SMTP for the daily feedback-digest email — REQUIRED. feedback_server.py
+# exits at startup if either is absent (mounted as files at /run/secrets/).
+Secret=austen_smtp_user,target=smtp_user
+Secret=austen_smtp_password,target=smtp_password
+
+[Service]
+Restart=always
+# Tiny stdlib HTTP server + periodic rclone sync of small JSON files.
+CPUQuota=50%
+MemoryMax=256M
+
+[Install]
+WantedBy=default.target
