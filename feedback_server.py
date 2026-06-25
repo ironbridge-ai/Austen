@@ -28,6 +28,7 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 FEEDBACK_LOG = os.path.join(SCRIPT_DIR, "feedback_log.json")
+SEARCH_LOG   = os.path.join(SCRIPT_DIR, "search_log.json")
 SMTP_SERVER  = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT    = 587
 RECIPIENT    = "renato.velasquez@ironbridgesg.com"
@@ -40,6 +41,31 @@ def load_log():
         with open(FEEDBACK_LOG) as f:
             return json.load(f)
     return {"entries": []}
+
+
+def load_search_log():
+    if os.path.exists(SEARCH_LOG):
+        with open(SEARCH_LOG) as f:
+            return json.load(f)
+    return {"events": []}
+
+
+def save_search_log(log):
+    with open(SEARCH_LOG, "w") as f:
+        json.dump(log, f, indent=2, ensure_ascii=False)
+
+
+def get_trending(days=7, limit=12):
+    log = load_search_log()
+    cutoff = datetime.now().timestamp() - days * 86400
+    counts = {}
+    for ev in log["events"]:
+        if ev.get("ts", 0) >= cutoff:
+            term = ev.get("term", "").strip().lower()
+            if term:
+                counts[term] = counts.get(term, 0) + 1
+    ranked = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+    return [{"term": t, "count": c} for t, c in ranked[:limit]]
 
 
 def save_log(log):
@@ -120,19 +146,64 @@ def _daily_sender_loop():
 
 
 class DigestHandler(SimpleHTTPRequestHandler):
-    """Extends SimpleHTTPRequestHandler to intercept POST /api/feedback."""
+    """Extends SimpleHTTPRequestHandler to intercept API endpoints."""
 
     def do_OPTIONS(self):
         self.send_response(200)
         self._cors()
         self.end_headers()
 
+    def do_GET(self):
+        if self.path.startswith("/api/trending"):
+            trending = get_trending()
+            body = json.dumps({"trending": trending}).encode()
+            self.send_response(200)
+            self._cors()
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        else:
+            super().do_GET()
+
     def do_POST(self):
-        if not self.path.startswith("/api/feedback"):
+        if self.path.startswith("/api/search"):
+            self._handle_search()
+        elif self.path.startswith("/api/feedback"):
+            self._handle_feedback()
+        else:
             self.send_response(404)
+            self.end_headers()
+
+    def _handle_search(self):
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            data = json.loads(self.rfile.read(length))
+        except Exception:
+            self.send_response(400)
             self.end_headers()
             return
 
+        term = data.get("term", "").strip()
+        if term:
+            event = {
+                "term":  term,
+                "page":  data.get("page", ""),
+                "ts":    datetime.now().timestamp(),
+                "at":    datetime.now().isoformat(timespec="seconds"),
+            }
+            log = load_search_log()
+            log["events"].append(event)
+            save_search_log(log)
+            print(f"[{event['at']}] Search: {repr(term)} on {event['page']}")
+
+        self.send_response(200)
+        self._cors()
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(b'{"ok":true}')
+
+    def _handle_feedback(self):
         length = int(self.headers.get("Content-Length", 0))
         try:
             data = json.loads(self.rfile.read(length))
@@ -165,11 +236,10 @@ class DigestHandler(SimpleHTTPRequestHandler):
 
     def _cors(self):
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
     def log_message(self, fmt, *args):
-        # Only log feedback POSTs, not every static file request
         if "POST" in (args[0] if args else ""):
             print(f"  {self.address_string()} {args[0] if args else ''}")
 

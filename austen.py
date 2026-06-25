@@ -431,6 +431,8 @@ TOOLTIP_CSS = """
     font-family: "Manrope", Arial, sans-serif;
   }"""
 
+FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://dev-rvelasquez.tailc35de4.ts.net")
+
 ACCENT   = "#4ddcc3"   # RAMSAC mint teal — primary brand accent
 PURPLE   = "#3bb2b7"   # RAMSAC fresh teal — secondary / metadata
 BG_MAIN  = "#f5fbff"   # RAMSAC light blue — page surface
@@ -441,6 +443,154 @@ MUTED    = "#5a5a5a"   # Secondary text
 BORDER   = "#c7e6ff"   # RAMSAC light blue — hairlines
 NAVY     = "#152230"   # RAMSAC dark navy — header/footer
 DARK_TEAL = "#11383f"  # RAMSAC dark teal — header gradient end
+
+# ─── Glossary data ──────────────────────────────────────────────────────────
+
+CATEGORY_COLORS = {
+    "foundation": "#f97316",
+    "generation":  "#8b5cf6",
+    "deployment":  "#3b82f6",
+    "safety":      "#ef4444",
+    "business":    "#10b981",
+}
+
+TERM_CATEGORIES = {
+    "ai agent": "deployment", "data isolation": "safety",
+    "prompt injection": "safety", "multi-agent interaction": "deployment",
+    "emergent behaviour": "safety", "frontier model": "foundation",
+    "token consumption": "business", "searchleak": "safety",
+    "multi-model architectures": "business", "diffusion-based generation": "generation",
+    "search-grounding": "deployment", "open-weight model": "foundation",
+    "diffusiongemma": "generation", "ai agent governance": "business",
+    "model diversification": "business", "record and replay": "deployment",
+    "llm": "foundation", "transformer": "foundation",
+    "neural network": "foundation", "context window": "deployment",
+    "rag": "deployment", "hallucination": "safety",
+    "rlhf": "safety", "multimodal": "generation",
+    "agentic workflow": "deployment", "alignment": "safety",
+    "autoregressive model": "generation", "copilot": "business",
+}
+
+GLOSSARY_SEED_TERMS = [
+    {"term": "LLM", "definition": "Large Language Model. An AI trained on vast amounts of text that can understand and generate human language. Think of it as an extremely well-read assistant that has absorbed billions of documents and can write, summarise, answer questions, and hold a conversation."},
+    {"term": "Transformer", "definition": "The architecture that powers most modern AI models. Invented by Google in 2017, it lets AI process entire paragraphs at once and understand how words relate to each other, rather than reading one word at a time. It is the engine inside GPT, Claude, Gemini, and nearly every other AI you use today."},
+    {"term": "Neural Network", "definition": "The basic building block of modern AI. Loosely inspired by the human brain, it is a layered system that learns patterns by adjusting millions of tiny connections based on examples. Train it on enough data and it learns to recognise faces, translate languages, or generate code."},
+    {"term": "Context Window", "definition": "The maximum amount of text an AI can see and work with at one time. Think of it like the AI's short-term memory. A small context window limits the AI to a few pages; a large one can handle an entire book. Bigger context windows mean the AI can work on longer, more complex tasks."},
+    {"term": "RAG", "definition": "Retrieval-Augmented Generation. A technique where an AI first searches a database of documents to find relevant information, then writes its answer based on what it found. This stops the AI from making things up and keeps answers grounded in your actual company data."},
+    {"term": "Hallucination", "definition": "When an AI confidently states something that is factually wrong. Like a student who does not know the answer but writes something plausible-sounding anyway. Hallucination is one of the main risks of using AI output without human review."},
+    {"term": "RLHF", "definition": "Reinforcement Learning from Human Feedback. A training method where humans rate the AI's responses as good or bad, and the AI learns to produce more of what got positive ratings. This is how ChatGPT and Claude became helpful and conversational."},
+    {"term": "Multimodal", "definition": "An AI that can work with more than one type of input or output — text, images, audio, and video. A multimodal model can describe a photograph, read a chart, listen to a voice recording, or analyse a document without switching tools."},
+    {"term": "Agentic workflow", "definition": "A process where an AI takes a series of actions over time to complete a goal, rather than just answering a single question. An AI told to book a meeting might check calendars, draft an email, send it, and update a spreadsheet — all in sequence without human prompting at each step."},
+    {"term": "Alignment", "definition": "The challenge of making AI systems do what humans actually want, safely and reliably. An aligned AI follows instructions without harmful side effects, respects rules, and does not pursue goals that conflict with human values. It is the difference between a helpful assistant and an unpredictable one."},
+    {"term": "Autoregressive model", "definition": "An AI that generates text one word at a time, where each word is predicted based on everything that came before it. This is how GPT models work. It is like autocomplete on your phone, but applied thousands of times in sequence at extraordinary speed."},
+]
+
+GLOSSARY_EDGES = [
+    ["LLM", "Transformer"], ["LLM", "frontier model"], ["LLM", "Context Window"],
+    ["LLM", "Hallucination"], ["LLM", "multi-model architectures"],
+    ["LLM", "Autoregressive model"],
+    ["Transformer", "diffusion-based generation"], ["Transformer", "Autoregressive model"],
+    ["AI agent", "Agentic workflow"], ["AI agent", "multi-agent interaction"],
+    ["AI agent", "AI agent governance"], ["AI agent", "Record and Replay"],
+    ["prompt injection", "SearchLeak"], ["prompt injection", "Data isolation"],
+    ["prompt injection", "Hallucination"],
+    ["search-grounding", "SearchLeak"], ["search-grounding", "RAG"],
+    ["RAG", "Context Window"],
+    ["model diversification", "multi-model architectures"],
+    ["model diversification", "open-weight model"],
+    ["diffusion-based generation", "DiffusionGemma"],
+    ["multi-agent interaction", "emergent behaviour"],
+    ["multi-agent interaction", "AI agent governance"],
+    ["frontier model", "open-weight model"],
+    ["token consumption", "Context Window"],
+    ["RLHF", "Alignment"], ["RLHF", "frontier model"],
+    ["Multimodal", "diffusion-based generation"],
+    ["Agentic workflow", "AI agent governance"],
+    ["Neural Network", "Transformer"], ["Neural Network", "LLM"],
+]
+
+# ─── Battle card data ────────────────────────────────────────────────────────
+
+BATTLE_CARDS = [
+    {
+        "id": "anthropic",
+        "name": "Anthropic",
+        "product": "Claude",
+        "tagline": "Safety-first frontier AI",
+        "color": "#d97706",
+        "what_it_is": "Anthropic is an AI safety company founded by former OpenAI researchers. Their flagship product is Claude — a family of AI models (Opus, Sonnet, Haiku) known for being exceptionally safe, accurate, and capable of handling long, complex documents. Claude powers many enterprise AI applications behind the scenes.",
+        "key_products": ["Claude Opus (most capable)", "Claude Sonnet (balanced)", "Claude Haiku (fastest, cheapest)"],
+        "strengths": ["Highest-rated for accuracy and instruction-following", "Best-in-class for long document analysis", "Strong safety record with enterprise clients", "Excellent at coding and technical reasoning"],
+        "watch_out": "Available primarily via API — no standalone consumer app with wide adoption yet. Anthropic focuses on the model layer, not the application layer.",
+        "ramsac_angle": "Claude is one of the models RAMSAC can deploy and wrap for clients. Because we are model-agnostic, we can use Anthropic's strengths — accuracy, safety, long-context — for the right use cases without locking clients into a single vendor.",
+        "related_terms": ["frontier model", "AI agent", "Context Window", "Alignment", "RLHF"],
+    },
+    {
+        "id": "openai",
+        "name": "OpenAI",
+        "product": "ChatGPT / GPT-4o",
+        "tagline": "The brand that made AI mainstream",
+        "color": "#10b981",
+        "what_it_is": "OpenAI created ChatGPT, the product that brought AI to 200 million users. Their GPT-4o model powers ChatGPT and is embedded in thousands of third-party products. OpenAI also makes Codex (code generation), DALL-E (images), and Operator (web browsing agent).",
+        "key_products": ["ChatGPT (consumer + enterprise)", "GPT-4o API", "Codex (coding)", "Operator (agentic web browsing)"],
+        "strengths": ["Largest user base and brand recognition", "Strong ecosystem of integrations", "Broad multimodal capability (text, images, audio, video)", "Fastest at shipping new features"],
+        "watch_out": "Quality can be inconsistent across versions. Microsoft has exclusive cloud rights, meaning Azure OpenAI Service is the enterprise path — which ties clients to Microsoft pricing and infrastructure.",
+        "ramsac_angle": "Most clients will already have heard of ChatGPT. RAMSAC can build on that familiarity while offering something they cannot get alone: proper deployment, governance, and the ability to switch to a better model when OpenAI is not the right fit.",
+        "related_terms": ["LLM", "Multimodal", "Agentic workflow", "Autoregressive model", "frontier model"],
+    },
+    {
+        "id": "microsoft",
+        "name": "Microsoft",
+        "product": "Copilot / Azure AI",
+        "tagline": "AI baked into tools your clients already pay for",
+        "color": "#0078d4",
+        "what_it_is": "Microsoft has embedded AI across its entire product stack. Copilot appears in Word, Excel, Outlook, Teams, and SharePoint. Azure OpenAI Service gives enterprises access to GPT-4 through Microsoft's cloud. Copilot Studio lets businesses build custom AI agents without writing code.",
+        "key_products": ["Microsoft 365 Copilot (Office AI)", "Azure OpenAI Service", "Copilot Studio (custom agents)", "Security Copilot"],
+        "strengths": ["Already inside tools clients pay for — no new vendor", "Deep integration with M365 data (emails, Teams, SharePoint)", "Enterprise-grade compliance and data residency", "Security Copilot for threat intelligence"],
+        "watch_out": "Copilot licensing adds cost on top of existing M365 subscriptions. Some features require specific licence tiers. Privacy and data handling policies have been a concern for regulated industries.",
+        "ramsac_angle": "This is core RAMSAC territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI — something Microsoft's own sales team cannot deliver at the SME level.",
+        "related_terms": ["Agentic workflow", "search-grounding", "prompt injection", "Data isolation", "multi-model architectures"],
+    },
+    {
+        "id": "google",
+        "name": "Google / DeepMind",
+        "product": "Gemini",
+        "tagline": "The multimodal powerhouse",
+        "color": "#4285f4",
+        "what_it_is": "Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind — Google's research arm — also produces breakthrough research models like AlphaFold and DiffusionGemma.",
+        "key_products": ["Gemini Ultra / Pro / Flash", "Google Workspace AI", "NotebookLM (document intelligence)", "Google Cloud Vertex AI"],
+        "strengths": ["Best multimodal capabilities (text, image, audio, video, code)", "Deep integration with Google Workspace", "Real-time web search grounding built in", "Strong research pedigree from DeepMind"],
+        "watch_out": "Gemini's consumer reputation has suffered from high-profile errors at launch. Enterprise adoption is growing but still behind Microsoft. Google Cloud customers are the natural target, not M365 shops.",
+        "ramsac_angle": "Most RAMSAC clients are in the Microsoft ecosystem, not Google. But Gemini's multimodal strengths and research pace mean it is a model worth including in any multi-model deployment strategy — especially for image, video, or search-heavy workflows.",
+        "related_terms": ["Multimodal", "diffusion-based generation", "frontier model", "search-grounding", "RAG"],
+    },
+    {
+        "id": "xai",
+        "name": "xAI",
+        "product": "Grok",
+        "tagline": "Elon Musk's unfiltered AI",
+        "color": "#1da1f2",
+        "what_it_is": "xAI is Elon Musk's AI company, launched in 2023. Grok is its flagship model, integrated into X (formerly Twitter) and available as a standalone API. Grok 3 is positioned as a frontier model competing directly with GPT-4 and Claude. Aurora is xAI's image generation model.",
+        "key_products": ["Grok 3 (frontier model)", "Grok API", "Aurora (image generation)", "X/Twitter integration"],
+        "strengths": ["Real-time access to X/Twitter data", "Fewer content restrictions than competitors", "Growing model quality — Grok 3 benchmarks are competitive", "Strong coding capabilities"],
+        "watch_out": "Brand association with Elon Musk and X creates reputational risk for enterprise clients. Data privacy policies are less mature than established providers. Not a natural fit for regulated industries.",
+        "ramsac_angle": "Grok is unlikely to be the right choice for RAMSAC clients in regulated or professional services sectors. Worth knowing about because clients will ask. In a model-agnostic architecture, it could serve specific use cases where real-time social data or fewer content restrictions matter.",
+        "related_terms": ["LLM", "frontier model", "open-weight model", "Multimodal"],
+    },
+    {
+        "id": "meta",
+        "name": "Meta AI",
+        "product": "Llama",
+        "tagline": "Open-weight AI anyone can run",
+        "color": "#0866ff",
+        "what_it_is": "Meta releases its Llama model family as open-weight — anyone can download and run the models on their own hardware. Llama 3 and 3.1 are among the most capable open models available. Meta AI is also the assistant embedded in WhatsApp, Instagram, and Facebook.",
+        "key_products": ["Llama 3.x (open-weight models)", "Meta AI (consumer assistant)", "Llama API (hosted inference)"],
+        "strengths": ["Open-weight means clients can run models on-premise with no data leaving their environment", "No per-token cost when self-hosted", "Strong community of fine-tuned variants for specific industries", "Competitive quality, especially for code and instruction-following"],
+        "watch_out": "Running Llama requires technical infrastructure — it is not plug-and-play for most SMEs. Meta's consumer products (WhatsApp AI) are separate from enterprise Llama deployments. Meta does not provide enterprise support.",
+        "ramsac_angle": "Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. RAMSAC can deploy Llama on the client's own infrastructure — something no single-vendor AI provider will ever offer.",
+        "related_terms": ["open-weight model", "LLM", "model diversification", "frontier model"],
+    },
+]
 
 
 def story_number_badge(n):
@@ -743,6 +893,617 @@ def render_html(data, today, date_slug):
 </html>"""
 
 
+# ─── Shared nav helpers ─────────────────────────────────────────────────────
+
+def _nav_css():
+    return f"""
+  .site-nav {{ background: {NAVY}; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid {ACCENT}; }}
+  .nav-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {ACCENT}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
+  .nav-link {{ font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }}
+  .nav-link:hover {{ color: #fff; }}
+  .nav-link.active {{ color: {ACCENT}; border-bottom-color: {ACCENT}; }}"""
+
+
+def _nav_html(active):
+    links = [
+        ("index.html", "Digest"),
+        ("glossary.html", "Glossary"),
+        ("battlecards.html", "Battle Cards"),
+    ]
+    items = ""
+    for href, label in links:
+        cls = "nav-link active" if label.lower().replace(" ", "") == active.lower().replace(" ", "") else "nav-link"
+        items += f'<a href="{href}" class="{cls}">{label}</a>'
+    return f'<nav class="site-nav"><div class="nav-brand">ramsac</div>{items}</nav>'
+
+
+# ─── Glossary constellation renderer ────────────────────────────────────────
+
+def render_glossary_html(knowledge_log):
+    # Merge seed terms with knowledge_log — knowledge_log takes priority for definitions
+    kl_terms = {t["term"].lower(): t for t in knowledge_log.get("terms", [])}
+    all_nodes = {}
+
+    for seed in GLOSSARY_SEED_TERMS:
+        key = seed["term"].lower()
+        if key in kl_terms:
+            t = kl_terms[key]
+            all_nodes[key] = {"label": t["term"], "definition": t["definition"],
+                               "category": TERM_CATEGORIES.get(key, "foundation"), "from_log": True}
+        else:
+            all_nodes[key] = {"label": seed["term"], "definition": seed["definition"],
+                               "category": TERM_CATEGORIES.get(key, "foundation"), "from_log": False}
+
+    for t in knowledge_log.get("terms", []):
+        key = t["term"].lower()
+        if key not in all_nodes:
+            all_nodes[key] = {"label": t["term"], "definition": t["definition"],
+                               "category": TERM_CATEGORIES.get(key, "business"), "from_log": True}
+
+    nodes_list = list(all_nodes.values())
+    label_to_idx = {n["label"].lower(): i for i, n in enumerate(nodes_list)}
+
+    valid_edges = []
+    for a, b in GLOSSARY_EDGES:
+        ia = label_to_idx.get(a.lower())
+        ib = label_to_idx.get(b.lower())
+        if ia is not None and ib is not None:
+            valid_edges.append([ia, ib])
+
+    # Build battle card linkage
+    bc_map = {}
+    for card in BATTLE_CARDS:
+        for t in card["related_terms"]:
+            key = t.lower()
+            if key not in bc_map:
+                bc_map[key] = []
+            bc_map[key].append({"name": card["name"], "id": card["id"]})
+
+    for n in nodes_list:
+        n["battlecards"] = bc_map.get(n["label"].lower(), [])
+
+    nodes_json = json.dumps(nodes_list)
+    edges_json = json.dumps(valid_edges)
+    cat_colors_json = json.dumps(CATEGORY_COLORS)
+    nav = _nav_html("glossary")
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Glossary — RAMSAC</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ background: {BG_MAIN}; font-family: Manrope, Arial, sans-serif; color: {TEXT}; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }}
+  a {{ color: inherit; text-decoration: none; }}
+  {_nav_css()}
+  .workspace {{ display: flex; flex: 1; overflow: hidden; }}
+  .graph-col {{ flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }}
+  .toolbar {{ display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: {BG_CARD}; border-bottom: 1px solid {BORDER}; flex-shrink: 0; }}
+  .search-wrap {{ position: relative; flex: 1; max-width: 300px; }}
+  .search-wrap input {{ width: 100%; padding: 8px 12px 8px 32px; border: 1px solid {BORDER}; border-radius: 20px; font-size: 13px; font-family: Manrope, Arial, sans-serif; outline: none; color: {TEXT}; background: {BG_MAIN}; transition: border-color 0.15s; }}
+  .search-wrap input:focus {{ border-color: {ACCENT}; }}
+  .search-icon {{ position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.5; pointer-events: none; }}
+  .legend {{ display: flex; gap: 10px; flex-wrap: wrap; }}
+  .legend-item {{ display: flex; align-items: center; gap: 5px; font-size: 11px; color: {MUTED}; font-family: Montserrat, Arial, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; }}
+  .legend-dot {{ width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }}
+  .trending-bar {{ font-size: 11px; color: {MUTED}; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }}
+  .trending-bar span {{ font-family: Montserrat, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: {ACCENT}; }}
+  .trending-chip {{ display: inline-block; background: rgba(77,220,195,0.1); color: {NAVY}; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(77,220,195,0.3); }}
+  .trending-chip:hover {{ background: {ACCENT}; color: {NAVY}; }}
+  #graph-svg {{ flex: 1; width: 100%; display: block; cursor: grab; }}
+  #graph-svg:active {{ cursor: grabbing; }}
+  .detail-col {{ width: 320px; flex-shrink: 0; border-left: 1px solid {BORDER}; background: {BG_CARD}; display: flex; flex-direction: column; overflow: hidden; }}
+  .detail-empty {{ flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; opacity: 0.5; }}
+  .detail-empty .hint-icon {{ font-size: 36px; margin-bottom: 12px; }}
+  .detail-empty p {{ font-size: 13px; color: {MUTED}; line-height: 1.6; }}
+  .detail-content {{ flex: 1; overflow-y: auto; padding: 28px 24px; display: none; }}
+  .detail-category {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }}
+  .detail-term {{ font-family: Montserrat, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 16px; line-height: 1.2; }}
+  .detail-def {{ font-size: 14px; line-height: 1.75; color: {TEXT}; margin-bottom: 24px; }}
+  .detail-section-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 8px; border-top: 1px solid {BORDER}; padding-top: 16px; }}
+  .related-chips {{ display: flex; flex-wrap: wrap; gap: 6px; }}
+  .related-chip {{ display: inline-block; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: Montserrat, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }}
+  .related-chip:hover {{ border-color: {ACCENT}; background: rgba(77,220,195,0.1); }}
+  .bc-link {{ display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; transition: border-color 0.15s; }}
+  .bc-link:hover {{ border-color: {ACCENT}; }}
+  .bc-link-arrow {{ margin-left: auto; color: {ACCENT}; }}
+</style>
+</head>
+<body>
+{nav}
+<div class="workspace">
+  <div class="graph-col">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="search-input" placeholder="Search concepts..." autocomplete="off">
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="toolbar" style="padding-top:8px;padding-bottom:8px;border-top:none">
+      <div class="trending-bar" id="trending-bar"><span>Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
+    </div>
+    <svg id="graph-svg"></svg>
+  </div>
+  <div class="detail-col">
+    <div class="detail-empty" id="detail-empty">
+      <div class="hint-icon">&#10024;</div>
+      <p>Click any concept to explore its definition and connections.</p>
+    </div>
+    <div class="detail-content" id="detail-content">
+      <div class="detail-category" id="d-cat"></div>
+      <div class="detail-term" id="d-term"></div>
+      <div class="detail-def" id="d-def"></div>
+      <div id="d-related-wrap" style="display:none">
+        <div class="detail-section-label">Related concepts</div>
+        <div class="related-chips" id="d-related"></div>
+      </div>
+      <div id="d-bc-wrap" style="display:none">
+        <div class="detail-section-label" style="margin-top:16px">See in battle cards</div>
+        <div id="d-bc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function() {{
+  var NODES = {nodes_json};
+  var EDGES = {edges_json};
+  var CAT_COLORS = {cat_colors_json};
+  var SEARCH_URL = "{FEEDBACK_SERVER_URL}";
+
+  var svg = document.getElementById('graph-svg');
+  var W, H;
+  var simNodes = [], simEdges = [];
+  var dragging = null, dragOffX = 0, dragOffY = 0;
+  var activeIdx = -1;
+  var filterCat = null;
+  var searchQuery = '';
+
+  function resize() {{
+    W = svg.clientWidth; H = svg.clientHeight;
+  }}
+
+  function initNodes() {{
+    var n = NODES.length;
+    simNodes = NODES.map(function(nd, i) {{
+      var angle = (2 * Math.PI * i / n) - Math.PI / 2;
+      var r = Math.min(W, H) * 0.32;
+      return {{ x: W/2 + r * Math.cos(angle), y: H/2 + r * Math.sin(angle),
+               vx: 0, vy: 0, data: nd, idx: i }};
+    }});
+    simEdges = EDGES.map(function(e) {{ return {{ s: e[0], t: e[1] }}; }});
+  }}
+
+  var REPULSION = 2800, SPRING_LEN = 130, SPRING_K = 0.04;
+  var DAMPING = 0.82, GRAVITY = 0.025, CAT_PULL = 0.012;
+
+  function tick() {{
+    var cx = W/2, cy = H/2;
+    for (var i = 0; i < simNodes.length; i++) {{
+      for (var j = i+1; j < simNodes.length; j++) {{
+        var a = simNodes[i], b = simNodes[j];
+        var dx = b.x - a.x, dy = b.y - a.y;
+        var dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        var f = REPULSION / (dist * dist);
+        var fx = f * dx/dist, fy = f * dy/dist;
+        a.vx -= fx; a.vy -= fy;
+        b.vx += fx; b.vy += fy;
+      }}
+    }}
+    for (var k = 0; k < simEdges.length; k++) {{
+      var e = simEdges[k];
+      var a = simNodes[e.s], b = simNodes[e.t];
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      var f = SPRING_K * (dist - SPRING_LEN);
+      var fx = f * dx/dist, fy = f * dy/dist;
+      a.vx += fx; a.vy += fy;
+      b.vx -= fx; b.vy -= fy;
+    }}
+    for (var i = 0; i < simNodes.length; i++) {{
+      var n = simNodes[i];
+      if (n === dragging) continue;
+      n.vx += (cx - n.x) * GRAVITY;
+      n.vy += (cy - n.y) * GRAVITY;
+      n.vx *= DAMPING; n.vy *= DAMPING;
+      n.x += n.vx; n.y += n.vy;
+      n.x = Math.max(50, Math.min(W - 50, n.x));
+      n.y = Math.max(50, Math.min(H - 50, n.y));
+    }}
+    render();
+    requestAnimationFrame(tick);
+  }}
+
+  function nodeVisible(n) {{
+    var nd = n.data;
+    if (filterCat && nd.category !== filterCat) return false;
+    if (searchQuery) {{
+      var q = searchQuery.toLowerCase();
+      return nd.label.toLowerCase().indexOf(q) >= 0 || nd.definition.toLowerCase().indexOf(q) >= 0;
+    }}
+    return true;
+  }}
+
+  function render() {{
+    svg.innerHTML = '';
+    var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    var filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+    filter.setAttribute('id', 'glow');
+    var feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+    feGaussianBlur.setAttribute('stdDeviation', '3'); feGaussianBlur.setAttribute('result', 'coloredBlur');
+    var feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+    var feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+    feMergeNode1.setAttribute('in', 'coloredBlur');
+    var feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+    feMergeNode2.setAttribute('in', 'SourceGraphic');
+    feMerge.appendChild(feMergeNode1); feMerge.appendChild(feMergeNode2);
+    filter.appendChild(feGaussianBlur); filter.appendChild(feMerge);
+    defs.appendChild(filter); svg.appendChild(defs);
+
+    // Draw edges
+    for (var k = 0; k < simEdges.length; k++) {{
+      var e = simEdges[k];
+      var a = simNodes[e.s], b = simNodes[e.t];
+      if (!nodeVisible(a) || !nodeVisible(b)) continue;
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      var isActive = (activeIdx === e.s || activeIdx === e.t);
+      line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+      line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+      line.setAttribute('stroke', isActive ? '#4ddcc3' : '{BORDER}');
+      line.setAttribute('stroke-width', isActive ? '2' : '1');
+      line.setAttribute('opacity', isActive ? '0.8' : '0.5');
+      svg.appendChild(line);
+    }}
+
+    // Draw nodes
+    for (var i = 0; i < simNodes.length; i++) {{
+      var n = simNodes[i]; var nd = n.data;
+      var visible = nodeVisible(n);
+      var isActive = (activeIdx === i);
+      var color = CAT_COLORS[nd.category] || '#888';
+      var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('transform', 'translate(' + n.x + ',' + n.y + ')');
+      g.setAttribute('data-idx', i);
+      g.style.opacity = visible ? '1' : '0.15';
+      g.style.cursor = 'pointer';
+
+      var r = isActive ? 10 : 8;
+      var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', r);
+      circle.setAttribute('fill', color);
+      circle.setAttribute('stroke', isActive ? '#fff' : 'rgba(255,255,255,0.6)');
+      circle.setAttribute('stroke-width', isActive ? '2.5' : '1.5');
+      if (isActive) circle.setAttribute('filter', 'url(#glow)');
+
+      var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('x', r + 6); label.setAttribute('y', '5');
+      label.setAttribute('font-size', isActive ? '13' : '12');
+      label.setAttribute('font-weight', isActive ? '700' : '600');
+      label.setAttribute('font-family', 'Montserrat, Arial, sans-serif');
+      label.setAttribute('fill', isActive ? '{NAVY}' : '#444');
+      label.setAttribute('pointer-events', 'none');
+      label.textContent = nd.label;
+
+      var hitbox = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hitbox.setAttribute('r', '20'); hitbox.setAttribute('fill', 'transparent');
+
+      g.appendChild(circle); g.appendChild(label); g.appendChild(hitbox);
+      svg.appendChild(g);
+    }}
+  }}
+
+  function showDetail(idx) {{
+    activeIdx = idx;
+    var nd = simNodes[idx].data;
+    document.getElementById('detail-empty').style.display = 'none';
+    var dc = document.getElementById('detail-content');
+    dc.style.display = 'block';
+    var catEl = document.getElementById('d-cat');
+    catEl.textContent = nd.category;
+    catEl.style.color = CAT_COLORS[nd.category] || '{ACCENT}';
+    document.getElementById('d-term').textContent = nd.label;
+    document.getElementById('d-def').textContent = nd.definition;
+
+    var relWrap = document.getElementById('d-related-wrap');
+    var relDiv = document.getElementById('d-related');
+    relDiv.innerHTML = '';
+    var neighbors = [];
+    for (var k = 0; k < simEdges.length; k++) {{
+      var e = simEdges[k];
+      if (e.s === idx) neighbors.push(e.t);
+      else if (e.t === idx) neighbors.push(e.s);
+    }}
+    if (neighbors.length > 0) {{
+      relWrap.style.display = 'block';
+      neighbors.forEach(function(ni) {{
+        var chip = document.createElement('span');
+        chip.className = 'related-chip';
+        chip.textContent = simNodes[ni].data.label;
+        chip.style.borderColor = CAT_COLORS[simNodes[ni].data.category] || '{BORDER}';
+        chip.addEventListener('click', function() {{ showDetail(ni); }});
+        relDiv.appendChild(chip);
+      }});
+    }} else {{
+      relWrap.style.display = 'none';
+    }}
+
+    var bcWrap = document.getElementById('d-bc-wrap');
+    var bcDiv = document.getElementById('d-bc');
+    bcDiv.innerHTML = '';
+    if (nd.battlecards && nd.battlecards.length > 0) {{
+      bcWrap.style.display = 'block';
+      nd.battlecards.forEach(function(bc) {{
+        var a = document.createElement('a');
+        a.className = 'bc-link';
+        a.href = 'battlecards.html#bc-' + bc.id;
+        a.innerHTML = bc.name + '<span class="bc-link-arrow">&#8599;</span>';
+        bcDiv.appendChild(a);
+      }});
+    }} else {{
+      bcWrap.style.display = 'none';
+    }}
+  }}
+
+  // Interaction
+  svg.addEventListener('mousedown', function(e) {{
+    var g = e.target.closest('g[data-idx]');
+    if (!g) return;
+    var idx = parseInt(g.getAttribute('data-idx'));
+    dragging = simNodes[idx];
+    var rect = svg.getBoundingClientRect();
+    dragOffX = e.clientX - rect.left - dragging.x;
+    dragOffY = e.clientY - rect.top - dragging.y;
+    dragging._startX = dragging.x; dragging._startY = dragging.y;
+    e.preventDefault();
+  }});
+
+  svg.addEventListener('mousemove', function(e) {{
+    if (!dragging) return;
+    var rect = svg.getBoundingClientRect();
+    dragging.x = e.clientX - rect.left - dragOffX;
+    dragging.y = e.clientY - rect.top - dragOffY;
+    dragging.vx = 0; dragging.vy = 0;
+  }});
+
+  window.addEventListener('mouseup', function(e) {{
+    if (!dragging) return;
+    var moved = Math.abs(dragging.x - dragging._startX) + Math.abs(dragging.y - dragging._startY);
+    var idx = dragging.idx;
+    dragging = null;
+    if (moved < 5) showDetail(idx);
+  }});
+
+  // Search
+  var searchTimer;
+  document.getElementById('search-input').addEventListener('input', function(e) {{
+    searchQuery = e.target.value.trim();
+    clearTimeout(searchTimer);
+    if (searchQuery.length >= 2) {{
+      searchTimer = setTimeout(function() {{
+        logSearch(searchQuery);
+      }}, 800);
+    }}
+  }});
+
+  // Legend
+  var legendEl = document.getElementById('legend');
+  Object.keys(CAT_COLORS).forEach(function(cat) {{
+    var item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = '<div class="legend-dot" style="background:' + CAT_COLORS[cat] + '"></div>' + cat;
+    item.addEventListener('click', function() {{
+      filterCat = (filterCat === cat) ? null : cat;
+      document.querySelectorAll('.legend-item').forEach(function(li) {{
+        li.style.opacity = (filterCat && li.textContent.trim() !== filterCat) ? '0.35' : '1';
+      }});
+    }});
+    legendEl.appendChild(item);
+  }});
+
+  // Trending
+  function logSearch(term) {{
+    var key = 'austen_searches';
+    var arr = JSON.parse(localStorage.getItem(key) || '[]');
+    arr.push({{term: term.toLowerCase(), ts: Date.now()}});
+    if (arr.length > 200) arr = arr.slice(-200);
+    localStorage.setItem(key, JSON.stringify(arr));
+    if (SEARCH_URL) {{
+      fetch(SEARCH_URL + '/api/search', {{
+        method: 'POST', headers: {{'Content-Type': 'application/json'}},
+        body: JSON.stringify({{term: term, page: 'glossary', ts: Date.now()/1000}})
+      }}).catch(function(){{}});
+    }}
+  }}
+
+  function loadTrending() {{
+    function display(items) {{
+      var el = document.getElementById('trending-chips');
+      el.innerHTML = '';
+      items.slice(0, 6).forEach(function(item) {{
+        var chip = document.createElement('span');
+        chip.className = 'trending-chip';
+        chip.textContent = item.term;
+        chip.addEventListener('click', function() {{
+          document.getElementById('search-input').value = item.term;
+          searchQuery = item.term;
+          var found = simNodes.find(function(n) {{
+            return n.data.label.toLowerCase() === item.term.toLowerCase();
+          }});
+          if (found) showDetail(found.idx);
+        }});
+        el.appendChild(chip);
+      }});
+    }}
+
+    if (SEARCH_URL) {{
+      fetch(SEARCH_URL + '/api/trending').then(function(r) {{ return r.json(); }})
+        .then(function(d) {{ if (d.trending && d.trending.length) display(d.trending); else loadTrendingLocal(); }})
+        .catch(loadTrendingLocal);
+    }} else {{
+      loadTrendingLocal();
+    }}
+  }}
+
+  function loadTrendingLocal() {{
+    var arr = JSON.parse(localStorage.getItem('austen_searches') || '[]');
+    var cutoff = Date.now() - 7 * 86400000;
+    var counts = {{}};
+    arr.filter(function(s) {{ return s.ts >= cutoff; }}).forEach(function(s) {{
+      counts[s.term] = (counts[s.term] || 0) + 1;
+    }});
+    var sorted = Object.entries(counts).sort(function(a,b) {{ return b[1]-a[1]; }});
+    if (sorted.length) display(sorted.slice(0,6).map(function(e) {{ return {{term:e[0], count:e[1]}}; }}));
+  }}
+
+  // URL param: focus a specific node on load
+  var params = new URLSearchParams(window.location.search);
+  var focusTerm = params.get('focus');
+
+  resize();
+  window.addEventListener('resize', function() {{ resize(); }});
+  initNodes();
+  loadTrending();
+  requestAnimationFrame(tick);
+
+  if (focusTerm) {{
+    setTimeout(function() {{
+      var found = simNodes.find(function(n) {{
+        return n.data.label.toLowerCase() === focusTerm.toLowerCase();
+      }});
+      if (found) showDetail(found.idx);
+    }}, 400);
+  }}
+}})();
+</script>
+</body>
+</html>"""
+
+
+# ─── Battle cards renderer ──────────────────────────────────────────────────
+
+def render_battlecards_html():
+    nav = _nav_html("battlecards")
+
+    cards_html = ""
+    for c in BATTLE_CARDS:
+        products_li = "".join(f'<li>{p}</li>' for p in c["key_products"])
+        strengths_li = "".join(f'<li>{s}</li>' for s in c["strengths"])
+        terms_html = ""
+        for t in c["related_terms"]:
+            terms_html += f'<a href="glossary.html?focus={t.replace(" ", "+")}" class="term-chip">{t}</a>'
+
+        cards_html += f"""
+<div class="bc-card" id="bc-{c['id']}">
+  <div class="bc-header" style="border-left:4px solid {c['color']}">
+    <div>
+      <div class="bc-name">{c['name']}</div>
+      <div class="bc-product">{c['product']}</div>
+      <div class="bc-tagline">{c['tagline']}</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>{c['what_it_is']}</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul>{products_li}</ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul>{strengths_li}</ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>{c['watch_out']}</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>{c['ramsac_angle']}</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms">{terms_html}</div>
+    </div>
+  </div>
+</div>"""
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Battle Cards — RAMSAC</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ background: {BG_MAIN}; font-family: Manrope, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
+  a {{ color: inherit; text-decoration: none; }}
+  {_nav_css()}
+  .page-body {{ max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }}
+  .page-title {{ font-family: Montserrat, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 6px; }}
+  .page-sub {{ font-size: 14px; color: {MUTED}; margin-bottom: 32px; line-height: 1.6; }}
+  .ramsac-diff {{ background: {NAVY}; border-radius: 10px; padding: 20px 24px; margin-bottom: 36px; }}
+  .ramsac-diff-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 8px; }}
+  .ramsac-diff p {{ font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }}
+  .bc-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }}
+  .bc-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-radius: 10px; overflow: hidden; }}
+  .bc-header {{ padding: 20px 20px 16px; background: {BG_CARD}; }}
+  .bc-name {{ font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {NAVY}; }}
+  .bc-product {{ font-size: 13px; color: {MUTED}; margin-top: 2px; }}
+  .bc-tagline {{ font-size: 12px; color: {ACCENT}; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; font-family: Montserrat, Arial, sans-serif; }}
+  .bc-body {{ padding: 0 20px 20px; }}
+  .bc-section {{ margin-top: 16px; }}
+  .bc-section-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 6px; }}
+  .bc-section p {{ font-size: 13px; line-height: 1.65; color: {MUTED}; }}
+  .bc-section ul {{ padding-left: 18px; }}
+  .bc-section ul li {{ font-size: 13px; line-height: 1.65; color: {MUTED}; margin-bottom: 2px; }}
+  .bc-watch {{ background: #fff8f0; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
+  .bc-watch .bc-section-label {{ color: #d97706; }}
+  .bc-ramsac {{ background: #f0fdf8; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
+  .bc-ramsac .bc-section-label {{ color: #059669; }}
+  .bc-ramsac p {{ color: #065f46; }}
+  .bc-terms {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }}
+  .term-chip {{ display: inline-block; background: rgba(77,220,195,0.12); color: #11383f; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid {ACCENT}; font-family: Montserrat, Arial, sans-serif; cursor: pointer; transition: background 0.15s; }}
+  .term-chip:hover {{ background: {ACCENT}; color: {NAVY}; }}
+</style>
+</head>
+<body>
+{nav}
+<div class="page-body">
+  <div class="page-title">AI Battle Cards</div>
+  <p class="page-sub">Know your landscape. Understand each major AI provider, what they offer, and how RAMSAC positions against them.</p>
+  <div class="ramsac-diff">
+    <div class="ramsac-diff-label">Our differentiation</div>
+    <p>RAMSAC is model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others — selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
+  </div>
+  <div class="bc-grid">
+    {cards_html}
+  </div>
+</div>
+<script>
+  var SEARCH_URL = "{FEEDBACK_SERVER_URL}";
+  function logView(name) {{
+    if (!SEARCH_URL) return;
+    fetch(SEARCH_URL + '/api/search', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{term: name, page: 'battlecards', ts: Date.now() / 1000}})
+    }}).catch(function(){{}});
+  }}
+  document.querySelectorAll('.bc-card').forEach(function(card) {{
+    logView(card.querySelector('.bc-name').textContent);
+  }});
+</script>
+</body>
+</html>"""
+
+
 # ─── EML generator ──────────────────────────────────────────────────────────
 
 def render_email_html(data, today, date_slug, digest_url):
@@ -917,7 +1678,7 @@ PAGES_BASE_URL = "https://ironbridge-ai.github.io/Austen"
 
 
 def write_index(directory, html_files):
-    """Generate index.html listing all digest editions newest-first."""
+    """Generate hub index.html with navigation and edition archive."""
     def date_label(filename):
         slug = filename.replace("austen_", "").replace(".html", "")
         try:
@@ -931,54 +1692,77 @@ def write_index(directory, html_files):
         label, slug = date_label(f)
         cards.append(
             f'    <div class="edition-card">\n'
-            f'      <div>\n'
-            f'        <div class="edition-date">{label}</div>\n'
-            f'      </div>\n'
+            f'      <div class="edition-date">{label}</div>\n'
             f'      <a class="view-btn" href="{f}">View &rarr;</a>\n'
             f'    </div>'
         )
-
     cards_html = "\n".join(cards)
+
+    nav = _nav_html("digest")
+    nav_css = _nav_css()
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Austen — Weekly AI Briefing by RAMSAC</title>
+<title>Austen — AI Briefing Hub by RAMSAC</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{ background: #f5fbff; font-family: Manrope, Arial, sans-serif; color: #373c46; min-height: 100vh; padding: 40px 16px 60px; }}
-  .container {{ max-width: 640px; margin: 0 auto; }}
-  .header {{ background: linear-gradient(135deg, #152230 0%, #11383f 100%); border-radius: 12px 12px 0 0; padding: 36px 36px 32px; border-bottom: 3px solid #4ddcc3; display: flex; align-items: flex-end; justify-content: space-between; }}
-  .header h1 {{ font-family: Montserrat, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }}
-  .header h1 span {{ color: #4ddcc3; }}
-  .header-sub {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4ddcc3; font-weight: 600; margin-bottom: 8px; }}
-  .header-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 20px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.03em; }}
-  .body {{ background: #f5fbff; border-left: 1px solid #c7e6ff; border-right: 1px solid #c7e6ff; padding: 28px 32px 32px; }}
-  .section-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4ddcc3; font-weight: 700; border-top: 1px solid #c7e6ff; padding-top: 24px; margin-bottom: 20px; }}
-  .edition-card {{ background: #fff; border: 1px solid #c7e6ff; border-left: 3px solid #4ddcc3; border-radius: 8px; padding: 18px 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }}
-  .edition-date {{ font-family: Montserrat, Arial, sans-serif; font-size: 14px; font-weight: 700; color: #152230; }}
-  .view-btn {{ display: inline-block; background: #4ddcc3; color: #152230; font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
+  body {{ background: {BG_MAIN}; font-family: Manrope, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
+  a {{ color: inherit; text-decoration: none; }}
+  {nav_css}
+  .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
+  .hub-hero {{ background: linear-gradient(135deg, {NAVY} 0%, {DARK_TEAL} 100%); border-radius: 12px; padding: 36px 36px 32px; border-bottom: 3px solid {ACCENT}; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; }}
+  .hub-hero h1 {{ font-family: Montserrat, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }}
+  .hub-hero h1 span {{ color: {ACCENT}; }}
+  .hub-hero-sub {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 600; margin-bottom: 8px; }}
+  .hub-hero-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 20px; font-weight: 800; color: {ACCENT}; letter-spacing: -0.03em; }}
+  .hub-tiles {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }}
+  .hub-tile {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; transition: box-shadow 0.15s; }}
+  .hub-tile:hover {{ box-shadow: 0 4px 20px rgba(21,34,48,0.08); }}
+  .hub-tile-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: {ACCENT}; }}
+  .hub-tile-title {{ font-family: Montserrat, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {NAVY}; }}
+  .hub-tile-desc {{ font-size: 13px; color: {MUTED}; line-height: 1.6; flex: 1; }}
+  .hub-tile-btn {{ display: inline-block; background: {ACCENT}; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }}
+  .hub-tile-btn:hover {{ opacity: 0.85; }}
+  .section-label {{ font-family: Montserrat, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; border-top: 1px solid {BORDER}; padding-top: 24px; margin-bottom: 20px; }}
+  .edition-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
+  .edition-date {{ font-family: Montserrat, Arial, sans-serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
+  .view-btn {{ display: inline-block; background: {ACCENT}; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
   .view-btn:hover {{ opacity: 0.85; }}
-  .footer {{ background: #152230; border-radius: 0 0 12px 12px; border: 1px solid #152230; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; }}
+  .footer {{ background: {NAVY}; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }}
   .footer p {{ font-size: 12px; color: rgba(255,255,255,0.5); font-family: Manrope, Arial, sans-serif; }}
-  .footer-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 800; color: #4ddcc3; letter-spacing: -0.02em; }}
+  .footer-brand {{ font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {ACCENT}; letter-spacing: -0.02em; }}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
+{nav}
+<div class="page-body">
+  <div class="hub-hero">
     <div>
-      <p class="header-sub">Austen &nbsp;&middot;&nbsp; Weekly AI Briefing</p>
+      <p class="hub-hero-sub">Austen &middot; AI Knowledge Hub</p>
       <h1><span>This Week</span> in AI</h1>
     </div>
-    <div class="header-brand">ramsac</div>
+    <div class="hub-hero-brand">ramsac</div>
   </div>
-  <div class="body">
-    <p class="section-label">All Editions</p>
+  <div class="hub-tiles">
+    <a class="hub-tile" href="glossary.html">
+      <div class="hub-tile-label">Explore</div>
+      <div class="hub-tile-title">AI Glossary</div>
+      <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
+      <span class="hub-tile-btn">Open glossary &rarr;</span>
+    </a>
+    <a class="hub-tile" href="battlecards.html">
+      <div class="hub-tile-label">Know your landscape</div>
+      <div class="hub-tile-title">Battle Cards</div>
+      <div class="hub-tile-desc">Understand the major AI players, what they offer, and how RAMSAC positions against them in client conversations.</div>
+      <span class="hub-tile-btn">View battle cards &rarr;</span>
+    </a>
+  </div>
+  <p class="section-label">All Editions</p>
 {cards_html}
-  </div>
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
     <div class="footer-brand">ramsac</div>
@@ -991,8 +1775,8 @@ def write_index(directory, html_files):
         f.write(html)
 
 
-def publish_to_pages(html_file, date_slug):
-    """Add new digest to gh-pages worktree, rebuild index, commit and push."""
+def publish_to_pages(html_file, date_slug, knowledge_log):
+    """Add new digest + glossary + battlecards to gh-pages, rebuild index, push."""
     import subprocess
     import shutil
     import tempfile
@@ -1007,6 +1791,15 @@ def publish_to_pages(html_file, date_slug):
         )
         try:
             shutil.copy(os.path.join(script_dir, html_file), os.path.join(tmp, html_file))
+
+            # Regenerate glossary and battlecards with latest data
+            glossary_html = render_glossary_html(knowledge_log)
+            with open(os.path.join(tmp, "glossary.html"), "w", encoding="utf-8") as f:
+                f.write(glossary_html)
+
+            battlecards_html = render_battlecards_html()
+            with open(os.path.join(tmp, "battlecards.html"), "w", encoding="utf-8") as f:
+                f.write(battlecards_html)
 
             pages = sorted(
                 [f for f in os.listdir(tmp) if f.startswith("austen_") and f.endswith(".html")],
@@ -1031,6 +1824,8 @@ def publish_to_pages(html_file, date_slug):
 
     print(f"--- Published:   {PAGES_BASE_URL}/")
     print(f"--- Direct link: {PAGES_BASE_URL}/{html_file}")
+    print(f"--- Glossary:    {PAGES_BASE_URL}/glossary.html")
+    print(f"--- Battle cards:{PAGES_BASE_URL}/battlecards.html")
 
 
 def publish_command_to_main(cmd_file, date_slug):
@@ -1216,7 +2011,7 @@ def main():
     print(f"\n    To open in Outlook, run this on your Mac (avoids quarantine):")
     print(f"    scp rvelasquez@dev-rvelasquez:{script_dir}/{cmd_file} ~/Desktop/ && open ~/Desktop/{cmd_file}")
 
-    publish_to_pages(html_file, date_slug)
+    publish_to_pages(html_file, date_slug, knowledge_log)
     publish_command_to_main(cmd_file, date_slug)
 
 
