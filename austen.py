@@ -502,6 +502,18 @@ TERM_CATEGORIES = {
     "rlhf": "safety", "multimodal": "generation",
     "agentic workflow": "deployment", "alignment": "safety",
     "autoregressive model": "generation", "copilot": "business",
+    # Foundational terms every beginner should learn
+    "generative ai": "generation", "prompt": "foundation",
+    "prompt engineering": "deployment", "token": "foundation",
+    "fine-tuning": "foundation", "inference": "deployment",
+    "parameters": "foundation", "embedding": "foundation",
+    "vector database": "deployment", "temperature": "generation",
+    "system prompt": "deployment", "chain-of-thought": "generation",
+    "reasoning model": "foundation", "guardrails": "safety",
+    "few-shot learning": "foundation", "knowledge cutoff": "safety",
+    "agi": "foundation", "mixture of experts": "foundation",
+    "distillation": "foundation", "quantization": "deployment",
+    "bias": "safety",
 }
 
 GLOSSARY_SEED_TERMS = [
@@ -516,6 +528,27 @@ GLOSSARY_SEED_TERMS = [
     {"term": "Agentic workflow", "definition": "A process where an AI takes a series of actions over time to complete a goal, rather than just answering a single question. An AI told to book a meeting might check calendars, draft an email, send it, and update a spreadsheet — all in sequence without human prompting at each step."},
     {"term": "Alignment", "definition": "The challenge of making AI systems do what humans actually want, safely and reliably. An aligned AI follows instructions without harmful side effects, respects rules, and does not pursue goals that conflict with human values. It is the difference between a helpful assistant and an unpredictable one."},
     {"term": "Autoregressive model", "definition": "An AI that generates text one word at a time, where each word is predicted based on everything that came before it. This is how GPT models work. It is like autocomplete on your phone, but applied thousands of times in sequence at extraordinary speed."},
+    {"term": "Generative AI", "definition": "AI that creates brand-new content — text, images, audio, or code — rather than just sorting or analysing existing data. It is the category that ChatGPT, image generators, and coding assistants all belong to. The 'generative' part means it produces something that did not exist before."},
+    {"term": "Prompt", "definition": "The instruction or question you give an AI to tell it what you want. It is simply what you type into the box. The clearer and more specific your prompt, the better the answer you get back."},
+    {"term": "Prompt engineering", "definition": "The skill of writing instructions that get the best results from an AI. Small changes in wording can dramatically change the output, so this has become a real craft. It is less about coding and more about clear, structured communication."},
+    {"term": "Token", "definition": "The small chunk of text an AI reads and writes, roughly three-quarters of a word. AI does not see whole sentences; it breaks everything into tokens. The number of tokens decides how much you pay and how much the AI can handle at once."},
+    {"term": "Fine-tuning", "definition": "Taking a general AI model and training it a little more on your own examples so it gets better at a specific job. Like hiring a capable graduate and then teaching them how your company does things. The result is a model that speaks your language and follows your patterns."},
+    {"term": "Inference", "definition": "The moment an AI actually answers — when it takes your question and produces a response. Training is when the model learns; inference is when it works. Every answer you receive is an act of inference, and it is what costs money to run."},
+    {"term": "Parameters", "definition": "The millions or billions of internal dials an AI adjusts as it learns. More parameters generally means the model can capture more complex patterns. When you hear a model is '70 billion parameters', that is a rough measure of its size and capability."},
+    {"term": "Embedding", "definition": "A way of turning words, images, or documents into lists of numbers that capture their meaning, so a computer can compare them. Things with similar meaning end up with similar numbers. This is how AI knows that 'car' and 'vehicle' are related."},
+    {"term": "Vector database", "definition": "A special kind of storage that holds those number-lists (embeddings) and finds the closest matches fast. It lets an AI search your documents by meaning rather than exact keywords. It is the engine behind most 'chat with your documents' tools."},
+    {"term": "Temperature", "definition": "A setting that controls how creative or predictable an AI's output is. Low temperature makes it focused and repeatable; high temperature makes it more varied and surprising. Think of it as a dial between a careful accountant and a free-wheeling brainstormer."},
+    {"term": "System prompt", "definition": "Hidden instructions given to an AI before you ever type anything, setting its role, tone, and rules. It is the briefing the AI gets backstage. It is why one chatbot acts like a formal assistant and another like a playful friend."},
+    {"term": "Chain-of-thought", "definition": "When an AI works through a problem step by step instead of jumping straight to an answer. Like showing your working in a maths exam, it makes the AI more accurate on hard problems. Many modern models reason this way before they reply."},
+    {"term": "Reasoning model", "definition": "A newer kind of AI built to think before it answers, spending extra time working through a problem step by step. It trades speed for accuracy, making it better at maths, coding, and logic. It is the difference between blurting an answer and pausing to reason."},
+    {"term": "Guardrails", "definition": "The safety rules and filters built around an AI to stop it producing harmful, false, or off-limits content. Like the barriers on a mountain road, they keep the system from going where it should not. Good guardrails are what make AI safe to put in front of customers."},
+    {"term": "Few-shot learning", "definition": "Giving an AI a handful of examples inside your request so it understands the pattern you want. Show it three examples of the format you like, and it copies the style. It is teaching by demonstration, with no retraining needed."},
+    {"term": "Knowledge cutoff", "definition": "The date after which an AI knows nothing, because its training data stopped there. Ask about events after the cutoff and it will not know unless it can search the web. It is why an AI sometimes seems frozen in the past."},
+    {"term": "AGI", "definition": "Artificial General Intelligence — a hypothetical AI that can do any intellectual task a human can, across every domain. Today's AI is narrow, brilliant at specific things; AGI would be broadly capable. It is the long-term goal that drives much of the industry."},
+    {"term": "Mixture of Experts", "definition": "A model design that splits the work among many specialist sub-models and only wakes the ones it needs for each task. Like a hospital routing you to the right specialist instead of one doctor for everything. It makes very large models faster and cheaper to run."},
+    {"term": "Distillation", "definition": "Training a small, fast AI to copy the behaviour of a large, expensive one. The big model is the teacher; the small model is the student that learns to give similar answers at a fraction of the cost. It is how powerful AI gets squeezed onto phones and laptops."},
+    {"term": "Quantization", "definition": "Shrinking an AI model by storing its numbers with less precision, so it runs on smaller, cheaper hardware. Like compressing a photo: slightly less detail, far smaller size. It is what lets big models run on a laptop or phone."},
+    {"term": "Bias", "definition": "When an AI systematically favours or disadvantages certain groups because of patterns in the data it learned from. If the training data was skewed, the AI inherits that skew. Spotting and reducing bias is central to using AI fairly."},
 ]
 
 GLOSSARY_EDGES = [
@@ -540,6 +573,28 @@ GLOSSARY_EDGES = [
     ["Multimodal", "diffusion-based generation"],
     ["Agentic workflow", "AI agent governance"],
     ["Neural Network", "Transformer"], ["Neural Network", "LLM"],
+    # Foundational-term connections
+    ["Generative AI", "LLM"], ["Generative AI", "diffusion-based generation"],
+    ["Generative AI", "Multimodal"],
+    ["Prompt", "Prompt engineering"], ["Prompt", "System prompt"],
+    ["Prompt", "Few-shot learning"], ["Prompt", "LLM"],
+    ["Prompt engineering", "Few-shot learning"],
+    ["Token", "Context Window"], ["Token", "Inference"], ["Token", "LLM"],
+    ["Fine-tuning", "Parameters"], ["Fine-tuning", "Distillation"], ["Fine-tuning", "LLM"],
+    ["Inference", "Quantization"], ["Inference", "Reasoning model"],
+    ["Parameters", "Neural Network"], ["Parameters", "Mixture of Experts"],
+    ["Embedding", "Vector database"], ["Embedding", "RAG"], ["Embedding", "Neural Network"],
+    ["Vector database", "RAG"],
+    ["Temperature", "Hallucination"], ["Temperature", "Generative AI"],
+    ["System prompt", "Guardrails"], ["System prompt", "Alignment"],
+    ["Chain-of-thought", "Reasoning model"], ["Chain-of-thought", "Agentic workflow"],
+    ["Reasoning model", "frontier model"],
+    ["Guardrails", "Alignment"], ["Guardrails", "prompt injection"],
+    ["Knowledge cutoff", "RAG"], ["Knowledge cutoff", "Hallucination"],
+    ["AGI", "frontier model"], ["AGI", "Alignment"],
+    ["Mixture of Experts", "multi-model architectures"],
+    ["Distillation", "open-weight model"], ["Quantization", "open-weight model"],
+    ["Bias", "Alignment"], ["Bias", "RLHF"],
 ]
 
 # ─── Battle card data ────────────────────────────────────────────────────────
@@ -719,9 +774,9 @@ def render_html(data, today, date_slug):
   html {{ background-color: #f8f4e3 !important; }}
   body {{ background-color: #f8f4e3 !important; color: #10131b !important; }}
   .dh-bracket {{ position: relative; }}
-  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 78px; width: 46px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
-  .dh-bracket::before {{ left: 22px; background-image: {BRACKET_L}; }}
-  .dh-bracket::after {{ right: 22px; background-image: {BRACKET_R}; }}
+  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 60px; width: 34px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .dh-bracket::before {{ left: 14px; background-image: {BRACKET_L}; }}
+  .dh-bracket::after {{ right: 14px; background-image: {BRACKET_R}; }}
 {TOOLTIP_CSS}
   .modal {{
     display: none;
@@ -778,7 +833,7 @@ def render_html(data, today, date_slug):
 
   <!-- ── HEADER ── -->
   <tr>
-    <td class="dh-bracket" style="background:{HERO_GRADIENT};border-radius:12px 12px 0 0;padding:40px 88px 36px">
+    <td class="dh-bracket" style="background:{HERO_GRADIENT};border-radius:12px 12px 0 0;padding:36px 72px 32px">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
@@ -962,9 +1017,9 @@ def _nav_css():
   .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket {{ position: relative; }}
-  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 84px; width: 50px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
-  .bracket::before {{ left: 22px; background-image: {BRACKET_L}; }}
-  .bracket::after {{ right: 22px; background-image: {BRACKET_R}; }}"""
+  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 72px; width: 40px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .bracket::before {{ left: 18px; background-image: {BRACKET_L}; }}
+  .bracket::after {{ right: 18px; background-image: {BRACKET_R}; }}"""
 
 
 def _nav_html(active):
