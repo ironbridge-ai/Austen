@@ -28,13 +28,13 @@
   .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket { position: relative; }
-  .bracket::before, .bracket::after { content: ''; position: absolute; top: 16px; bottom: 16px; width: 42px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
-  .bracket::before { left: 16px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
-  .bracket::after { right: 16px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
+  .bracket::before, .bracket::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 84px; width: 50px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
+  .bracket::before { left: 22px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
+  .bracket::after { right: 22px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
   .page-body { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
   .page-title { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #10131b; margin-bottom: 6px; }
   .page-sub { font-size: 14px; color: #5f5a52; margin-bottom: 32px; line-height: 1.6; }
-  .ramsac-diff { background: linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%); border-radius: 10px; padding: 24px 52px; margin-bottom: 36px; overflow: hidden; }
+  .ramsac-diff { background: linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%); border-radius: 10px; padding: 28px 88px; margin-bottom: 36px; overflow: hidden; }
   .ramsac-diff-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; font-weight: 700; margin-bottom: 8px; }
   .ramsac-diff p { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }
   .bc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
@@ -60,7 +60,7 @@
 </style>
 </head>
 <body>
-<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link active">Battle Cards</a><span class="nav-build">build Jun 26, 14:24</span></nav><div class="brand-bar"></div>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link active">Battle Cards</a><span class="nav-build">build Jun 26, 14:30</span></nav><div class="brand-bar"></div>
 <div class="page-body">
   <div class="eyebrow-row" style="margin-bottom:14px">
     <span class="pill">Know your landscape</span>

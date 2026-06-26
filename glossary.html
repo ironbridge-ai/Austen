@@ -28,9 +28,9 @@
   .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket { position: relative; }
-  .bracket::before, .bracket::after { content: ''; position: absolute; top: 16px; bottom: 16px; width: 42px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
-  .bracket::before { left: 16px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
-  .bracket::after { right: 16px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
+  .bracket::before, .bracket::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 84px; width: 50px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
+  .bracket::before { left: 22px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
+  .bracket::after { right: 22px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
   .workspace { display: flex; flex: 1; overflow: hidden; }
   .graph-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
   .toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e6dcc4; flex-shrink: 0; }
@@ -69,7 +69,7 @@
 </style>
 </head>
 <body>
-<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link active">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 26, 14:24</span></nav><div class="brand-bar"></div>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link active">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 26, 14:30</span></nav><div class="brand-bar"></div>
 <div class="workspace">
   <div class="graph-col">
     <div class="toolbar">
