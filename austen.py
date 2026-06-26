@@ -1204,7 +1204,7 @@ def render_glossary_html(knowledge_log):
       label.setAttribute('y', '5');
       label.setAttribute('font-size', isActive ? '13' : '12');
       label.setAttribute('font-weight', isActive ? '700' : '600');
-      label.setAttribute('font-family', 'Geist, Arial, sans-serif');
+      label.setAttribute('font-family', "'Install Rounded', 'Nunito', Geist, Arial, sans-serif");
       label.setAttribute('fill', isActive ? '{NAVY}' : '#444');
       label.setAttribute('stroke', '{BG_MAIN}');
       label.setAttribute('stroke-width', '3.5');
