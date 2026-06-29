@@ -432,7 +432,11 @@ TOOLTIP_CSS = """
     font-family: "Geist", Arial, sans-serif;
   }"""
 
-FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://dev-rvelasquez.tailc35de4.ts.net")
+FEEDBACK_SERVER_URL = os.environ.get(
+    "FEEDBACK_SERVER_URL",
+    # Thought Provoked site's Supabase `digest-feedback` edge function.
+    "https://hiuksmizqtmfdbycnzsw.supabase.co/functions/v1/digest-feedback",
+)
 
 # Ironbridge "Brand Worlds" metal-heat palette.
 ACCENT   = "#bf5631"   # 800°C high forging heat (rust) — primary accent
@@ -943,7 +947,7 @@ def render_html(data, today, date_slug):
     }}
     localStorage.setItem('feedback-{date_slug}', text);
     var thanks = document.getElementById('fb-thanks');
-    fetch('/api/feedback', {{
+    fetch('{FEEDBACK_SERVER_URL}/api/feedback', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
       body: JSON.stringify({{digest_date: '{date_slug}', votes: votes, text: text}})
