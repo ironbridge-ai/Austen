@@ -2012,7 +2012,13 @@ def main():
     print(f"    scp rvelasquez@dev-rvelasquez:{script_dir}/{cmd_file} ~/Desktop/ && open ~/Desktop/{cmd_file}")
 
     publish_to_pages(html_file, date_slug, knowledge_log)
-    publish_command_to_main(cmd_file, date_slug)
+    # The .command file is the manual macOS/Outlook send path. Skip committing
+    # it to main when AUSTEN_PUBLISH_COMMAND=0 (set by the weekly CI workflow,
+    # which web-publishes only and doesn't use the Outlook flow).
+    if os.environ.get("AUSTEN_PUBLISH_COMMAND", "1") != "0":
+        publish_command_to_main(cmd_file, date_slug)
+    else:
+        print("--- Skipping .command publish to main (AUSTEN_PUBLISH_COMMAND=0)")
 
 
 if __name__ == "__main__":

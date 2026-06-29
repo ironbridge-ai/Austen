@@ -27,8 +27,8 @@ signal. **Provision all secrets before/with the first deploy.**
 ## Secrets (add to ai-guild-infra `deployment/secrets.enc.yaml`, `production` tier)
 
 ```yaml
-austen_smtp_user:           { tier: production, value: <m365-sender@ironbridgesg.com> }
-austen_smtp_password:       { tier: production, value: <m365 app password> }
+austen_smtp_user:           { tier: production, value: <google sender, e.g. you@gmail.com or you@workspace-domain> }
+austen_smtp_password:       { tier: production, value: <google App Password — 16 chars, requires 2FA on the account> }
 austen_az_storage_account:  { tier: production, value: <storage account name> }
 austen_az_storage_key:      { tier: production, value: <storage account key1> }
 austen_az_storage_container:{ tier: production, value: data }
@@ -41,7 +41,7 @@ austen_az_storage_container:{ tier: production, value: data }
 
 Lives in the Quadlet (`Environment=`): `PORT=4097`, `HOST=0.0.0.0`,
 `AUSTEN_WEB_ROOT=/apps/storage/public`, `AUSTEN_DATA_DIR=/apps/storage/data`,
-`SMTP_SERVER=smtp.office365.com`, `DIGEST_SEND_TIME=17:00`,
+`SMTP_SERVER=smtp.gmail.com`, `DIGEST_SEND_TIME=17:00`,
 `AUSTEN_FEEDBACK_RECIPIENT=renato.velasquez@ironbridgesg.com`.
 
 ## Persistence
@@ -54,10 +54,22 @@ once with `deploy/seed-azure.sh <account>` before the first deploy.
 ## Egress caveat (daily email)
 
 Outbound is default-deny via tinyproxy. `storage_azure` (rclone HTTPS) is
-allowed and works. `office365_smtp` is declared, but SMTP/:587 is STARTTLS,
-not HTTP — tinyproxy may not tunnel it. If the daily email can't connect,
-either add a direct VM firewall allowance for `smtp.office365.com:587` or move
-email to Microsoft Graph over HTTPS. Feedback collection is unaffected.
+allowed and works. `gmail_smtp` is declared, but SMTP/:587 is STARTTLS, not
+HTTP — tinyproxy may not tunnel it. If the daily email can't connect, add a
+direct VM firewall allowance for `smtp.gmail.com:587`. (Egress isn't enforced
+in the current infra version anyway.) Feedback collection is unaffected.
+
+The daily email sends from a **Google** address: `austen_smtp_user` is the
+sender, `austen_smtp_password` is a **Google App Password** (Google Account →
+Security → 2-Step Verification → App passwords — 2FA must be on). Not an API key.
+
+## Weekly digest generation
+
+`.github/workflows/weekly-digest.yml` runs `austen.py` on a cron (Mondays
+07:00 UTC) and publishes the edition to GitHub Pages automatically — no manual
+run. It needs an `ANTHROPIC_API_KEY` repo secret (and `ANTHROPIC_BASE_URL` if you
+route Claude through a gateway). It web-publishes only; emailing the edition to
+the audience is not automated here (see PR discussion).
 
 ## Local dev
 

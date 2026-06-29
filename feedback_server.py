@@ -17,15 +17,15 @@ Configuration — env vars, or podman secrets mounted at /run/secrets/<name>:
 
   REQUIRED (the server EXITS at startup if either is missing — we fail fast
   rather than run half-configured):
-    smtp_user      / SMTP_USER       M365 sender, e.g. someone@ironbridgesg.com
-    smtp_password  / SMTP_PASSWORD   M365 password or app password
+    smtp_user      / SMTP_USER       Google sender address (Gmail / Workspace)
+    smtp_password  / SMTP_PASSWORD   Google App Password (16-char; requires 2FA)
 
   Optional (sane defaults):
     PORT                       listen port (default 4097; argv[1] also accepted)
     HOST                       bind address (default 0.0.0.0 — container needs this)
     AUSTEN_WEB_ROOT            static-file root (default: this script's dir)
     AUSTEN_DATA_DIR            feedback/search log dir (default: this script's dir)
-    SMTP_SERVER                SMTP host (default smtp.office365.com)
+    SMTP_SERVER                SMTP host (default smtp.gmail.com)
     DIGEST_SEND_TIME           HH:MM 24h, default 17:00
     AUSTEN_FEEDBACK_RECIPIENT  daily-digest recipient
 
@@ -50,7 +50,7 @@ WEB_ROOT     = os.environ.get("AUSTEN_WEB_ROOT", SCRIPT_DIR)
 DATA_DIR     = os.environ.get("AUSTEN_DATA_DIR", SCRIPT_DIR)
 FEEDBACK_LOG = os.path.join(DATA_DIR, "feedback_log.json")
 SEARCH_LOG   = os.path.join(DATA_DIR, "search_log.json")
-SMTP_SERVER  = os.environ.get("SMTP_SERVER", "smtp.office365.com")
+SMTP_SERVER  = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT    = 587
 RECIPIENT    = os.environ.get("AUSTEN_FEEDBACK_RECIPIENT", "renato.velasquez@ironbridgesg.com")
 STORY_LABELS = {1: "Story 1", 2: "Story 2", 3: "Story 3", 4: "Story 4", 5: "Story 5"}
