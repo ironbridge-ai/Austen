@@ -2003,11 +2003,28 @@ def publish_command_to_main(cmd_file, date_slug):
 
 # ─── Main ───────────────────────────────────────────────────────────────────
 
+def load_dotenv():
+    """Load KEY=VALUE pairs from a local .env (next to this script) into the
+    environment, without overriding anything already set. No dependencies."""
+    env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if not os.path.exists(env_file):
+        return
+    with open(env_file, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, val = line.partition("=")
+            os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
+
+
 def main():
+    load_dotenv()
     api_key  = os.environ.get("ANTHROPIC_API_KEY")
     base_url = os.environ.get("ANTHROPIC_BASE_URL")
     if not api_key:
-        print("Error: ANTHROPIC_API_KEY environment variable not set.")
+        print("Error: ANTHROPIC_API_KEY not set. Create ~/workspace/ai-news-digest/.env")
+        print("with ANTHROPIC_API_KEY=... and ANTHROPIC_BASE_URL=... (see .env.example).")
         sys.exit(1)
 
     cutoff = datetime.now(timezone.utc) - timedelta(days=7)
