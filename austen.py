@@ -103,7 +103,7 @@ def fetch_rss(name, url, ai_filter, cutoff):
             if dt < cutoff:
                 continue
             title = (item.findtext("title") or "").strip()
-            summary = (item.findtext("description") or "").strip()[:800]
+            summary = (item.findtext("description") or "").strip()[:400]
             if ai_filter and not is_ai_related(title, summary):
                 continue
             articles.append({"source": name, "title": title, "summary": summary,
@@ -121,7 +121,7 @@ def fetch_rss(name, url, ai_filter, cutoff):
             sel = entry.find("atom:summary", ns)
             if sel is None:
                 sel = entry.find("atom:content", ns)
-            summary = (sel.text or "").strip()[:800] if sel is not None else ""
+            summary = (sel.text or "").strip()[:400] if sel is not None else ""
             if ai_filter and not is_ai_related(title, summary):
                 continue
             articles.append({"source": name, "title": title, "summary": summary,
@@ -475,6 +475,17 @@ def _bracket_uri(path):
 BRACKET_L = _bracket_uri(_BR_PATH_L)
 BRACKET_R = _bracket_uri(_BR_PATH_R)
 
+# TP monogram — approximates the Thought Provoked mark (P with extended T crossbar).
+# Uses currentColor so it works on both dark (white) and light (dark) surfaces.
+TP_MARK = (
+    '<svg width="20" height="24" viewBox="0 0 20 24" xmlns="http://www.w3.org/2000/svg" '
+    'aria-hidden="true" style="display:inline-block;vertical-align:middle;flex-shrink:0">'
+    '<rect x="0" y="0" width="5.5" height="24" rx="2" fill="currentColor"/>'
+    '<rect x="0" y="0" width="14" height="5" rx="2" fill="currentColor"/>'
+    '<path d="M5.5 0 H12 C17 0 20 3.5 20 8 C20 12.5 17 15.5 12 15.5 H5.5 Z" fill="currentColor"/>'
+    '</svg>'
+)
+
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
 # Sampled from the Ironbridge "Brand Worlds" metal-heat palette — one
@@ -610,7 +621,7 @@ BATTLE_CARDS = [
         "key_products": ["Claude Opus (most capable)", "Claude Sonnet (balanced)", "Claude Haiku (fastest, cheapest)"],
         "strengths": ["Highest-rated for accuracy and instruction-following", "Best-in-class for long document analysis", "Strong safety record with enterprise clients", "Excellent at coding and technical reasoning"],
         "watch_out": "Available primarily via API — no standalone consumer app with wide adoption yet. Anthropic focuses on the model layer, not the application layer.",
-        "ramsac_angle": "Claude is one of the models RAMSAC can deploy and wrap for clients. Because we are model-agnostic, we can use Anthropic's strengths — accuracy, safety, long-context — for the right use cases without locking clients into a single vendor.",
+        "ramsac_angle": "Claude is one of the models we can deploy and wrap for clients. Because we are model-agnostic, we can use Anthropic's strengths — accuracy, safety, long-context — for the right use cases without locking clients into a single vendor.",
         "related_terms": ["frontier model", "AI agent", "Context Window", "Alignment", "RLHF"],
     },
     {
@@ -623,7 +634,7 @@ BATTLE_CARDS = [
         "key_products": ["ChatGPT (consumer + enterprise)", "GPT-4o API", "Codex (coding)", "Operator (agentic web browsing)"],
         "strengths": ["Largest user base and brand recognition", "Strong ecosystem of integrations", "Broad multimodal capability (text, images, audio, video)", "Fastest at shipping new features"],
         "watch_out": "Quality can be inconsistent across versions. Microsoft has exclusive cloud rights, meaning Azure OpenAI Service is the enterprise path — which ties clients to Microsoft pricing and infrastructure.",
-        "ramsac_angle": "Most clients will already have heard of ChatGPT. RAMSAC can build on that familiarity while offering something they cannot get alone: proper deployment, governance, and the ability to switch to a better model when OpenAI is not the right fit.",
+        "ramsac_angle": "Most clients will already have heard of ChatGPT. We can build on that familiarity while offering something they cannot get alone: proper deployment, governance, and the ability to switch to a better model when OpenAI is not the right fit.",
         "related_terms": ["LLM", "Multimodal", "Agentic workflow", "Autoregressive model", "frontier model"],
     },
     {
@@ -636,7 +647,7 @@ BATTLE_CARDS = [
         "key_products": ["Microsoft 365 Copilot (Office AI)", "Azure OpenAI Service", "Copilot Studio (custom agents)", "Security Copilot"],
         "strengths": ["Already inside tools clients pay for — no new vendor", "Deep integration with M365 data (emails, Teams, SharePoint)", "Enterprise-grade compliance and data residency", "Security Copilot for threat intelligence"],
         "watch_out": "Copilot licensing adds cost on top of existing M365 subscriptions. Some features require specific licence tiers. Privacy and data handling policies have been a concern for regulated industries.",
-        "ramsac_angle": "This is core RAMSAC territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI — something Microsoft's own sales team cannot deliver at the SME level.",
+        "ramsac_angle": "This is our core territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI — something Microsoft's own sales team cannot deliver at the SME level.",
         "related_terms": ["Agentic workflow", "search-grounding", "prompt injection", "Data isolation", "multi-model architectures"],
     },
     {
@@ -649,7 +660,7 @@ BATTLE_CARDS = [
         "key_products": ["Gemini Ultra / Pro / Flash", "Google Workspace AI", "NotebookLM (document intelligence)", "Google Cloud Vertex AI"],
         "strengths": ["Best multimodal capabilities (text, image, audio, video, code)", "Deep integration with Google Workspace", "Real-time web search grounding built in", "Strong research pedigree from DeepMind"],
         "watch_out": "Gemini's consumer reputation has suffered from high-profile errors at launch. Enterprise adoption is growing but still behind Microsoft. Google Cloud customers are the natural target, not M365 shops.",
-        "ramsac_angle": "Most RAMSAC clients are in the Microsoft ecosystem, not Google. But Gemini's multimodal strengths and research pace mean it is a model worth including in any multi-model deployment strategy — especially for image, video, or search-heavy workflows.",
+        "ramsac_angle": "Most of our clients are in the Microsoft ecosystem, not Google. But Gemini's multimodal strengths and research pace mean it is a model worth including in any multi-model deployment strategy — especially for image, video, or search-heavy workflows.",
         "related_terms": ["Multimodal", "diffusion-based generation", "frontier model", "search-grounding", "RAG"],
     },
     {
@@ -662,7 +673,7 @@ BATTLE_CARDS = [
         "key_products": ["Grok 3 (frontier model)", "Grok API", "Aurora (image generation)", "X/Twitter integration"],
         "strengths": ["Real-time access to X/Twitter data", "Fewer content restrictions than competitors", "Growing model quality — Grok 3 benchmarks are competitive", "Strong coding capabilities"],
         "watch_out": "Brand association with Elon Musk and X creates reputational risk for enterprise clients. Data privacy policies are less mature than established providers. Not a natural fit for regulated industries.",
-        "ramsac_angle": "Grok is unlikely to be the right choice for RAMSAC clients in regulated or professional services sectors. Worth knowing about because clients will ask. In a model-agnostic architecture, it could serve specific use cases where real-time social data or fewer content restrictions matter.",
+        "ramsac_angle": "Grok is unlikely to be the right choice for our clients in regulated or professional services sectors. Worth knowing about because clients will ask. In a model-agnostic architecture, it could serve specific use cases where real-time social data or fewer content restrictions matter.",
         "related_terms": ["LLM", "frontier model", "open-weight model", "Multimodal"],
     },
     {
@@ -675,7 +686,7 @@ BATTLE_CARDS = [
         "key_products": ["Llama 3.x (open-weight models)", "Meta AI (consumer assistant)", "Llama API (hosted inference)"],
         "strengths": ["Open-weight means clients can run models on-premise with no data leaving their environment", "No per-token cost when self-hosted", "Strong community of fine-tuned variants for specific industries", "Competitive quality, especially for code and instruction-following"],
         "watch_out": "Running Llama requires technical infrastructure — it is not plug-and-play for most SMEs. Meta's consumer products (WhatsApp AI) are separate from enterprise Llama deployments. Meta does not provide enterprise support.",
-        "ramsac_angle": "Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. RAMSAC can deploy Llama on the client's own infrastructure — something no single-vendor AI provider will ever offer.",
+        "ramsac_angle": "Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. We can deploy Llama on the client's own infrastructure — something no single-vendor AI provider will ever offer.",
         "related_terms": ["open-weight model", "LLM", "model diversification", "frontier model"],
     },
 ]
@@ -844,7 +855,7 @@ def render_html(data, today, date_slug):
             <p style="margin:12px 0 0 0;font-size:14px;color:rgba(255,255,255,0.75);font-family:Geist,Arial,sans-serif;line-height:1.6">{data['intro']}</p>
           </td>
           <td width="80" align="right" valign="top">
-            <p style="margin:0;font-size:22px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.03em;line-height:1">ramsac</p>
+            <p style="margin:0;font-size:14px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em;line-height:1.3">Thought<br>Provoked</p>
           </td>
         </tr>
       </table>
@@ -887,7 +898,7 @@ def render_html(data, today, date_slug):
             <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);font-family:Geist,Arial,sans-serif">See you next week.</p>
           </td>
           <td align="right">
-            <p style="margin:0;font-size:11px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.02em">ramsac</p>
+            <p style="margin:0;font-size:11px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em">Thought Provoked</p>
             <p style="margin:2px 0 0 0;font-size:10px;color:rgba(255,255,255,0.4);font-family:Geist,Arial,sans-serif">Weekly AI Briefing</p>
           </td>
         </tr>
@@ -1032,7 +1043,9 @@ def _nav_html(active):
     for href, label in links:
         cls = "nav-link active" if label.lower().replace(" ", "") == active.lower().replace(" ", "") else "nav-link"
         items += f'<a href="{href}" class="{cls}">{label}</a>'
-    return f'<nav class="site-nav"><div class="nav-brand">ramsac</div>{items}<span class="nav-build">build {BUILD_TAG}</span></nav><div class="brand-bar"></div>'
+    brand = (f'<div class="nav-brand" style="display:flex;align-items:center;gap:7px">'
+             f'{TP_MARK}<span>Thought Provoked</span></div>')
+    return f'<nav class="site-nav">{brand}{items}<span class="nav-build">build {BUILD_TAG}</span></nav><div class="brand-bar"></div>'
 
 
 # ─── Glossary constellation renderer ────────────────────────────────────────
@@ -1090,7 +1103,7 @@ def render_glossary_html(knowledge_log):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Glossary — RAMSAC</title>
+<title>AI Glossary — Thought Provoked</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -1569,7 +1582,7 @@ def render_battlecards_html():
       <p>{c['watch_out']}</p>
     </div>
     <div class="bc-section bc-ramsac">
-      <div class="bc-section-label">RAMSAC angle</div>
+      <div class="bc-section-label">Our angle</div>
       <p>{c['ramsac_angle']}</p>
     </div>
     <div class="bc-section">
@@ -1584,7 +1597,7 @@ def render_battlecards_html():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Battle Cards — RAMSAC</title>
+<title>AI Battle Cards — Thought Provoked</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -1627,11 +1640,11 @@ def render_battlecards_html():
     <span class="eyebrow-count">{len(BATTLE_CARDS)} providers</span>
   </div>
   <div class="page-title">AI Battle Cards</div>
-  <p class="page-sub">Understand each major AI provider, what they offer, and how RAMSAC positions against them.</p>
+  <p class="page-sub">Understand each major AI provider, what they offer, and how we position against them.</p>
   <hr class="hairline" style="margin:24px 0 28px">
   <div class="ramsac-diff bracket">
     <div class="ramsac-diff-label">Our differentiation</div>
-    <p>RAMSAC is model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others — selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
+    <p>We are model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others — selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
   </div>
   <div class="bc-grid">
     {cards_html}
@@ -1736,8 +1749,8 @@ def render_email_html(data, today, date_slug, digest_url):
               </p>
             </td>
             <td width="80" align="right" valign="top">
-              <p style="margin:0;font-size:22px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.03em;line-height:1">
-                <font color="#ffffff"><b>ramsac</b></font>
+              <p style="margin:0;font-size:13px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em;line-height:1.4">
+                <font color="#ffffff"><b>Thought<br>Provoked</b></font>
               </p>
             </td>
           </tr>
@@ -1791,8 +1804,8 @@ def render_email_html(data, today, date_slug, digest_url):
               </p>
             </td>
             <td align="right">
-              <p style="margin:0;font-size:11px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.02em">
-                <font color="#ffffff"><b>ramsac</b></font>
+              <p style="margin:0;font-size:11px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em">
+                <font color="#ffffff"><b>Thought Provoked</b></font>
               </p>
               <p style="margin:2px 0 0 0;font-size:10px;font-family:Geist,Arial,sans-serif">
                 <font color="#666666">Weekly AI Briefing</font>
@@ -1857,7 +1870,7 @@ def write_index(directory, html_files):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Austen — AI Briefing Hub by RAMSAC</title>
+<title>Austen — AI Briefing Hub by Thought Provoked</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -1896,7 +1909,7 @@ def write_index(directory, html_files):
       <p style="margin:0 0 14px 0"><span class="pill pill-light">Austen &middot; AI Knowledge Hub</span></p>
       <h1><span>This Week</span> in AI</h1>
     </div>
-    <div class="hub-hero-brand">ramsac</div>
+    <div class="hub-hero-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></div>
   </div>
   <div class="hub-tiles">
     <a class="hub-tile" href="glossary.html">
@@ -1908,7 +1921,7 @@ def write_index(directory, html_files):
     <a class="hub-tile" href="battlecards.html">
       <span class="pill">Know your landscape</span>
       <div class="hub-tile-title">Battle Cards</div>
-      <div class="hub-tile-desc">Understand the major AI players, what they offer, and how RAMSAC positions against them in client conversations.</div>
+      <div class="hub-tile-desc">Understand the major AI players, what they offer, and how we position against them in client conversations.</div>
       <span class="hub-tile-btn">View battle cards &rarr;</span>
     </a>
   </div>
@@ -1920,7 +1933,7 @@ def write_index(directory, html_files):
 {cards_html}
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
-    <div class="footer-brand">ramsac</div>
+    <div class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></div>
   </div>
 </div>
 </body>
@@ -2049,6 +2062,12 @@ def main():
         print("\nNo articles found in the past 7 days.")
         sys.exit(1)
 
+    # Cap at 50 most-recent articles — Claude only selects 5; beyond ~50 the
+    # additional context adds cost without improving selection quality.
+    if len(unique) > 50:
+        print(f"  Capping at 50 most-recent articles (found {len(unique)}).")
+        unique = unique[:50]
+
     print(f"\nTotal: {len(unique)} unique articles. Sending to Claude...\n")
 
     knowledge_log = load_knowledge_log()
@@ -2063,7 +2082,7 @@ def main():
     print(f"Model: {model}\n")
     response = client.messages.create(
         model=model,
-        max_tokens=16000,
+        max_tokens=4000,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": build_user_prompt(unique, knowledge_log)}],
     )
