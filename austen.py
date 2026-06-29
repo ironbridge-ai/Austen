@@ -2059,7 +2059,7 @@ def main():
         client_kwargs["base_url"] = base_url
     client = anthropic.Anthropic(**client_kwargs)
 
-    model = os.environ.get("AUSTEN_MODEL", "eu.anthropic.claude-sonnet-4-6")
+    model = os.environ.get("AUSTEN_MODEL", "eu.anthropic.claude-opus-4-6-v1")
     print(f"Model: {model}\n")
     response = client.messages.create(
         model=model,
