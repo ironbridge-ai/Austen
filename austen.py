@@ -2059,9 +2059,11 @@ def main():
         client_kwargs["base_url"] = base_url
     client = anthropic.Anthropic(**client_kwargs)
 
+    model = os.environ.get("AUSTEN_MODEL", "azure-eur-geolocated/gpt-5.5-2")
+    print(f"Model: {model}\n")
     response = client.messages.create(
-        model="eu.anthropic.claude-opus-4-6-v1",
-        max_tokens=4096,
+        model=model,
+        max_tokens=16000,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": build_user_prompt(unique, knowledge_log)}],
     )
