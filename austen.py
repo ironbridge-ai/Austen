@@ -1836,31 +1836,67 @@ end tell
 PAGES_BASE_URL = "https://ironbridge-ai.github.io/Austen"  # GitHub Pages URL
 
 
-def write_index(directory, html_files):
-    """Generate hub index.html with navigation and edition archive."""
-    def date_label(filename):
-        slug = filename.replace("austen_", "").replace(".html", "")
-        try:
-            dt = datetime.strptime(slug, "%Y-%m-%d")
-            return dt.strftime("%B %d, %Y"), slug
-        except ValueError:
-            return slug, slug
+def _date_label(filename):
+    """Return (display label, slug) for an austen_*.html filename."""
+    slug = filename.replace("austen_", "").replace(".html", "")
+    try:
+        dt = datetime.strptime(slug, "%Y-%m-%d")
+        return dt.strftime("%B %d, %Y"), slug
+    except ValueError:
+        return slug, slug
 
-    cards = []
-    for f in html_files:
-        label, slug = date_label(f)
-        cards.append(
-            f'    <div class="edition-card">\n'
-            f'      <div class="edition-date">{label}</div>\n'
-            f'      <a class="view-btn" href="{f}">View &rarr;</a>\n'
-            f'    </div>'
-        )
-    cards_html = "\n".join(cards)
+
+def write_index(directory, html_files):
+    """Generate index.html: latest briefing inline, 3 prev edition cards, AI Glossary tile."""
+    import re as _re
 
     nav = _nav_html("digest")
     nav_css = _nav_css()
 
-    html = f"""<!DOCTYPE html>
+    # ── Extract latest digest content ────────────────────────────────────────
+    digest_css_extra = ""
+    digest_main_html = ""
+    digest_modals_html = ""
+    digest_script_html = ""
+
+    if html_files:
+        latest_path = os.path.join(directory, html_files[0])
+        if os.path.exists(latest_path):
+            with open(latest_path, encoding="utf-8") as _f:
+                raw = _f.read()
+
+            m = _re.search(r'<style>(.*?)</style>', raw, _re.DOTALL)
+            if m:
+                digest_css_extra = m.group(1)
+
+            c_start = raw.find('<!-- Email container -->')
+            m_start = raw.find('<div id="modal-1"')
+            if c_start != -1 and m_start != -1:
+                digest_main_html = raw[c_start:m_start].rstrip()
+
+            t_start = raw.find('<div id="ai-tooltip"')
+            if m_start != -1 and t_start != -1:
+                digest_modals_html = raw[m_start:t_start].rstrip()
+
+            sc_start = raw.find('<script>')
+            sc_end = raw.rfind('</script>') + len('</script>')
+            if sc_start != -1:
+                digest_script_html = raw[sc_start:sc_end]
+
+    # ── Previous edition cards (max 3, skip latest) ──────────────────────────
+    prev_cards_html = ""
+    for f in html_files[1:4]:
+        label, _ = _date_label(f)
+        prev_cards_html += (
+            f'    <div class="edition-card">\n'
+            f'      <div class="edition-date">{label}</div>\n'
+            f'      <a class="view-btn" href="{f}">View &rarr;</a>\n'
+            f'    </div>\n'
+        )
+
+    n_total = len(html_files)
+
+    hub_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1872,13 +1908,14 @@ def write_index(directory, html_files):
   body {{ background: {BG_MAIN}; font-family: Geist, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
   a {{ color: inherit; text-decoration: none; }}
   {nav_css}
-  .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
-  .hub-hero {{ background: {HERO_GRADIENT}; border-radius: 12px; padding: 44px 92px 40px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; overflow: hidden; }}
-  .hub-hero h1 {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }}
-  .hub-hero h1 span {{ color: {ON_DARK}; border-bottom: 3px solid {ACCENT}; padding-bottom: 2px; }}
-  .hub-hero-sub {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 600; margin-bottom: 8px; }}
-  .hub-hero-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 20px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.03em; }}
-  .hub-tiles {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }}
+  .page-body {{ max-width: 720px; margin: 0 auto; padding: 32px 16px 60px; }}
+  .section-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; border-top: 1px solid {BORDER}; padding-top: 24px; margin-bottom: 20px; }}
+  .edition-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
+  .edition-date {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
+  .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
+  .view-btn:hover {{ opacity: 0.85; }}
+  .read-prev-btn {{ display: inline-block; color: {ACCENT}; border: 2px solid {ACCENT}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 8px; transition: all 0.15s; }}
+  .read-prev-btn:hover {{ background: {ACCENT}; color: {ON_DARK}; }}
   .hub-tile {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; transition: box-shadow 0.15s; }}
   .hub-tile:hover {{ box-shadow: 0 4px 20px rgba(16,19,27,0.08); }}
   .hub-tile-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: {ACCENT}; }}
@@ -1886,7 +1923,93 @@ def write_index(directory, html_files):
   .hub-tile-desc {{ font-size: 13px; color: {MUTED}; line-height: 1.6; flex: 1; }}
   .hub-tile-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }}
   .hub-tile-btn:hover {{ opacity: 0.85; }}
-  .section-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; border-top: 1px solid {BORDER}; padding-top: 24px; margin-bottom: 20px; }}
+  .footer {{ background: {NAVY}; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }}
+  .footer p {{ font-size: 12px; color: rgba(255,255,255,0.5); font-family: Geist, Arial, sans-serif; }}
+  .footer-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; }}
+  /* digest-page styles injected below */
+  __DIGEST_CSS__
+</style>
+</head>
+<body>
+{nav}
+<div class="page-body">
+
+  <!-- ── Latest briefing ── -->
+  __DIGEST_MAIN__
+
+  <!-- ── Earlier editions ── -->
+  <div class="section-label" style="margin-top:36px">Earlier Editions</div>
+{prev_cards_html}
+  <div style="text-align:center;margin:20px 0 4px">
+    <a href="archive.html" target="_blank" class="read-prev-btn">Read previous editions &nbsp;&rarr;</a>
+  </div>
+
+  <!-- ── AI Glossary ── -->
+  <div style="border-top:1px solid {BORDER};margin:36px 0 20px"></div>
+  <a class="hub-tile" href="glossary.html">
+    <span class="hub-tile-label">Explore</span>
+    <div class="hub-tile-title">AI Glossary</div>
+    <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
+    <span class="hub-tile-btn">Open glossary &rarr;</span>
+  </a>
+
+  <div class="footer">
+    <p>Stay curious, stay ahead.</p>
+    <div class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></div>
+  </div>
+</div>
+
+__DIGEST_MODALS__
+<div id="ai-tooltip"></div>
+__DIGEST_SCRIPT__
+</body>
+</html>"""
+
+    html = (hub_template
+            .replace("__DIGEST_CSS__", digest_css_extra)
+            .replace("__DIGEST_MAIN__", digest_main_html)
+            .replace("__DIGEST_MODALS__", digest_modals_html)
+            .replace("__DIGEST_SCRIPT__", digest_script_html))
+
+    with open(os.path.join(directory, "index.html"), "w", encoding="utf-8") as f:
+        f.write(html)
+
+    write_archive(directory, html_files)
+
+
+def write_archive(directory, html_files):
+    """Generate archive.html listing all editions sorted newest-first."""
+    nav = _nav_html("digest")
+    nav_css = _nav_css()
+
+    cards_html = ""
+    for f in html_files:
+        label, _ = _date_label(f)
+        cards_html += (
+            f'    <div class="edition-card">\n'
+            f'      <div class="edition-date">{label}</div>\n'
+            f'      <a class="view-btn" href="{f}">View &rarr;</a>\n'
+            f'    </div>\n'
+        )
+
+    n = len(html_files)
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All Editions — Thought Provoked AI Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ background: {BG_MAIN}; font-family: Geist, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
+  a {{ color: inherit; text-decoration: none; }}
+  {nav_css}
+  .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
+  .eyebrow-row {{ display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }}
+  .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
+  .pill {{ display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {ACCENT}; border: 1px solid {ACCENT}; border-radius: 999px; padding: 4px 13px; }}
   .edition-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
   .edition-date {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
   .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
@@ -1899,31 +2022,12 @@ def write_index(directory, html_files):
 <body>
 {nav}
 <div class="page-body">
-  <div class="hub-hero bracket">
-    <div>
-      <p style="margin:0 0 14px 0"><span class="pill pill-light">Austen &middot; AI Knowledge Hub</span></p>
-      <h1><span>This Week</span> in AI</h1>
-    </div>
-    <div class="hub-hero-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></div>
+  <div style="margin-bottom:24px">
+    <a href="index.html" style="display:inline-block;background:{BG_CARD};border:1px solid {BORDER};color:{ACCENT};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:8px">&larr; Back to Hub</a>
   </div>
-  <div class="hub-tiles">
-    <a class="hub-tile" href="glossary.html">
-      <span class="pill">Explore</span>
-      <div class="hub-tile-title">AI Glossary</div>
-      <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
-      <span class="hub-tile-btn">Open glossary &rarr;</span>
-    </a>
-    <a class="hub-tile" href="battlecards.html">
-      <span class="pill">Know your landscape</span>
-      <div class="hub-tile-title">Battle Cards</div>
-      <div class="hub-tile-desc">Understand the major AI players, what they offer, and how we position against them in client conversations.</div>
-      <span class="hub-tile-btn">View battle cards &rarr;</span>
-    </a>
-  </div>
-  <hr class="hairline" style="margin:36px 0 20px">
-  <div class="eyebrow-row" style="margin-bottom:20px">
+  <div class="eyebrow-row">
     <span class="pill">All Editions</span>
-    <span class="eyebrow-count">{len(html_files)} edition{'s' if len(html_files) != 1 else ''}</span>
+    <span class="eyebrow-count">{n} edition{'s' if n != 1 else ''}</span>
   </div>
 {cards_html}
   <div class="footer">
@@ -1934,7 +2038,7 @@ def write_index(directory, html_files):
 </body>
 </html>"""
 
-    with open(os.path.join(directory, "index.html"), "w", encoding="utf-8") as f:
+    with open(os.path.join(directory, "archive.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
 
