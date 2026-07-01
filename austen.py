@@ -769,6 +769,12 @@ def story_modal(n, story):
             f'<a class="modal-link-btn" href="{story["url"]}" target="_blank" rel="noopener">'
             f'Read original &#8599;</a>'
         )
+    source_html = story['source']
+    if story.get("url"):
+        source_html = (
+            f'<a href="{story["url"]}" target="_blank" rel="noopener" '
+            f'style="color:inherit;text-decoration:none">{story["source"]}</a>'
+        )
     return f"""
 <div id="{modal_id}" class="modal" onclick="if(event.target===this)closeModal('{modal_id}')">
   <div class="modal-content">
@@ -776,7 +782,7 @@ def story_modal(n, story):
     <div class="mflip" id="mflip-{n}">
       <div class="mflip-inner">
         <div class="mflip-face mflip-front">
-          <p style="margin:0 0 8px 0;font-size:11px;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">{story['source']}</p>
+          <p style="margin:0 0 8px 0;font-size:11px;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">{source_html}</p>
           <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">{story['title']}</h2>
           <ul style="margin:0;padding-left:20px">{bullets_html}</ul>
           <div class="modal-actions">
