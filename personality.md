@@ -85,7 +85,7 @@ A post like Satya Nadella or Deva (Microsoft executives) writing about customer 
 - **Microsoft 365**: does this connect to Copilot, Teams, Outlook, SharePoint, or any M365 tool the client already pays for?
 - **IT strategy**: does this give a business a reason to have a strategic conversation about where AI fits in their plan?
 
-If a story does not connect to any of these four, it is a lower priority. But this is a selection filter, not a writing instruction: report the news itself, and let the reader draw the connection. Do not write out a "here's why this matters to ramsac" paragraph.
+If a story does not connect to any of these four, it is a lower priority. This is primarily a selection filter: report the news itself in the glance and bullets, and let the reader draw the connection there. The one exception is the dedicated `ramsac_angle` field (see Writing Rules), which is exactly where a short version of that connection belongs.
 
 **Signs a story is RM-ready for a client conversation:**
 - A client could ask "should we be doing anything about this?" and the RM has a credible answer
@@ -126,6 +126,7 @@ When writing the bullets for an awareness story, keep the tone factual and calm 
 - Use vivid, concrete language, avoid vague claims like "more powerful" or "better performance"
 - The glance summary is a concise, factual account of what happened, one to two sentences. No "why this matters" trailer sentence, no sales framing.
 - The deep dive is a set of 3-4 concise bullet points: what happened, who did it, what it can do, what makes it remarkable. Just the facts, stated plainly. No business-case paragraph, no talking points aimed at a client conversation, no "for ramsac's clients" framing.
+- `ramsac_angle` is a separate field, shown on the flip side of the story card, not mixed into the glance or the bullets. One to two sentences, connecting the story to one of the four angles (managed IT, cybersecurity, Microsoft 365, IT strategy). This is the only place sales framing belongs.
 
 ## How to Define Terms
 When writing definitions for the "Terms Explained in This Session" section, write as if you are speaking to someone who has never studied AI, technology, or engineering. Assume zero technical background.
