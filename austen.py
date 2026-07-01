@@ -525,16 +525,16 @@ GLOSSARY_SEED_TERMS = [
     {"term": "RAG", "definition": "Retrieval-Augmented Generation. A technique where an AI first searches a database of documents to find relevant information, then writes its answer based on what it found. This stops the AI from making things up and keeps answers grounded in your actual company data."},
     {"term": "Hallucination", "definition": "When an AI confidently states something that is factually wrong. Like a student who does not know the answer but writes something plausible-sounding anyway. Hallucination is one of the main risks of using AI output without human review."},
     {"term": "RLHF", "definition": "Reinforcement Learning from Human Feedback. A training method where humans rate the AI's responses as good or bad, and the AI learns to produce more of what got positive ratings. This is how ChatGPT and Claude became helpful and conversational."},
-    {"term": "Multimodal", "definition": "An AI that can work with more than one type of input or output — text, images, audio, and video. A multimodal model can describe a photograph, read a chart, listen to a voice recording, or analyse a document without switching tools."},
-    {"term": "Agentic workflow", "definition": "A process where an AI takes a series of actions over time to complete a goal, rather than just answering a single question. An AI told to book a meeting might check calendars, draft an email, send it, and update a spreadsheet — all in sequence without human prompting at each step."},
+    {"term": "Multimodal", "definition": "An AI that can work with more than one type of input or output, such as text, images, audio, and video. A multimodal model can describe a photograph, read a chart, listen to a voice recording, or analyse a document without switching tools."},
+    {"term": "Agentic workflow", "definition": "A process where an AI takes a series of actions over time to complete a goal, rather than just answering a single question. An AI told to book a meeting might check calendars, draft an email, send it, and update a spreadsheet, all without needing a human to prompt every step."},
     {"term": "Alignment", "definition": "The challenge of making AI systems do what humans actually want, safely and reliably. An aligned AI follows instructions without harmful side effects, respects rules, and does not pursue goals that conflict with human values. It is the difference between a helpful assistant and an unpredictable one."},
     {"term": "Autoregressive model", "definition": "An AI that generates text one word at a time, where each word is predicted based on everything that came before it. This is how GPT models work. It is like autocomplete on your phone, but applied thousands of times in sequence at extraordinary speed."},
-    {"term": "Generative AI", "definition": "AI that creates brand-new content — text, images, audio, or code — rather than just sorting or analysing existing data. It is the category that ChatGPT, image generators, and coding assistants all belong to. The 'generative' part means it produces something that did not exist before."},
+    {"term": "Generative AI", "definition": "AI that creates brand-new content, whether that's text, images, audio, or code, rather than just sorting or analysing existing data. It is the category that ChatGPT, image generators, and coding assistants all belong to. The 'generative' part means it produces something that did not exist before."},
     {"term": "Prompt", "definition": "The instruction or question you give an AI to tell it what you want. It is simply what you type into the box. The clearer and more specific your prompt, the better the answer you get back."},
     {"term": "Prompt engineering", "definition": "The skill of writing instructions that get the best results from an AI. Small changes in wording can dramatically change the output, so this has become a real craft. It is less about coding and more about clear, structured communication."},
     {"term": "Token", "definition": "The small chunk of text an AI reads and writes, roughly three-quarters of a word. AI does not see whole sentences; it breaks everything into tokens. The number of tokens decides how much you pay and how much the AI can handle at once."},
     {"term": "Fine-tuning", "definition": "Taking a general AI model and training it a little more on your own examples so it gets better at a specific job. Like hiring a capable graduate and then teaching them how your company does things. The result is a model that speaks your language and follows your patterns."},
-    {"term": "Inference", "definition": "The moment an AI actually answers — when it takes your question and produces a response. Training is when the model learns; inference is when it works. Every answer you receive is an act of inference, and it is what costs money to run."},
+    {"term": "Inference", "definition": "The moment an AI actually answers, taking your question and turning it into a response. Training is when the model learns, and inference is when it works. Every answer you receive is an act of inference, and it is what costs money to run."},
     {"term": "Parameters", "definition": "The millions or billions of internal dials an AI adjusts as it learns. More parameters generally means the model can capture more complex patterns. When you hear a model is '70 billion parameters', that is a rough measure of its size and capability."},
     {"term": "Embedding", "definition": "A way of turning words, images, or documents into lists of numbers that capture their meaning, so a computer can compare them. Things with similar meaning end up with similar numbers. This is how AI knows that 'car' and 'vehicle' are related."},
     {"term": "Vector database", "definition": "A special kind of storage that holds those number-lists (embeddings) and finds the closest matches fast. It lets an AI search your documents by meaning rather than exact keywords. It is the engine behind most 'chat with your documents' tools."},
@@ -545,7 +545,7 @@ GLOSSARY_SEED_TERMS = [
     {"term": "Guardrails", "definition": "The safety rules and filters built around an AI to stop it producing harmful, false, or off-limits content. Like the barriers on a mountain road, they keep the system from going where it should not. Good guardrails are what make AI safe to put in front of customers."},
     {"term": "Few-shot learning", "definition": "Giving an AI a handful of examples inside your request so it understands the pattern you want. Show it three examples of the format you like, and it copies the style. It is teaching by demonstration, with no retraining needed."},
     {"term": "Knowledge cutoff", "definition": "The date after which an AI knows nothing, because its training data stopped there. Ask about events after the cutoff and it will not know unless it can search the web. It is why an AI sometimes seems frozen in the past."},
-    {"term": "AGI", "definition": "Artificial General Intelligence — a hypothetical AI that can do any intellectual task a human can, across every domain. Today's AI is narrow, brilliant at specific things; AGI would be broadly capable. It is the long-term goal that drives much of the industry."},
+    {"term": "AGI", "definition": "Artificial General Intelligence, a hypothetical AI that can do any intellectual task a human can, across every domain. Today's AI is narrow, brilliant at specific things, while AGI would be broadly capable. It is the long-term goal that drives much of the industry."},
     {"term": "Mixture of Experts", "definition": "A model design that splits the work among many specialist sub-models and only wakes the ones it needs for each task. Like a hospital routing you to the right specialist instead of one doctor for everything. It makes very large models faster and cheaper to run."},
     {"term": "Distillation", "definition": "Training a small, fast AI to copy the behaviour of a large, expensive one. The big model is the teacher; the small model is the student that learns to give similar answers at a fraction of the cost. It is how powerful AI gets squeezed onto phones and laptops."},
     {"term": "Quantization", "definition": "Shrinking an AI model by storing its numbers with less precision, so it runs on smaller, cheaper hardware. Like compressing a photo: slightly less detail, far smaller size. It is what lets big models run on a laptop or phone."},
@@ -615,11 +615,11 @@ BATTLE_CARDS = [
         "product": "Claude",
         "tagline": "Safety-first frontier AI",
         "color": "#CF512B",
-        "what_it_is": "Anthropic is an AI safety company founded by former OpenAI researchers. Their flagship product is Claude — a family of AI models (Opus, Sonnet, Haiku) known for being exceptionally safe, accurate, and capable of handling long, complex documents. Claude powers many enterprise AI applications behind the scenes.",
+        "what_it_is": "Anthropic is an AI safety company founded by former OpenAI researchers. Their flagship product is Claude, a family of AI models (Opus, Sonnet, Haiku) known for being exceptionally safe, accurate, and capable of handling long, complex documents. Claude powers many enterprise AI applications behind the scenes.",
         "key_products": ["Claude Opus (most capable)", "Claude Sonnet (balanced)", "Claude Haiku (fastest, cheapest)"],
         "strengths": ["Highest-rated for accuracy and instruction-following", "Best-in-class for long document analysis", "Strong safety record with enterprise clients", "Excellent at coding and technical reasoning"],
-        "watch_out": "Available primarily via API — no standalone consumer app with wide adoption yet. Anthropic focuses on the model layer, not the application layer.",
-        "ramsac_angle": "Claude is one of the models we can deploy and wrap for clients. Because we are model-agnostic, we can use Anthropic's strengths — accuracy, safety, long-context — for the right use cases without locking clients into a single vendor.",
+        "watch_out": "Available primarily via API, with no standalone consumer app that's seen wide adoption yet. Anthropic focuses on the model layer, not the application layer.",
+        "ramsac_angle": "Claude is one of the models we can deploy and wrap for clients. Because we are model-agnostic, we can use Anthropic's strengths in accuracy, safety, and long context for the right use cases without locking clients into a single vendor.",
         "related_terms": ["frontier model", "AI agent", "Context Window", "Alignment", "RLHF"],
     },
     {
@@ -631,7 +631,7 @@ BATTLE_CARDS = [
         "what_it_is": "OpenAI created ChatGPT, the product that brought AI to 200 million users. Their GPT-4o model powers ChatGPT and is embedded in thousands of third-party products. OpenAI also makes Codex (code generation), DALL-E (images), and Operator (web browsing agent).",
         "key_products": ["ChatGPT (consumer + enterprise)", "GPT-4o API", "Codex (coding)", "Operator (agentic web browsing)"],
         "strengths": ["Largest user base and brand recognition", "Strong ecosystem of integrations", "Broad multimodal capability (text, images, audio, video)", "Fastest at shipping new features"],
-        "watch_out": "Quality can be inconsistent across versions. Microsoft has exclusive cloud rights, meaning Azure OpenAI Service is the enterprise path — which ties clients to Microsoft pricing and infrastructure.",
+        "watch_out": "Quality can be inconsistent across versions. Microsoft has exclusive cloud rights, meaning Azure OpenAI Service is the enterprise path, which ties clients to Microsoft pricing and infrastructure.",
         "ramsac_angle": "Most clients will already have heard of ChatGPT. We can build on that familiarity while offering something they cannot get alone: proper deployment, governance, and the ability to switch to a better model when OpenAI is not the right fit.",
         "related_terms": ["LLM", "Multimodal", "Agentic workflow", "Autoregressive model", "frontier model"],
     },
@@ -643,9 +643,9 @@ BATTLE_CARDS = [
         "color": "#748094",
         "what_it_is": "Microsoft has embedded AI across its entire product stack. Copilot appears in Word, Excel, Outlook, Teams, and SharePoint. Azure OpenAI Service gives enterprises access to GPT-4 through Microsoft's cloud. Copilot Studio lets businesses build custom AI agents without writing code.",
         "key_products": ["Microsoft 365 Copilot (Office AI)", "Azure OpenAI Service", "Copilot Studio (custom agents)", "Security Copilot"],
-        "strengths": ["Already inside tools clients pay for — no new vendor", "Deep integration with M365 data (emails, Teams, SharePoint)", "Enterprise-grade compliance and data residency", "Security Copilot for threat intelligence"],
+        "strengths": ["Already inside tools clients pay for, so there's no new vendor to bring in", "Deep integration with M365 data (emails, Teams, SharePoint)", "Enterprise-grade compliance and data residency", "Security Copilot for threat intelligence"],
         "watch_out": "Copilot licensing adds cost on top of existing M365 subscriptions. Some features require specific licence tiers. Privacy and data handling policies have been a concern for regulated industries.",
-        "ramsac_angle": "This is our core territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI — something Microsoft's own sales team cannot deliver at the SME level.",
+        "ramsac_angle": "This is our core territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI, something Microsoft's own sales team cannot deliver at the SME level.",
         "related_terms": ["Agentic workflow", "search-grounding", "prompt injection", "multi-model architectures"],
     },
     {
@@ -654,11 +654,11 @@ BATTLE_CARDS = [
         "product": "Gemini",
         "tagline": "The multimodal powerhouse",
         "color": "#B9793A",
-        "what_it_is": "Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind — Google's research arm — also produces breakthrough research models including AlphaFold.",
+        "what_it_is": "Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind, Google's research arm, also produces breakthrough research models including AlphaFold.",
         "key_products": ["Gemini Ultra / Pro / Flash", "Google Workspace AI", "NotebookLM (document intelligence)", "Google Cloud Vertex AI"],
         "strengths": ["Best multimodal capabilities (text, image, audio, video, code)", "Deep integration with Google Workspace", "Real-time web search grounding built in", "Strong research pedigree from DeepMind"],
         "watch_out": "Gemini's consumer reputation has suffered from high-profile errors at launch. Enterprise adoption is growing but still behind Microsoft. Google Cloud customers are the natural target, not M365 shops.",
-        "ramsac_angle": "Most of our clients are in the Microsoft ecosystem, not Google. But Gemini's multimodal strengths and research pace mean it is a model worth including in any multi-model deployment strategy — especially for image, video, or search-heavy workflows.",
+        "ramsac_angle": "Most of our clients are in the Microsoft ecosystem, not Google. But Gemini's multimodal strengths and research pace mean it is a model worth including in any multi-model deployment strategy, especially for image, video, or search-heavy workflows.",
         "related_terms": ["Multimodal", "diffusion-based generation", "frontier model", "search-grounding", "RAG"],
     },
     {
@@ -669,7 +669,7 @@ BATTLE_CARDS = [
         "color": "#0A111A",
         "what_it_is": "xAI is Elon Musk's AI company, launched in 2023. Grok is its flagship model, integrated into X (formerly Twitter) and available as a standalone API. Grok 3 is positioned as a frontier model competing directly with GPT-4 and Claude. Aurora is xAI's image generation model.",
         "key_products": ["Grok 3 (frontier model)", "Grok API", "Aurora (image generation)", "X/Twitter integration"],
-        "strengths": ["Real-time access to X/Twitter data", "Fewer content restrictions than competitors", "Growing model quality — Grok 3 benchmarks are competitive", "Strong coding capabilities"],
+        "strengths": ["Real-time access to X/Twitter data", "Fewer content restrictions than competitors", "Growing model quality, with Grok 3 benchmarks now competitive", "Strong coding capabilities"],
         "watch_out": "Brand association with Elon Musk and X creates reputational risk for enterprise clients. Data privacy policies are less mature than established providers. Not a natural fit for regulated industries.",
         "ramsac_angle": "Grok is unlikely to be the right choice for our clients in regulated or professional services sectors. Worth knowing about because clients will ask. In a model-agnostic architecture, it could serve specific use cases where real-time social data or fewer content restrictions matter.",
         "related_terms": ["LLM", "frontier model", "open-weight model", "Multimodal"],
@@ -680,11 +680,11 @@ BATTLE_CARDS = [
         "product": "Llama",
         "tagline": "Open-weight AI anyone can run",
         "color": "#F0B976",
-        "what_it_is": "Meta releases its Llama model family as open-weight — anyone can download and run the models on their own hardware. Llama 3 and 3.1 are among the most capable open models available. Meta AI is also the assistant embedded in WhatsApp, Instagram, and Facebook.",
+        "what_it_is": "Meta releases its Llama model family as open-weight, meaning anyone can download and run the models on their own hardware. Llama 3 and 3.1 are among the most capable open models available. Meta AI is also the assistant embedded in WhatsApp, Instagram, and Facebook.",
         "key_products": ["Llama 3.x (open-weight models)", "Meta AI (consumer assistant)", "Llama API (hosted inference)"],
         "strengths": ["Open-weight means clients can run models on-premise with no data leaving their environment", "No per-token cost when self-hosted", "Strong community of fine-tuned variants for specific industries", "Competitive quality, especially for code and instruction-following"],
-        "watch_out": "Running Llama requires technical infrastructure — it is not plug-and-play for most SMEs. Meta's consumer products (WhatsApp AI) are separate from enterprise Llama deployments. Meta does not provide enterprise support.",
-        "ramsac_angle": "Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. We can deploy Llama on the client's own infrastructure — something no single-vendor AI provider will ever offer.",
+        "watch_out": "Running Llama requires technical infrastructure, and it is not plug-and-play for most SMEs. Meta's consumer products (WhatsApp AI) are separate from enterprise Llama deployments. Meta does not provide enterprise support.",
+        "ramsac_angle": "Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. We can deploy Llama on the client's own infrastructure, something no single-vendor AI provider will ever offer.",
         "related_terms": ["open-weight model", "LLM", "frontier model"],
     },
 ]
@@ -872,7 +872,7 @@ def render_html(data, today, date_slug):
     <td style="background:{BG_MAIN};padding:28px 32px 8px;border-left:1px solid {BORDER};border-right:1px solid {BORDER}">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
 
-        {section_header("Top 5 at a Glance — click a title for the full story", "")}
+        {section_header("Top 5 at a Glance (click a title for the full story)", "")}
         {glance_rows}
         {terms_section}
 
@@ -1736,7 +1736,7 @@ def render_battlecards_html():
   <hr class="hairline" style="margin:24px 0 28px">
   <div class="ramsac-diff bracket">
     <div class="ramsac-diff-label">Our differentiation</div>
-    <p>We are model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others — selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
+    <p>We are model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others, selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
   </div>
   <div class="bc-grid">
     {cards_html}
@@ -1857,7 +1857,7 @@ def render_email_html(data, today, date_slug, digest_url):
           <tr>
             <td style="padding:28px 0 20px 0;border-top:1px solid #C2CCD5">
               <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
-                <font color="#CF512B">Top 5 at a Glance — click to read the full edition online</font>
+                <font color="#CF512B">Top 5 at a Glance (click to read the full edition online)</font>
               </p>
             </td>
           </tr>
