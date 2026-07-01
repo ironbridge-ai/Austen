@@ -847,7 +847,7 @@ def render_html(data, today, date_slug):
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
-            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">Weekly Briefing &nbsp;·&nbsp; {today}</p>
+            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">{today}</p>
             <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2">
               <span style="color:#ffffff;border-bottom:3px solid #CF512B;padding-bottom:2px">This Week</span> in AI
             </h1>
@@ -1831,7 +1831,7 @@ def render_email_html(data, today, date_slug, digest_url):
           <tr>
             <td>
               <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">
-                <font color="#ffffff">Weekly Briefing &nbsp;·&nbsp; {today}</font>
+                <font color="#ffffff">{today}</font>
               </p>
               <p style="margin:0;font-size:28px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2">
                 <font color="#ffffff"><b>This Week</b></font><font color="#C2CCD5"><b> in AI</b></font>
@@ -1938,7 +1938,7 @@ def _date_label(filename):
     slug = filename.replace("austen_", "").replace(".html", "")
     try:
         dt = datetime.strptime(slug, "%Y-%m-%d")
-        return dt.strftime("%B %d, %Y"), slug
+        return dt.strftime("%-d %B %Y"), slug
     except ValueError:
         return slug, slug
 
@@ -2305,7 +2305,7 @@ def main():
             print(f"Error: Claude didn't return valid JSON.\n{e}\n\nRaw output:\n{raw}")
             sys.exit(1)
 
-    today = datetime.now().strftime("%B %d, %Y")
+    today = datetime.now().strftime("%-d %B %Y")
     date_slug = datetime.now().strftime("%Y-%m-%d")
 
     # Blocklist: general IT/business/cybersecurity terms that are never AI-specific
