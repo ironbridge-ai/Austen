@@ -104,10 +104,11 @@ def fetch_rss(name, url, ai_filter, cutoff):
                 continue
             title = (item.findtext("title") or "").strip()
             summary = (item.findtext("description") or "").strip()[:400]
+            link = (item.findtext("link") or "").strip()
             if ai_filter and not is_ai_related(title, summary):
                 continue
             articles.append({"source": name, "title": title, "summary": summary,
-                              "date": dt.strftime("%Y-%m-%d"), "ts": dt})
+                              "date": dt.strftime("%Y-%m-%d"), "ts": dt, "url": link})
 
         for entry in root.findall("atom:entry", ns):
             pub = (entry.findtext("atom:published", namespaces=ns) or
@@ -122,10 +123,12 @@ def fetch_rss(name, url, ai_filter, cutoff):
             if sel is None:
                 sel = entry.find("atom:content", ns)
             summary = (sel.text or "").strip()[:400] if sel is not None else ""
+            link_el = entry.find("atom:link", ns)
+            link = (link_el.get("href") or "").strip() if link_el is not None else ""
             if ai_filter and not is_ai_related(title, summary):
                 continue
             articles.append({"source": name, "title": title, "summary": summary,
-                              "date": dt.strftime("%Y-%m-%d"), "ts": dt})
+                              "date": dt.strftime("%Y-%m-%d"), "ts": dt, "url": link})
     except Exception as e:
         print(f"  Warning: could not fetch {name} ({e})")
     return articles
@@ -307,7 +310,8 @@ def build_user_prompt(articles, knowledge_log):
         '      "source": "<publication name>",',
         '      "glance": "<1-2 sentence concise summary of what happened, no sales framing>",',
         '      "bullets": ["<concise fact: who/what>", "<concise fact: what it can do>", "<concise fact: what makes it remarkable>", "<optional concise fact: what to watch next>"],',
-        '      "ramsac_angle": "<1-2 sentences ONLY: the ramsac talking point, kept separate from the facts above>"',
+        '      "ramsac_angle": "<1-2 sentences ONLY: the ramsac talking point, kept separate from the facts above>",',
+        '      "source_index": <the [N] number of the article below this story is based on, so the link back to the original can be resolved automatically>',
         '    }',
         '  ],',
         '  "new_terms": [',
@@ -723,43 +727,74 @@ def story_number_badge(n):
 
 
 def glance_card(n, story):
-    bullets_html = "".join(
-        f'<li style="margin-bottom:6px;font-size:13px;color:{TEXT};font-family:Geist,Arial,sans-serif;line-height:1.5">{b}</li>'
-        for b in story.get("bullets", [])
-    )
+    modal_id = f"modal-{n}"
     return f"""
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-{n}" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:{BG_CARD};border-radius:8px;border:1px solid {BORDER};border-left:3px solid {ACCENT}">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   {story_number_badge(n)}
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">{story['source']}</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">{story['title']}</p>
+                    <p onclick="openModal('{modal_id}')" style="margin:0;font-size:15px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">{story['title']} <span style="font-size:11px;color:{ACCENT};opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:{MUTED};font-family:Geist,Arial,sans-serif;line-height:1.6">{story['glance']}</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px">{bullets_html}</ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-{n}" onclick="event.stopPropagation();vote({n},'up')" title="Relevant" aria-label="Relevant">{THUMB_UP_SVG}Relevant</button>
-                  <button class="fb-btn" id="dn-{n}" onclick="event.stopPropagation();vote({n},'dn')" title="Not relevant" aria-label="Not relevant">{THUMB_DOWN_SVG}Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-{n}" onclick="vote({n},'up')" title="Relevant" aria-label="Relevant">{THUMB_UP_SVG}Relevant</button>
+                  <button class="fb-btn" id="dn-{n}" onclick="vote({n},'dn')" title="Not relevant" aria-label="Not relevant">{THUMB_DOWN_SVG}Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>{story.get('ramsac_angle', '')}</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>"""
+
+
+def story_modal(n, story):
+    modal_id = f"modal-{n}"
+    bullets_html = "".join(
+        f'<li style="margin-bottom:10px;font-size:14px;color:{TEXT};font-family:Geist,Arial,sans-serif;line-height:1.6">{b}</li>'
+        for b in story.get("bullets", [])
+    )
+    read_original = ""
+    if story.get("url"):
+        read_original = (
+            f'<a class="modal-link-btn" href="{story["url"]}" target="_blank" rel="noopener">'
+            f'Read original &#8599;</a>'
+        )
+    return f"""
+<div id="{modal_id}" class="modal" onclick="if(event.target===this)closeModal('{modal_id}')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('{modal_id}')">&times;</button>
+    <div class="mflip" id="mflip-{n}">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">{story['source']}</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">{story['title']}</h2>
+          <ul style="margin:0;padding-left:20px">{bullets_html}</ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-{n}')">Ramsac angle &rarr;</button>
+            {read_original}
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>{story.get('ramsac_angle', '')}</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-{n}')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>"""
 
 
 def section_header(title, icon):
@@ -784,6 +819,7 @@ def new_terms_section(new_terms):
 
 def render_html(data, today, date_slug):
     glance_rows  = "".join(glance_card(i + 1, s) for i, s in enumerate(data["stories"]))
+    modals       = "".join(story_modal(i + 1, s) for i, s in enumerate(data["stories"]))
     terms_section = new_terms_section(data.get("new_terms", []))
 
     return f"""<!DOCTYPE html>
@@ -805,40 +841,62 @@ def render_html(data, today, date_slug):
   .dh-bracket::before {{ left: 14px; background-image: {BRACKET_L}; }}
   .dh-bracket::after {{ right: 14px; background-image: {BRACKET_R}; }}
 {TOOLTIP_CSS}
-  .scard {{ cursor: pointer; perspective: 1600px; }}
-  .scard-inner {{
+  .modal {{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,17,26,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }}
+  .modal.active {{ display: flex; }}
+  .modal-content {{
+    background: {BG_CARD};
+    border: 1px solid {BORDER};
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 48px -12px rgba(10,17,26,0.3);
+  }}
+  .modal-close {{
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: #888F95;
+    font-size: 26px;
+    cursor: pointer;
+    line-height: 1;
+  }}
+  .modal-close:hover {{ color: {TEXT}; }}
+  .mflip {{ perspective: 1600px; }}
+  .mflip-inner {{
     position: relative;
     transition: transform 0.55s cubic-bezier(.22,.61,.36,1);
     transform-style: preserve-3d;
   }}
-  .scard.flipped .scard-inner {{ transform: rotateY(180deg); }}
-  .scard-face {{
-    background: {BG_CARD};
-    border-radius: 8px;
-    padding: 20px 22px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }}
-  .scard-front {{ border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; }}
-  .scard-back {{
+  .mflip.flipped .mflip-inner {{ transform: rotateY(180deg); }}
+  .mflip-face {{ backface-visibility: hidden; -webkit-backface-visibility: hidden; }}
+  .mflip-front {{ position: relative; }}
+  .mflip-back {{
     position: absolute;
     inset: 0;
     transform: rotateY(180deg);
     background: #F6E6D3;
     border: 1.5px solid {ACCENT};
+    border-radius: 10px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
-  }}
-  .scard-cue {{
-    font-family: 'Charger', Georgia, 'Times New Roman', serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: {ACCENT};
-    margin-right: 10px;
   }}
   .scard-tag {{
     display: inline-flex;
@@ -853,7 +911,25 @@ def render_html(data, today, date_slug):
     margin-bottom: 10px;
   }}
   .scard-tag::before {{ content: ''; width: 16px; height: 2px; background: {ACCENT}; display: inline-block; }}
-  .scard-back p {{ margin: 0; font-size: 14px; color: {TEXT}; font-family: Geist, Arial, sans-serif; line-height: 1.6; }}
+  .mflip-back p {{ margin: 0; font-size: 14px; color: {TEXT}; font-family: Geist, Arial, sans-serif; line-height: 1.6; }}
+  .modal-actions {{ display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }}
+  .modal-action-btn, .modal-link-btn {{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    cursor: pointer;
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    color: {ACCENT};
+    font-family: 'Charger', Georgia, 'Times New Roman', serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 14px;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }}
+  .modal-action-btn:hover, .modal-link-btn:hover {{ border-color: {ACCENT}; background: rgba(207,81,43,0.08); }}
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#FAF7E6 !important;font-family:Geist,Arial,Helvetica,sans-serif;color:#0A111A !important">
@@ -955,11 +1031,31 @@ def render_html(data, today, date_slug):
 </td></tr>
 </table>
 
+{modals}
+
 <div id="ai-tooltip"></div>
 <script>
-  function flipCard(el) {{
-    el.classList.toggle('flipped');
+  function openModal(id) {{
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
   }}
+  function closeModal(id) {{
+    var m = document.getElementById(id);
+    m.classList.remove('active');
+    document.body.style.overflow = '';
+    var mflip = m.querySelector('.mflip');
+    if (mflip) mflip.classList.remove('flipped');
+  }}
+  function flipModal(id) {{
+    document.getElementById(id).classList.toggle('flipped');
+  }}
+  document.addEventListener('keydown', function(e) {{
+    if (e.key === 'Escape') {{
+      document.querySelectorAll('.modal.active').forEach(function(m) {{
+        closeModal(m.id);
+      }});
+    }}
+  }});
   function vote(n, dir) {{
     var up = document.getElementById('up-' + n);
     var dn = document.getElementById('dn-' + n);
@@ -2329,6 +2425,14 @@ def main():
         except json.JSONDecodeError as e:
             print(f"Error: Claude didn't return valid JSON.\n{e}\n\nRaw output:\n{raw}")
             sys.exit(1)
+
+    # Resolve each story's source URL from the article it was based on, rather
+    # than trusting the model to reproduce a URL string verbatim.
+    for story in data.get("stories", []):
+        idx = story.pop("source_index", None)
+        story["url"] = ""
+        if isinstance(idx, int) and 1 <= idx <= len(unique):
+            story["url"] = unique[idx - 1].get("url", "")
 
     today = datetime.now().strftime("%-d %B %Y")
     date_slug = datetime.now().strftime("%Y-%m-%d")
