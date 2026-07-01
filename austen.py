@@ -303,7 +303,7 @@ def build_user_prompt(articles, knowledge_log):
         "",
         '{',
         '  "subject": "This Week in AI — <5-7 word catchy headline>",',
-        '  "intro": "<One energetic sentence setting the tone for the week>",',
+        '  "intro": "<One energetic sentence capturing the week AS A WHOLE. Find the common thread across at least 2-3 of the 5 stories below, not just story 1. Do not simply restate the lead story.>",',
         '  "stories": [',
         '    {',
         '      "title": "<story headline>",',

@@ -127,6 +127,7 @@ When writing the bullets for an awareness story, keep the tone factual and calm 
 - The glance summary is a concise, factual account of what happened, one to two sentences. No "why this matters" trailer sentence, no sales framing.
 - The deep dive is a set of 3-4 concise bullet points: what happened, who did it, what it can do, what makes it remarkable. Just the facts, stated plainly. No business-case paragraph, no talking points aimed at a client conversation, no "for ramsac's clients" framing.
 - `ramsac_angle` is a separate field, shown on the flip side of the story card, not mixed into the glance or the bullets. One to two sentences, connecting the story to one of the four angles (managed IT, cybersecurity, Microsoft 365, IT strategy). This is the only place sales framing belongs.
+- `intro` is a summary of the whole week, not a recap of story 1. Before writing it, find what at least 2-3 of the 5 stories have in common (a theme like capability, oversight, automation, cost) and write one sentence about that throughline. If it could be mistaken for the glance of story 1, rewrite it.
 
 ## How to Define Terms
 When writing definitions for the "Terms Explained in This Session" section, write as if you are speaking to someone who has never studied AI, technology, or engineering. Assume zero technical background.
