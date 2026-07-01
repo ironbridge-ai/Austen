@@ -1352,7 +1352,7 @@ def render_glossary_html(knowledge_log):
   // (a coarse semantic prior) while edges pull specifically-related concepts
   // together (fine semantic structure). Clusters therefore emerge from actual
   // relationships, like a projected vector space, instead of arbitrary bins.
-  var CLUSTER_FORCE = 0.020;
+  var CLUSTER_FORCE = 0.014;
 
   var svg = document.getElementById('graph-svg');
   var W, H;
@@ -1370,7 +1370,7 @@ def render_glossary_html(knowledge_log):
     var n = NODES.length;
     simNodes = NODES.map(function(nd, i) {{
       var angle = (2 * Math.PI * i / n) - Math.PI / 2;
-      var r = Math.min(W, H) * 0.42;
+      var r = Math.min(W, H) * 0.28;
       return {{ x: W/2 + r * Math.cos(angle), y: H/2 + r * Math.sin(angle),
                vx: 0, vy: 0, data: nd, idx: i }};
     }});
@@ -1399,12 +1399,12 @@ def render_glossary_html(knowledge_log):
     }});
   }}
 
-  var REPULSION = 7000, SPRING_LEN = 175, SPRING_K = 0.035;
+  var REPULSION = 4200, SPRING_LEN = 175, SPRING_K = 0.02;
   // GRAVITY is the coefficient of a LOGARITHMIC centering pull (see tick).
   // Linear gravity grew with distance and crushed far-apart concepts into the
   // centre; log scaling makes the inward pull near-constant past mid-range so
   // distant concepts keep their spread instead of compressing together.
-  var DAMPING = 0.74, GRAVITY = 0.41;  // lower = more friction, settles with less overshoot/bounce
+  var DAMPING = 0.68, GRAVITY = 0.28;  // lower DAMPING = more friction; lower GRAVITY = gentler pull to center
 
   function tick() {{
     var cx = W/2, cy = H/2;
