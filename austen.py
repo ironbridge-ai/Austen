@@ -201,22 +201,24 @@ def apply_term_highlights(data, knowledge_log):
 
     used_terms = set()
 
+    def highlight(text):
+        for t in eligible:
+            # Strip parenthetical qualifiers Claude may append (e.g. "fine-tuning (in AI)" -> "fine-tuning")
+            search_term = re.sub(r'\s*\([^)]*\)', '', t["term"]).strip()
+            if not search_term:
+                continue
+            definition = t["definition"].replace("'", "&#39;").replace('"', '&quot;')
+            pattern = re.compile(r'\b' + re.escape(search_term) + r's?\b', re.IGNORECASE)
+            replacement = f'<span class="ai-term" data-def="{definition}" data-term="{search_term}">\\g<0></span>'
+            new_text, count = pattern.subn(replacement, text)
+            if count:
+                used_terms.add(t["term"])
+            text = new_text
+        return text
+
     for story in data.get("stories", []):
-        for field in ("glance", "deep_p1", "deep_p2"):
-            text = story.get(field, "")
-            for t in eligible:
-                # Strip parenthetical qualifiers Claude may append (e.g. "fine-tuning (in AI)" -> "fine-tuning")
-                search_term = re.sub(r'\s*\([^)]*\)', '', t["term"]).strip()
-                if not search_term:
-                    continue
-                definition = t["definition"].replace("'", "&#39;").replace('"', '&quot;')
-                pattern = re.compile(r'\b' + re.escape(search_term) + r's?\b', re.IGNORECASE)
-                replacement = f'<span class="ai-term" data-def="{definition}" data-term="{search_term}">\\g<0></span>'
-                new_text, count = pattern.subn(replacement, text)
-                if count:
-                    used_terms.add(t["term"])
-                text = new_text
-            story[field] = text
+        story["glance"] = highlight(story.get("glance", ""))
+        story["bullets"] = [highlight(b) for b in story.get("bullets", [])]
 
     return data, used_terms
 
@@ -258,7 +260,7 @@ def build_user_prompt(articles, knowledge_log):
             "The following terms have already been introduced to the sales team in previous editions.",
             "Do NOT list them as new terms.",
             "IMPORTANT: If a story is about a concept from this list, you MUST use the exact term phrase",
-            "from the list somewhere in your story text (glance, deep_p1, or deep_p2) so it gets highlighted.",
+            "from the list somewhere in your story text (glance or bullets) so it gets highlighted.",
             "For example: if 'Diffusion-based generation' is in this list and you are writing about a diffusion",
             "model, write 'Diffusion-based generation' in the story text — not 'diffusion techniques' or",
             "'diffusion approach'. The exact phrase must appear so the reader can see the tooltip.",
@@ -303,9 +305,8 @@ def build_user_prompt(articles, knowledge_log):
         '    {',
         '      "title": "<story headline>",',
         '      "source": "<publication name>",',
-        '      "glance": "<2-3 sentence punchy summary focused on achievement and why it matters>",',
-        '      "deep_p1": "<paragraph: what happened, who, what it can do, what makes it remarkable>",',
-        '      "deep_p2": "<paragraph: what this unlocks for businesses, what changes, what to watch>"',
+        '      "glance": "<1-2 sentence concise summary of what happened, no sales framing>",',
+        '      "bullets": ["<concise fact: who/what>", "<concise fact: what it can do>", "<concise fact: what makes it remarkable>", "<optional concise fact: what to watch next>"]',
         '    }',
         '  ],',
         '  "new_terms": [',
@@ -347,7 +348,9 @@ def render_text(data, today):
 
     lines += ["━" * 38, "DEEP DIVE — THE FULL STORY", "━" * 38, ""]
     for i, s in enumerate(data["stories"], 1):
-        lines += [f"{i}. {s['title']}", s["deep_p1"], "", s["deep_p2"], ""]
+        lines += [f"{i}. {s['title']}"]
+        lines += [f"  - {b}" for b in s.get("bullets", [])]
+        lines.append("")
 
     lines += ["━" * 38, "", "Stay curious, stay ahead. See you next week!"]
     return "\n".join(lines)
@@ -732,14 +735,17 @@ def glance_card(n, story):
 
 def story_modal(n, story):
     modal_id = f"modal-{n}"
+    bullets_html = "".join(
+        f'<li style="margin-bottom:10px;font-size:14px;color:{TEXT};font-family:Geist,Arial,sans-serif;line-height:1.6">{b}</li>'
+        for b in story.get("bullets", [])
+    )
     return f"""
 <div id="{modal_id}" class="modal" onclick="if(event.target===this)closeModal('{modal_id}')">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal('{modal_id}')">&times;</button>
     <p style="margin:0 0 8px 0;font-size:11px;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">{story['source']}</p>
     <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">{story['title']}</h2>
-    <p style="margin:0 0 14px 0;font-size:14px;color:{TEXT};font-family:Geist,Arial,sans-serif;line-height:1.7">{story['deep_p1']}</p>
-    <p style="margin:0;font-size:14px;color:{MUTED};font-family:Geist,Arial,sans-serif;line-height:1.7">{story['deep_p2']}</p>
+    <ul style="margin:0;padding-left:20px">{bullets_html}</ul>
   </div>
 </div>"""
 

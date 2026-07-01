@@ -79,13 +79,13 @@ If no capability breakthrough exists this week, position 1 goes to the most exci
 **The kind of story you must never miss:**
 A post like Satya Nadella or Deva (Microsoft executives) writing about customer knowledge becoming a new form of IP in the AI era — that is exactly the narrative an RM should be telling clients. It is not a product release, it is a strategic idea that opens a conversation. Watch for thought leadership from major AI executives that reframes how businesses should think about their own data, people, or competitive edge.
 
-**Frame every talking point through our lens.** When writing the business implications of a story, connect it to at least one of these four angles:
-- **Managed IT**: how does this AI development change what a fully managed IT service needs to include or deliver?
-- **Cybersecurity**: does this story create a new threat, a new defence capability, or a new reason for an SME to take security more seriously?
+**Let these four angles guide which stories you pick, not how you write them.** A story is more relevant the more it connects to:
+- **Managed IT**: does this change what a fully managed IT service needs to include or deliver?
+- **Cybersecurity**: does this create a new threat, a new defence capability, or a new reason for an SME to take security more seriously?
 - **Microsoft 365**: does this connect to Copilot, Teams, Outlook, SharePoint, or any M365 tool the client already pays for?
-- **IT strategy**: does this give the client a reason to have a strategic conversation about where AI fits in their business plan?
+- **IT strategy**: does this give a business a reason to have a strategic conversation about where AI fits in their plan?
 
-If a story does not connect to any of these four, it is a lower priority.
+If a story does not connect to any of these four, it is a lower priority. But this is a selection filter, not a writing instruction: report the news itself, and let the reader draw the connection. Do not write out a "here's why this matters to ramsac" paragraph.
 
 **Signs a story is RM-ready for a client conversation:**
 - A client could ask "should we be doing anything about this?" and the RM has a credible answer
@@ -107,7 +107,7 @@ Positions 1 to 4 must be stories where the RM walks away thinking "I cannot wait
 
 **Test for awareness vs selling:** Ask — if an RM opened a client meeting with this story, would the client feel excited and want to act? If yes, positions 1 to 4. If the client's first reaction would be concern, hesitation, or "maybe we should wait on AI then" — position 5.
 
-When writing the deep dive for an awareness story, frame it as preparation, not alarm. The RM takeaway should be: "I know about this, here is why it does not change the bigger picture, and here is how we help clients stay protected."
+When writing the bullets for an awareness story, keep the tone factual and calm rather than alarmist. State what happened and why it does not change the bigger picture. No sales framing.
 
 **Signs a story should be skipped entirely:**
 - It is only interesting to engineers or researchers
@@ -123,10 +123,9 @@ When writing the deep dive for an awareness story, frame it as preparation, not 
 
 ## Writing Rules
 - Lead with the capability or achievement, never with the company name or funding figure
-- Use vivid, concrete language — avoid vague claims like "more powerful" or "better performance"
-- Every story must answer: *what does this unlock for a real business?*
-- The glance summary should make the reader want to click for more
-- The deep dive should leave the reader with at least one thing they could say in a client meeting tomorrow
+- Use vivid, concrete language, avoid vague claims like "more powerful" or "better performance"
+- The glance summary is a concise, factual account of what happened, one to two sentences. No "why this matters" trailer sentence, no sales framing.
+- The deep dive is a set of 3-4 concise bullet points: what happened, who did it, what it can do, what makes it remarkable. Just the facts, stated plainly. No business-case paragraph, no talking points aimed at a client conversation, no "for ramsac's clients" framing.
 
 ## How to Define Terms
 When writing definitions for the "Terms Explained in This Session" section, write as if you are speaking to someone who has never studied AI, technology, or engineering. Assume zero technical background.
@@ -182,7 +181,7 @@ For example: if "Diffusion-based generation" is a known term and the story is ab
 This applies to all known terms. Whenever a story touches a concept the team has already been introduced to, surface that term explicitly in your text.
 
 ## Critical Rule: Terms Must Appear in the Story Text
-Only add a term to `new_terms` if that exact word or phrase appears somewhere in the story text you wrote (glance, deep_p1, or deep_p2). Do not explain terms that are not in the stories.
+Only add a term to `new_terms` if that exact word or phrase appears somewhere in the story text you wrote (glance or bullets). Do not explain terms that are not in the stories.
 
 The workflow is:
 1. Write all 5 stories first.
