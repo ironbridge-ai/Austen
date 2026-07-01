@@ -210,8 +210,8 @@ def apply_term_highlights(data, knowledge_log):
                 if not search_term:
                     continue
                 definition = t["definition"].replace("'", "&#39;").replace('"', '&quot;')
-                pattern = re.compile(r'\b' + re.escape(search_term) + r'\b', re.IGNORECASE)
-                replacement = f'<span class="ai-term" data-def="{definition}">\\g<0></span>'
+                pattern = re.compile(r'\b' + re.escape(search_term) + r's?\b', re.IGNORECASE)
+                replacement = f'<span class="ai-term" data-def="{definition}" data-term="{search_term}">\\g<0></span>'
                 new_text, count = pattern.subn(replacement, text)
                 if count:
                     used_terms.add(t["term"])
@@ -357,23 +357,23 @@ def render_text(data, today):
 
 TOOLTIP_CSS = """
   .ai-term {
-    color: #41407c;
+    color: #41488A;
     font-weight: 700;
-    border-bottom: 2px dashed #bf5631;
-    cursor: help;
+    border-bottom: 2px dashed #CF512B;
+    cursor: pointer;
   }
   #ai-tooltip {
     position: fixed;
     display: none;
-    background: #10131b;
+    background: #0A111A;
     color: #ffffff;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
     border-radius: 8px;
     padding: 10px 14px;
-    border: 1px solid #bf5631;
-    box-shadow: 0 4px 20px rgba(16,19,27,0.4);
+    border: 1px solid #CF512B;
+    box-shadow: 0 4px 20px rgba(10,17,26,0.4);
     max-width: 260px;
     width: 260px;
     z-index: 9999;
@@ -382,25 +382,25 @@ TOOLTIP_CSS = """
   }
   .fb-btn {
     background: none;
-    border: 1px solid #e6dcc4;
+    border: 1px solid #C2CCD5;
     border-radius: 6px;
-    color: #93979f;
+    color: #888F95;
     cursor: pointer;
     font-size: 15px;
     padding: 3px 10px;
     margin-left: 6px;
     transition: border-color 0.15s, color 0.15s, background 0.15s;
   }
-  .fb-btn:hover { border-color: #bf5631; color: #10131b; }
-  .fb-btn.active-up { background: rgba(191,86,49,0.12); border-color: #bf5631; color: #000000; }
-  .fb-btn.active-dn { background: rgba(191,86,49,0.12); border-color: #bf5631; color: #41407c; }
+  .fb-btn:hover { border-color: #CF512B; color: #0A111A; }
+  .fb-btn.active-up { background: rgba(207,81,43,0.12); border-color: #CF512B; color: #0A111A; }
+  .fb-btn.active-dn { background: rgba(207,81,43,0.12); border-color: #CF512B; color: #41488A; }
   #fb-section textarea {
     width: 100%;
     box-sizing: border-box;
     background: #ffffff;
-    border: 1px solid #e6dcc4;
+    border: 1px solid #C2CCD5;
     border-radius: 8px;
-    color: #10131b;
+    color: #0A111A;
     font-size: 13px;
     font-family: "Geist", Arial, sans-serif;
     line-height: 1.6;
@@ -409,17 +409,17 @@ TOOLTIP_CSS = """
     outline: none;
     transition: border-color 0.15s;
   }
-  #fb-section textarea:focus { border-color: #bf5631; }
+  #fb-section textarea:focus { border-color: #CF512B; }
   #fb-submit {
     margin-top: 10px;
-    background: #bf5631;
+    background: #CF512B;
     border: none;
     border-radius: 8px;
     color: #ffffff;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
-    font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif;
+    font-family: 'Charger', Georgia, 'Times New Roman', serif;
     padding: 10px 22px;
     transition: opacity 0.15s;
   }
@@ -428,39 +428,39 @@ TOOLTIP_CSS = """
     display: none;
     margin-top: 10px;
     font-size: 13px;
-    color: #41407c;
+    color: #41488A;
     font-family: "Geist", Arial, sans-serif;
   }"""
 
 FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://dev-rvelasquez.tailc35de4.ts.net")
 
-# Ironbridge "Brand Worlds" metal-heat palette.
-ACCENT   = "#bf5631"   # 800°C high forging heat (rust) — primary accent
-PURPLE   = "#41407c"   # 280°C classic blued-steel (indigo) — secondary / metadata
-BG_MAIN  = "#f8f4e3"   # 1300°C metal at its brightest (ivory) — page surface
+# ramsac × Alpha Real brand palette (cream / ink / blue / orange / red / grey).
+ACCENT   = "#CF512B"   # red — primary accent
+PURPLE   = "#41488A"   # blue — secondary / metadata
+BG_MAIN  = "#FAF7E6"   # cream — page surface
 BG_CARD  = "#ffffff"   # White — card surface
 BG_CARD2 = "#ffffff"   # White — modal surface
-TEXT     = "#10131b"   # 20°C raw metal (charcoal) — primary text
-MUTED    = "#5f5a52"   # Warm grey — secondary text
-BORDER   = "#e6dcc4"   # Warm sand (ivory/gold blend) — hairlines
-NAVY     = "#10131b"   # 20°C raw metal (charcoal) — header/footer
-DARK_TEAL = "#000000"  # Black — header gradient end
-ON_DARK  = "#ffffff"   # Text/accents on dark surfaces (rust is too dark on charcoal)
+TEXT     = "#0A111A"   # ink — primary text
+MUTED    = "#41488A"   # blue — secondary text
+BORDER   = "#C2CCD5"   # grey — hairlines
+NAVY     = "#0A111A"   # ink — header/footer
+DARK_TEAL = "#0A111A"  # ink — header gradient end
+ON_DARK  = "#ffffff"   # Text/accents on dark surfaces
 
 BUILD_TAG = datetime.now().strftime("%b %d, %H:%M")  # stamped each generation — lets you confirm the live build
 
-# Ironbridge "iron is never one colour" metal-heat gradient: white-hot → gold →
-# forging rust → cooling steel → blued-steel → cold iron. Used as a thin signature bar.
-GRADIENT_BAR = ("linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,"
-                "#c2ccd7 68%,#41407c 85%,#10131b 100%)")
-# Hero treatment: forging heat cooling into cold iron (white text stays readable).
-HERO_GRADIENT = "linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%)"
+# ramsac × Alpha Real signature gradient: cream → orange → red → grey → blue → ink.
+# Used as a thin signature bar.
+GRADIENT_BAR = ("linear-gradient(90deg,#FAF7E6 0%,#F0B976 20%,#CF512B 45%,"
+                "#C2CCD5 68%,#41488A 85%,#0A111A 100%)")
+# Hero treatment: red cooling into blue into ink (white text stays readable).
+HERO_GRADIENT = "linear-gradient(150deg,#CF512B 0%,#41488A 52%,#0A111A 100%)"
 
 # Ironbridge "bridge" bracket frames — a solid cream [ / ] with a large
 # semicircular arch bitten out of the inner edge (the bridge underside).
 # Drawn as a FILLED inline SVG, used as ::before/::after background images.
 _BR_TEMPLATE = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200' "
-                "fill='#f8f4e3'><path d='{d}'/></svg>")
+                "fill='#FAF7E6'><path d='{d}'/></svg>")
 # Left bracket: cutout on the right (inner) side; rounded outer corners + arm tips.
 _BR_PATH_L = ("M0 10 A10 10 0 0 1 10 0 L90 0 A10 10 0 0 1 100 10 L100 30 "
               "A70 70 0 0 0 100 170 L100 190 A10 10 0 0 1 90 200 L10 200 "
@@ -482,25 +482,23 @@ TP_MARK = (
 
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
-# Sampled from the Ironbridge "Brand Worlds" metal-heat palette — one
-# temperature step per theme, all readable on the ivory background.
+# Sampled from the ramsac × Alpha Real brand palette — one hue per theme,
+# deepened where needed so labels stay readable on the cream background.
 CATEGORY_COLORS = {
-    "foundation": "#10131b",   # raw metal — charcoal
-    "generation": "#bf5631",   # high forging heat — rust
-    "deployment": "#41407c",   # classic blued-steel — indigo
-    "safety":     "#c2922f",   # forge-welding heat — deepened gold
-    "business":   "#7d8aa0",   # oxide steel-blue — deepened
+    "foundation": "#0A111A",   # ink
+    "generation": "#CF512B",   # red
+    "deployment": "#41488A",   # blue
+    "safety":     "#B9793A",   # orange — deepened for legibility
+    "business":   "#748094",   # grey — deepened for legibility
 }
 
 TERM_CATEGORIES = {
-    "ai agent": "deployment", "data isolation": "safety",
+    "ai agent": "deployment",
     "prompt injection": "safety", "multi-agent interaction": "deployment",
     "emergent behaviour": "safety", "frontier model": "foundation",
-    "token consumption": "business", "searchleak": "safety",
     "multi-model architectures": "business", "diffusion-based generation": "generation",
     "search-grounding": "deployment", "open-weight model": "foundation",
-    "diffusiongemma": "generation", "ai agent governance": "business",
-    "model diversification": "business", "record and replay": "deployment",
+    "ai agent governance": "business",
     "llm": "foundation", "transformer": "foundation",
     "neural network": "foundation", "context window": "deployment",
     "rag": "deployment", "hallucination": "safety",
@@ -562,18 +560,13 @@ GLOSSARY_EDGES = [
     ["LLM", "Autoregressive model"],
     ["Transformer", "diffusion-based generation"], ["Transformer", "Autoregressive model"],
     ["AI agent", "Agentic workflow"], ["AI agent", "multi-agent interaction"],
-    ["AI agent", "AI agent governance"], ["AI agent", "Record and Replay"],
-    ["prompt injection", "SearchLeak"], ["prompt injection", "Data isolation"],
+    ["AI agent", "AI agent governance"],
     ["prompt injection", "Hallucination"],
-    ["search-grounding", "SearchLeak"], ["search-grounding", "RAG"],
+    ["search-grounding", "RAG"],
     ["RAG", "Context Window"],
-    ["model diversification", "multi-model architectures"],
-    ["model diversification", "open-weight model"],
-    ["diffusion-based generation", "DiffusionGemma"],
     ["multi-agent interaction", "emergent behaviour"],
     ["multi-agent interaction", "AI agent governance"],
     ["frontier model", "open-weight model"],
-    ["token consumption", "Context Window"],
     ["RLHF", "Alignment"], ["RLHF", "frontier model"],
     ["Multimodal", "diffusion-based generation"],
     ["Agentic workflow", "AI agent governance"],
@@ -600,6 +593,19 @@ GLOSSARY_EDGES = [
     ["Mixture of Experts", "multi-model architectures"],
     ["Distillation", "open-weight model"], ["Quantization", "open-weight model"],
     ["Bias", "Alignment"], ["Bias", "RLHF"],
+    # Dynamic knowledge-log terms — safe to add; only applied when both nodes exist
+    ["computer use", "AI agent"], ["computer use", "Agentic workflow"],
+    ["computer use", "Multimodal"],
+    ["model cloning", "Distillation"], ["model cloning", "open-weight model"],
+    ["model cloning", "frontier model"],
+    ["copilot", "multi-model architectures"], ["copilot", "context window"],
+    ["latent space", "Embedding"], ["latent space", "diffusion-based generation"],
+    ["reinforcement learning", "RLHF"], ["reinforcement learning", "Alignment"],
+    ["synthetic data", "Fine-tuning"], ["synthetic data", "Distillation"],
+    ["function calling", "AI agent"], ["function calling", "Agentic workflow"],
+    ["tool use", "AI agent"], ["tool use", "function calling"],
+    ["grounding", "RAG"], ["grounding", "Hallucination"],
+    ["model collapse", "Fine-tuning"], ["model collapse", "synthetic data"],
 ]
 
 # ─── Battle card data ────────────────────────────────────────────────────────
@@ -610,7 +616,7 @@ BATTLE_CARDS = [
         "name": "Anthropic",
         "product": "Claude",
         "tagline": "Safety-first frontier AI",
-        "color": "#bf5631",
+        "color": "#CF512B",
         "what_it_is": "Anthropic is an AI safety company founded by former OpenAI researchers. Their flagship product is Claude — a family of AI models (Opus, Sonnet, Haiku) known for being exceptionally safe, accurate, and capable of handling long, complex documents. Claude powers many enterprise AI applications behind the scenes.",
         "key_products": ["Claude Opus (most capable)", "Claude Sonnet (balanced)", "Claude Haiku (fastest, cheapest)"],
         "strengths": ["Highest-rated for accuracy and instruction-following", "Best-in-class for long document analysis", "Strong safety record with enterprise clients", "Excellent at coding and technical reasoning"],
@@ -623,7 +629,7 @@ BATTLE_CARDS = [
         "name": "OpenAI",
         "product": "ChatGPT / GPT-4o",
         "tagline": "The brand that made AI mainstream",
-        "color": "#41407c",
+        "color": "#41488A",
         "what_it_is": "OpenAI created ChatGPT, the product that brought AI to 200 million users. Their GPT-4o model powers ChatGPT and is embedded in thousands of third-party products. OpenAI also makes Codex (code generation), DALL-E (images), and Operator (web browsing agent).",
         "key_products": ["ChatGPT (consumer + enterprise)", "GPT-4o API", "Codex (coding)", "Operator (agentic web browsing)"],
         "strengths": ["Largest user base and brand recognition", "Strong ecosystem of integrations", "Broad multimodal capability (text, images, audio, video)", "Fastest at shipping new features"],
@@ -636,21 +642,21 @@ BATTLE_CARDS = [
         "name": "Microsoft",
         "product": "Copilot / Azure AI",
         "tagline": "AI baked into tools your clients already pay for",
-        "color": "#7d8aa0",
+        "color": "#748094",
         "what_it_is": "Microsoft has embedded AI across its entire product stack. Copilot appears in Word, Excel, Outlook, Teams, and SharePoint. Azure OpenAI Service gives enterprises access to GPT-4 through Microsoft's cloud. Copilot Studio lets businesses build custom AI agents without writing code.",
         "key_products": ["Microsoft 365 Copilot (Office AI)", "Azure OpenAI Service", "Copilot Studio (custom agents)", "Security Copilot"],
         "strengths": ["Already inside tools clients pay for — no new vendor", "Deep integration with M365 data (emails, Teams, SharePoint)", "Enterprise-grade compliance and data residency", "Security Copilot for threat intelligence"],
         "watch_out": "Copilot licensing adds cost on top of existing M365 subscriptions. Some features require specific licence tiers. Privacy and data handling policies have been a concern for regulated industries.",
         "ramsac_angle": "This is our core territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI — something Microsoft's own sales team cannot deliver at the SME level.",
-        "related_terms": ["Agentic workflow", "search-grounding", "prompt injection", "Data isolation", "multi-model architectures"],
+        "related_terms": ["Agentic workflow", "search-grounding", "prompt injection", "multi-model architectures"],
     },
     {
         "id": "google",
         "name": "Google / DeepMind",
         "product": "Gemini",
         "tagline": "The multimodal powerhouse",
-        "color": "#c2922f",
-        "what_it_is": "Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind — Google's research arm — also produces breakthrough research models like AlphaFold and DiffusionGemma.",
+        "color": "#B9793A",
+        "what_it_is": "Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind — Google's research arm — also produces breakthrough research models including AlphaFold.",
         "key_products": ["Gemini Ultra / Pro / Flash", "Google Workspace AI", "NotebookLM (document intelligence)", "Google Cloud Vertex AI"],
         "strengths": ["Best multimodal capabilities (text, image, audio, video, code)", "Deep integration with Google Workspace", "Real-time web search grounding built in", "Strong research pedigree from DeepMind"],
         "watch_out": "Gemini's consumer reputation has suffered from high-profile errors at launch. Enterprise adoption is growing but still behind Microsoft. Google Cloud customers are the natural target, not M365 shops.",
@@ -662,7 +668,7 @@ BATTLE_CARDS = [
         "name": "xAI",
         "product": "Grok",
         "tagline": "Elon Musk's unfiltered AI",
-        "color": "#10131b",
+        "color": "#0A111A",
         "what_it_is": "xAI is Elon Musk's AI company, launched in 2023. Grok is its flagship model, integrated into X (formerly Twitter) and available as a standalone API. Grok 3 is positioned as a frontier model competing directly with GPT-4 and Claude. Aurora is xAI's image generation model.",
         "key_products": ["Grok 3 (frontier model)", "Grok API", "Aurora (image generation)", "X/Twitter integration"],
         "strengths": ["Real-time access to X/Twitter data", "Fewer content restrictions than competitors", "Growing model quality — Grok 3 benchmarks are competitive", "Strong coding capabilities"],
@@ -675,13 +681,13 @@ BATTLE_CARDS = [
         "name": "Meta AI",
         "product": "Llama",
         "tagline": "Open-weight AI anyone can run",
-        "color": "#e2b566",
+        "color": "#F0B976",
         "what_it_is": "Meta releases its Llama model family as open-weight — anyone can download and run the models on their own hardware. Llama 3 and 3.1 are among the most capable open models available. Meta AI is also the assistant embedded in WhatsApp, Instagram, and Facebook.",
         "key_products": ["Llama 3.x (open-weight models)", "Meta AI (consumer assistant)", "Llama API (hosted inference)"],
         "strengths": ["Open-weight means clients can run models on-premise with no data leaving their environment", "No per-token cost when self-hosted", "Strong community of fine-tuned variants for specific industries", "Competitive quality, especially for code and instruction-following"],
         "watch_out": "Running Llama requires technical infrastructure — it is not plug-and-play for most SMEs. Meta's consumer products (WhatsApp AI) are separate from enterprise Llama deployments. Meta does not provide enterprise support.",
         "ramsac_angle": "Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. We can deploy Llama on the client's own infrastructure — something no single-vendor AI provider will ever offer.",
-        "related_terms": ["open-weight model", "LLM", "model diversification", "frontier model"],
+        "related_terms": ["open-weight model", "LLM", "frontier model"],
     },
 ]
 
@@ -689,8 +695,8 @@ BATTLE_CARDS = [
 def story_number_badge(n):
     return (
         f'<td width="48" valign="top" style="padding:0 14px 0 0">'
-        f'<div style="width:36px;height:36px;border-radius:50%;background:#bf5631;'
-        f'text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:\'Install Rounded\',\'Nunito\',Geist,Arial,sans-serif">'
+        f'<div style="width:36px;height:36px;border-radius:50%;background:#CF512B;'
+        f'text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:\'Charger\',Georgia,\'Times New Roman\',serif">'
         f'{n}</div></td>'
     )
 
@@ -708,7 +714,7 @@ def glance_card(n, story):
                 <tr>
                   {story_number_badge(n)}
                   <td valign="middle">
-                    <p onclick="openModal('{modal_id}')" style="margin:0;font-size:15px;font-weight:700;color:{NAVY};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;line-height:1.3;cursor:pointer">{story['title']} <span style="font-size:11px;color:{ACCENT};opacity:0.8">&#8599;</span></p>
+                    <p onclick="openModal('{modal_id}')" style="margin:0;font-size:15px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">{story['title']} <span style="font-size:11px;color:{ACCENT};opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
@@ -732,8 +738,8 @@ def story_modal(n, story):
 <div id="{modal_id}" class="modal" onclick="if(event.target===this)closeModal('{modal_id}')">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal('{modal_id}')">&times;</button>
-    <p style="margin:0 0 8px 0;font-size:11px;color:{ACCENT};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">{story['source']}</p>
-    <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{NAVY};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;line-height:1.3">{story['title']}</h2>
+    <p style="margin:0 0 8px 0;font-size:11px;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">{story['source']}</p>
+    <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">{story['title']}</h2>
     <p style="margin:0 0 14px 0;font-size:14px;color:{TEXT};font-family:Geist,Arial,sans-serif;line-height:1.7">{story['deep_p1']}</p>
     <p style="margin:0;font-size:14px;color:{MUTED};font-family:Geist,Arial,sans-serif;line-height:1.7">{story['deep_p2']}</p>
   </div>
@@ -747,7 +753,7 @@ def section_header(title, icon):
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tr>
             <td style="border-top:1px solid {BORDER};padding-top:28px">
-              <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:{ACCENT};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-weight:700">{title}</p>
+              <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">{title}</p>
             </td>
           </tr>
         </table>
@@ -766,18 +772,19 @@ def render_html(data, today, date_slug):
     terms_section = new_terms_section(data.get("new_terms", []))
 
     return f"""<!DOCTYPE html>
-<html lang="en" style="color-scheme:light only;background-color:#f8f4e3">
+<html lang="en" style="color-scheme:light only;background-color:#FAF7E6">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light only">
 <title>{data['subject']}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
   :root {{ color-scheme: light only; }}
-  html {{ background-color: #f8f4e3 !important; }}
-  body {{ background-color: #f8f4e3 !important; color: #10131b !important; }}
+  html {{ background-color: #FAF7E6 !important; }}
+  body {{ background-color: #FAF7E6 !important; color: #0A111A !important; }}
   .dh-bracket {{ position: relative; }}
   .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 60px; width: 34px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
   .dh-bracket::before {{ left: 14px; background-image: {BRACKET_L}; }}
@@ -787,7 +794,7 @@ def render_html(data, today, date_slug):
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(16,19,27,0.6);
+    background: rgba(10,17,26,0.6);
     z-index: 1000;
     align-items: center;
     justify-content: center;
@@ -804,7 +811,7 @@ def render_html(data, today, date_slug):
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0 20px 48px -12px rgba(16,19,27,0.3);
+    box-shadow: 0 20px 48px -12px rgba(10,17,26,0.3);
   }}
   .modal-close {{
     position: absolute;
@@ -812,7 +819,7 @@ def render_html(data, today, date_slug):
     right: 18px;
     background: none;
     border: none;
-    color: #93979f;
+    color: #888F95;
     font-size: 26px;
     cursor: pointer;
     line-height: 1;
@@ -820,16 +827,16 @@ def render_html(data, today, date_slug):
   .modal-close:hover {{ color: {TEXT}; }}
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f8f4e3 !important;font-family:Geist,Arial,Helvetica,sans-serif;color:#10131b !important">
+<body style="margin:0;padding:0;background-color:#FAF7E6 !important;font-family:Geist,Arial,Helvetica,sans-serif;color:#0A111A !important">
 
 <!-- Outer wrapper -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f8f4e3;min-height:100vh">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FAF7E6;min-height:100vh">
 <tr><td align="center" style="padding:32px 16px">
 
 <!-- Back to hub -->
 <table width="620" cellpadding="0" cellspacing="0" border="0" style="max-width:620px;width:100%">
   <tr><td style="padding:0 0 16px 0">
-    <a href="index.html" style="display:inline-block;background:{BG_CARD};border:1px solid {BORDER};color:{ACCENT};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:8px">&larr; Back to Hub</a>
+    <a href="index.html" style="display:inline-block;background:{BG_CARD};border:1px solid {BORDER};color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;font-size:12px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:8px">&larr; Back to Hub</a>
   </td></tr>
 </table>
 
@@ -842,15 +849,17 @@ def render_html(data, today, date_slug):
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
-            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-weight:600">Weekly Briefing &nbsp;·&nbsp; {today}</p>
-            <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;line-height:1.2">
-              <span style="color:#ffffff;border-bottom:3px solid #bf5631;padding-bottom:2px">This Week</span> in AI
+            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">Weekly Briefing &nbsp;·&nbsp; {today}</p>
+            <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2">
+              <span style="color:#ffffff;border-bottom:3px solid #CF512B;padding-bottom:2px">This Week</span> in AI
             </h1>
             <p style="margin:12px 0 0 0;font-size:14px;color:rgba(255,255,255,0.75);font-family:Geist,Arial,sans-serif;line-height:1.6">{data['intro']}</p>
           </td>
-          <td width="80" align="right" valign="top" style="text-align:right">
-            {TP_MARK}
-            <p style="margin:4px 0 0 0;font-size:11px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em">Thought Provoked</p>
+          <td width="180" align="right" valign="middle" style="text-align:right">
+            <div style="display:inline-flex;align-items:center;gap:8px">
+              {TP_MARK}
+              <span style="font-size:16px;font-weight:800;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.02em;white-space:nowrap">Thought Provoked</span>
+            </div>
           </td>
         </tr>
       </table>
@@ -876,7 +885,7 @@ def render_html(data, today, date_slug):
   <!-- ── FEEDBACK ── -->
   <tr>
     <td id="fb-section" style="background:{BG_MAIN};padding:24px 32px 32px;border-left:1px solid {BORDER};border-right:1px solid {BORDER};border-top:1px solid {BORDER}">
-      <p style="margin:0 0 10px 0;font-size:14px;font-weight:600;color:{MUTED};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif">How can we make this more useful?</p>
+      <p style="margin:0 0 10px 0;font-size:14px;font-weight:600;color:{MUTED};font-family:'Charger',Georgia,'Times New Roman',serif">How can we make this more useful?</p>
       <textarea id="fb-text" rows="3" placeholder="Your thoughts..."></textarea>
       <br><button id="fb-submit" onclick="submitFeedback()">Send feedback</button>
       <p id="fb-thanks">Thanks! Your feedback has been saved.</p>
@@ -889,12 +898,17 @@ def render_html(data, today, date_slug):
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
-            <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif">Stay curious, stay ahead.</p>
+            <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">Stay curious, stay ahead.</p>
             <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);font-family:Geist,Arial,sans-serif">See you next week.</p>
           </td>
           <td align="right">
-            <p style="margin:0;font-size:11px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em">Thought Provoked</p>
-            <p style="margin:2px 0 0 0;font-size:10px;color:rgba(255,255,255,0.4);font-family:Geist,Arial,sans-serif">Weekly AI Briefing</p>
+            <div style="display:inline-flex;align-items:center;gap:8px">
+              {TP_MARK}
+              <div style="text-align:left">
+                <p style="margin:0;font-size:16px;font-weight:800;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.02em;white-space:nowrap">Thought Provoked</p>
+                <p style="margin:2px 0 0 0;font-size:10px;color:rgba(255,255,255,0.4);font-family:Geist,Arial,sans-serif">Weekly AI Briefing</p>
+              </div>
+            </div>
           </td>
         </tr>
       </table>
@@ -994,6 +1008,11 @@ def render_html(data, today, date_slug):
       el.addEventListener('mouseleave', function() {{
         tip.style.display = 'none';
       }});
+      el.addEventListener('click', function() {{
+        tip.style.display = 'none';
+        var term = el.getAttribute('data-term') || el.textContent;
+        window.open('glossary.html?focus=' + encodeURIComponent(term), '_blank');
+      }});
     }});
   }})();
 </script>
@@ -1005,22 +1024,25 @@ def render_html(data, today, date_slug):
 
 def _nav_css():
     return f"""
-  .site-nav {{ background: {NAVY}; padding: 0 24px; display: flex; align-items: center; gap: 0; }}
-  .nav-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
-  .nav-link {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }}
+  .site-nav {{ background: {NAVY}; padding: 0 24px; display: flex; align-items: center; gap: 0; position: relative; z-index: 10; }}
+  .nav-brand {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 16px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
+  .nav-link {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }}
   .nav-link:hover {{ color: #fff; }}
   .nav-link.active {{ color: {ON_DARK}; border-bottom-color: {ACCENT}; }}
-  .nav-build {{ margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }}
+  .nav-build {{ margin-left: auto; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }}
+  .austen-name {{ position: relative; color: rgba(255,255,255,0.75); font-weight: 800; letter-spacing: 0.06em; cursor: help; }}
+  .austen-name::after {{ content: "Named after Jane Austen, English novelist of Pride and Prejudice and Emma. She had a rare gift for making complicated worlds feel clear, urgent, and readable. That is exactly what this digest tries to do for AI."; position: absolute; top: calc(100% + 8px); right: 0; background: {NAVY}; color: {BG_MAIN}; padding: 12px 16px; border-radius: 10px; font-size: 12px; font-weight: 400; line-height: 1.6; width: 260px; white-space: normal; opacity: 0; pointer-events: none; transition: opacity 0.2s; border: 1px solid {ACCENT}; box-shadow: 0 6px 24px rgba(10,17,26,0.5); z-index: 9999; text-transform: none; letter-spacing: 0; }}
+  .austen-name:hover::after {{ opacity: 1; }}
   /* Ironbridge "iron is never one colour" gradient bar */
   .brand-bar {{ height: 4px; width: 100%; background: {GRADIENT_BAR}; }}
   /* hairline divider */
   .hairline {{ height: 1px; background: {BORDER}; border: none; margin: 0; }}
   /* outlined pill tag */
-  .pill {{ display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {ACCENT}; border: 1px solid {ACCENT}; border-radius: 999px; padding: 4px 13px; }}
-  .pill-light {{ border-color: rgba(248,244,227,0.5); color: {ON_DARK}; }}
+  .pill {{ display: inline-block; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {ACCENT}; border: 1px solid {ACCENT}; border-radius: 999px; padding: 4px 13px; }}
+  .pill-light {{ border-color: rgba(250,247,230,0.5); color: {ON_DARK}; }}
   /* eyebrow row: pill on the left, counter on the right */
   .eyebrow-row {{ display: flex; align-items: center; justify-content: space-between; gap: 16px; }}
-  .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
+  .eyebrow-count {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket {{ position: relative; }}
   .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 72px; width: 40px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
@@ -1032,15 +1054,15 @@ def _nav_html(active):
     links = [
         ("index.html", "Digest"),
         ("glossary.html", "Glossary"),
-        ("battlecards.html", "Battle Cards"),
     ]
     items = ""
     for href, label in links:
         cls = "nav-link active" if label.lower().replace(" ", "") == active.lower().replace(" ", "") else "nav-link"
         items += f'<a href="{href}" class="{cls}">{label}</a>'
-    brand = (f'<div class="nav-brand" style="display:flex;align-items:center;gap:7px">'
-             f'{TP_MARK}<span>Thought Provoked</span></div>')
-    return f'<nav class="site-nav">{brand}{items}<span class="nav-build">build {BUILD_TAG}</span></nav><div class="brand-bar"></div>'
+    brand = (f'<a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" '
+             f'class="nav-brand" style="display:flex;align-items:center;gap:7px">'
+             f'{TP_MARK}<span>Thought Provoked</span></a>')
+    return f'<nav class="site-nav">{brand}{items}<span class="nav-build"><span class="austen-name">Austen</span> &middot; build {BUILD_TAG}</span></nav><div class="brand-bar"></div>'
 
 
 # ─── Glossary constellation renderer ────────────────────────────────────────
@@ -1050,20 +1072,24 @@ def render_glossary_html(knowledge_log):
     kl_terms = {t["term"].lower(): t for t in knowledge_log.get("terms", [])}
     all_nodes = {}
 
+    def _cap(s):
+        """Capitalise first letter only, preserving the rest (LLM stays LLM, RAG stays RAG)."""
+        return (s[0].upper() + s[1:]) if s else s
+
     for seed in GLOSSARY_SEED_TERMS:
         key = seed["term"].lower()
         if key in kl_terms:
             t = kl_terms[key]
-            all_nodes[key] = {"label": t["term"], "definition": t["definition"],
+            all_nodes[key] = {"label": _cap(t["term"]), "definition": t["definition"],
                                "category": TERM_CATEGORIES.get(key, "foundation"), "from_log": True}
         else:
-            all_nodes[key] = {"label": seed["term"], "definition": seed["definition"],
+            all_nodes[key] = {"label": _cap(seed["term"]), "definition": seed["definition"],
                                "category": TERM_CATEGORIES.get(key, "foundation"), "from_log": False}
 
     for t in knowledge_log.get("terms", []):
         key = t["term"].lower()
         if key not in all_nodes:
-            all_nodes[key] = {"label": t["term"], "definition": t["definition"],
+            all_nodes[key] = {"label": _cap(t["term"]), "definition": t["definition"],
                                "category": TERM_CATEGORIES.get(key, "business"), "from_log": True}
 
     nodes_list = list(all_nodes.values())
@@ -1099,8 +1125,9 @@ def render_glossary_html(knowledge_log):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Glossary — Thought Provoked</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: {BG_MAIN}; font-family: Geist, Arial, sans-serif; color: {TEXT}; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }}
   a {{ color: inherit; text-decoration: none; }}
@@ -1117,11 +1144,11 @@ def render_glossary_html(knowledge_log):
   .legend-item {{ display: flex; align-items: flex-start; gap: 6px; cursor: pointer; transition: opacity 0.15s; }}
   .legend-dot {{ width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }}
   .legend-text {{ display: flex; flex-direction: column; line-height: 1.25; }}
-  .legend-name {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: {NAVY}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; }}
+  .legend-name {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: {NAVY}; font-family: 'Charger', Georgia, 'Times New Roman', serif; }}
   .legend-desc {{ font-size: 10px; color: {MUTED}; font-family: Geist, Arial, sans-serif; white-space: nowrap; }}
   .trending-bar {{ font-size: 11px; color: {MUTED}; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }}
-  .trending-bar span {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: {ACCENT}; }}
-  .trending-chip {{ display: inline-block; background: rgba(191,86,49,0.1); color: {NAVY}; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(191,86,49,0.3); }}
+  .trending-bar span {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: {ACCENT}; }}
+  .trending-chip {{ display: inline-block; background: rgba(207,81,43,0.1); color: {NAVY}; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(207,81,43,0.3); }}
   .trending-chip:hover {{ background: {ACCENT}; color: {ON_DARK}; }}
   #graph-svg {{ flex: 1; width: 100%; display: block; cursor: grab; }}
   #graph-svg:active {{ cursor: grabbing; }}
@@ -1130,16 +1157,23 @@ def render_glossary_html(knowledge_log):
   .detail-empty .hint-icon {{ font-size: 36px; margin-bottom: 12px; }}
   .detail-empty p {{ font-size: 13px; color: {MUTED}; line-height: 1.6; }}
   .detail-content {{ flex: 1; overflow-y: auto; padding: 28px 24px; display: none; }}
-  .detail-category {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }}
-  .detail-term {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 16px; line-height: 1.2; }}
+  .detail-category {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }}
+  .detail-term {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 16px; line-height: 1.2; }}
   .detail-def {{ font-size: 14px; line-height: 1.75; color: {TEXT}; margin-bottom: 24px; }}
-  .detail-section-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 8px; border-top: 1px solid {BORDER}; padding-top: 16px; }}
+  .detail-section-label {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 8px; border-top: 1px solid {BORDER}; padding-top: 16px; }}
   .related-chips {{ display: flex; flex-wrap: wrap; gap: 6px; }}
-  .related-chip {{ display: inline-block; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }}
-  .related-chip:hover {{ border-color: {ACCENT}; background: rgba(191,86,49,0.1); }}
-  .bc-link {{ display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: {NAVY}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; transition: border-color 0.15s; }}
+  .related-chip {{ display: inline-block; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }}
+  .related-chip:hover {{ border-color: {ACCENT}; background: rgba(207,81,43,0.1); }}
+  .bc-link {{ display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: {BG_MAIN}; border: 1px solid {BORDER}; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: {NAVY}; font-family: 'Charger', Georgia, 'Times New Roman', serif; transition: border-color 0.15s; }}
   .bc-link:hover {{ border-color: {ACCENT}; }}
   .bc-link-arrow {{ margin-left: auto; color: {ACCENT}; }}
+  .back-hub-btn {{ display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1px solid {BORDER}; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; font-family: 'Charger', Georgia, 'Times New Roman', serif; color: {NAVY}; letter-spacing: 0.04em; transition: border-color 0.15s, background 0.15s; white-space: nowrap; flex-shrink: 0; }}
+  .back-hub-btn:hover {{ border-color: {ACCENT}; background: rgba(207,81,43,0.08); color: {ACCENT}; }}
+  .shuffle-btn {{ position: absolute; bottom: 20px; right: 20px; display: inline-flex; align-items: center; gap: 8px; background: {ACCENT}; color: {ON_DARK}; border: none; border-radius: 24px; padding: 10px 20px; font-size: 13px; font-weight: 700; font-family: 'Charger', Georgia, 'Times New Roman', serif; letter-spacing: 0.04em; cursor: pointer; box-shadow: 0 4px 16px rgba(207,81,43,0.35); transition: opacity 0.15s, transform 0.15s; z-index: 10; }}
+  .shuffle-btn:hover {{ opacity: 0.88; transform: scale(1.04); }}
+  .shuffle-btn:active {{ transform: scale(0.97); }}
+  .proximity-note {{ position: absolute; bottom: 20px; left: 20px; max-width: 280px; display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.45; color: {MUTED}; font-family: Geist, Arial, sans-serif; background: rgba(250,247,230,0.82); backdrop-filter: blur(2px); border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 8px 11px; z-index: 10; pointer-events: none; }}
+  .proximity-note b {{ color: {NAVY}; font-weight: 700; }}
 </style>
 </head>
 <body>
@@ -1147,19 +1181,22 @@ def render_glossary_html(knowledge_log):
 <div class="workspace">
   <div class="graph-col">
     <div class="toolbar">
+      <a href="index.html" class="back-hub-btn">&#8592; Back to Hub</a>
       <div class="search-wrap">
         <span class="search-icon">&#128269;</span>
         <input type="text" id="search-input" placeholder="Search concepts..." autocomplete="off">
       </div>
     </div>
     <div class="toolbar" style="padding-top:10px;padding-bottom:10px;border-top:none;align-items:flex-start;flex-wrap:wrap;gap:14px">
-      <span class="legend-intro">Concepts are grouped into 5 themes &mdash; click a theme to filter:</span>
+      <span class="legend-intro">Colour marks one of 5 themes &mdash; click a theme to filter:</span>
       <div class="legend" id="legend"></div>
     </div>
     <div class="toolbar" style="padding-top:8px;padding-bottom:8px;border-top:none">
       <div class="trending-bar" id="trending-bar"><span class="pill">Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
     </div>
     <svg id="graph-svg"></svg>
+    <div class="proximity-note">&#9737;&nbsp;<span><b>This map reflects conceptual proximity.</b> Position is not decorative &mdash; related concepts are pulled closer together, so distance on the map mirrors how related two ideas actually are.</span></div>
+    <button class="shuffle-btn" id="shuffle-btn" title="Pick a random concept">&#9654; Shuffle</button>
   </div>
   <div class="detail-col">
     <div class="detail-empty" id="detail-empty">
@@ -1174,10 +1211,6 @@ def render_glossary_html(knowledge_log):
         <div class="detail-section-label">Related concepts</div>
         <div class="related-chips" id="d-related"></div>
       </div>
-      <div id="d-bc-wrap" style="display:none">
-        <div class="detail-section-label" style="margin-top:16px">See in battle cards</div>
-        <div id="d-bc"></div>
-      </div>
     </div>
   </div>
 </div>
@@ -1187,6 +1220,22 @@ def render_glossary_html(knowledge_log):
   var EDGES = {edges_json};
   var CAT_COLORS = {cat_colors_json};
   var SEARCH_URL = "{FEEDBACK_SERVER_URL}";
+  var POPULARITY = {{
+    'llm': 5, 'generative ai': 5, 'hallucination': 5, 'agi': 5,
+    'prompt': 4, 'ai agent': 4, 'frontier model': 4, 'reasoning model': 4,
+    'rag': 4, 'multimodal': 4, 'agentic workflow': 4, 'alignment': 4,
+    'context window': 3, 'neural network': 3, 'transformer': 3,
+    'fine-tuning': 3, 'embedding': 3, 'open-weight model': 3,
+    'diffusion-based generation': 3, 'multi-model architectures': 3,
+    'prompt injection': 3, 'bias': 3, 'rlhf': 3,
+    'computer use': 2, 'model cloning': 2, 'distillation': 2, 'quantization': 2
+  }};
+  // Semantic-proximity clustering: rather than snapping categories to fixed
+  // screen zones, each node is pulled toward the LIVE centroid of its category
+  // (a coarse semantic prior) while edges pull specifically-related concepts
+  // together (fine semantic structure). Clusters therefore emerge from actual
+  // relationships, like a projected vector space, instead of arbitrary bins.
+  var CLUSTER_FORCE = 0.020;
 
   var svg = document.getElementById('graph-svg');
   var W, H;
@@ -1209,10 +1258,36 @@ def render_glossary_html(knowledge_log):
                vx: 0, vy: 0, data: nd, idx: i }};
     }});
     simEdges = EDGES.map(function(e) {{ return {{ s: e[0], t: e[1] }}; }});
+    // Auto-connect isolated nodes — ensure every node has at least one edge
+    var nodeDeg = new Array(simNodes.length).fill(0);
+    simEdges.forEach(function(e) {{ nodeDeg[e.s]++; nodeDeg[e.t]++; }});
+    simNodes.forEach(function(n, i) {{
+      if (nodeDeg[i] > 0) return;
+      var bestJ = -1, bestDist = Infinity;
+      simNodes.forEach(function(m, j) {{
+        if (j === i) return;
+        if (m.data.category === n.data.category) {{
+          var dx = n.x - m.x, dy = n.y - m.y;
+          var d = dx*dx + dy*dy;
+          if (d < bestDist) {{ bestDist = d; bestJ = j; }}
+        }}
+      }});
+      if (bestJ === -1) simNodes.forEach(function(m, j) {{
+        if (j === i) return;
+        var dx = n.x - m.x, dy = n.y - m.y;
+        var d = dx*dx + dy*dy;
+        if (d < bestDist) {{ bestDist = d; bestJ = j; }}
+      }});
+      if (bestJ !== -1) {{ simEdges.push({{s: i, t: bestJ}}); nodeDeg[i]++; nodeDeg[bestJ]++; }}
+    }});
   }}
 
   var REPULSION = 7000, SPRING_LEN = 175, SPRING_K = 0.035;
-  var DAMPING = 0.84, GRAVITY = 0.013;
+  // GRAVITY is the coefficient of a LOGARITHMIC centering pull (see tick).
+  // Linear gravity grew with distance and crushed far-apart concepts into the
+  // centre; log scaling makes the inward pull near-constant past mid-range so
+  // distant concepts keep their spread instead of compressing together.
+  var DAMPING = 0.84, GRAVITY = 0.41;
 
   function tick() {{
     var cx = W/2, cy = H/2;
@@ -1237,11 +1312,25 @@ def render_glossary_html(knowledge_log):
       a.vx += fx; a.vy += fy;
       b.vx -= fx; b.vy -= fy;
     }}
+    // Live per-category centroids (semantic prior) — recomputed each frame
+    var cenX = {{}}, cenY = {{}}, cenN = {{}};
+    for (var i = 0; i < simNodes.length; i++) {{
+      var c = simNodes[i].data.category;
+      if (cenN[c] === undefined) {{ cenX[c] = 0; cenY[c] = 0; cenN[c] = 0; }}
+      cenX[c] += simNodes[i].x; cenY[c] += simNodes[i].y; cenN[c]++;
+    }}
+    for (var c in cenN) {{ cenX[c] /= cenN[c]; cenY[c] /= cenN[c]; }}
     for (var i = 0; i < simNodes.length; i++) {{
       var n = simNodes[i];
       if (n === dragging) continue;
-      n.vx += (cx - n.x) * GRAVITY;
-      n.vy += (cy - n.y) * GRAVITY;
+      var gdx = cx - n.x, gdy = cy - n.y;
+      var gd = Math.sqrt(gdx*gdx + gdy*gdy) || 1;
+      var gpull = GRAVITY * Math.log(1 + gd);  // logarithmic: gentle, near-constant pull at range
+      n.vx += gpull * gdx / gd;
+      n.vy += gpull * gdy / gd;
+      var ncat = n.data.category;  // pull toward live centroid of same-category nodes
+      n.vx += (cenX[ncat] - n.x) * CLUSTER_FORCE;
+      n.vy += (cenY[ncat] - n.y) * CLUSTER_FORCE;
       n.vx *= DAMPING; n.vy *= DAMPING;
       n.x += n.vx; n.y += n.vy;
       n.x = Math.max(50, Math.min(W - 50, n.x));
@@ -1286,7 +1375,7 @@ def render_glossary_html(knowledge_log):
       var isActive = (activeIdx === e.s || activeIdx === e.t);
       line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
       line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
-      line.setAttribute('stroke', isActive ? '#bf5631' : '{BORDER}');
+      line.setAttribute('stroke', isActive ? '#CF512B' : '{BORDER}');
       line.setAttribute('stroke-width', isActive ? '2' : '1');
       line.setAttribute('opacity', isActive ? '0.8' : '0.5');
       svg.appendChild(line);
@@ -1304,28 +1393,38 @@ def render_glossary_html(knowledge_log):
       g.style.opacity = visible ? '1' : '0.15';
       g.style.cursor = 'pointer';
 
-      var r = isActive ? 10 : 8;
+      var displayLabel = nd.label.charAt(0).toUpperCase() + nd.label.slice(1);
+      var pop = POPULARITY[nd.label.toLowerCase()] || (nd.from_log ? 2 : 1);
+      var baseR = 5 + pop * 1.1;
+      var r = isActive ? baseR + 3 : baseR;
+      if (pop >= 4 && !isActive) {{
+        var ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('r', r + 5); ring.setAttribute('fill', 'none');
+        ring.setAttribute('stroke', color); ring.setAttribute('stroke-width', '1');
+        ring.setAttribute('opacity', '0.35'); ring.setAttribute('pointer-events', 'none');
+        g.appendChild(ring);
+      }}
       var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('r', r);
       circle.setAttribute('fill', color);
-      circle.setAttribute('stroke', isActive ? '#10131b' : 'rgba(16,19,27,0.22)');
+      circle.setAttribute('stroke', isActive ? '#0A111A' : 'rgba(10,17,26,0.22)');
       circle.setAttribute('stroke-width', isActive ? '2.5' : '1.5');
       if (isActive) circle.setAttribute('filter', 'url(#glow)');
 
       var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       var onRight = n.x > W * 0.58;
-      label.setAttribute('x', onRight ? -(r + 6) : (r + 6));
+      label.setAttribute('x', onRight ? -(r + 7) : (r + 7));
       label.setAttribute('text-anchor', onRight ? 'end' : 'start');
       label.setAttribute('y', '5');
-      label.setAttribute('font-size', isActive ? '13' : '12');
-      label.setAttribute('font-weight', isActive ? '700' : '600');
-      label.setAttribute('font-family', "'Install Rounded', 'Nunito', Geist, Arial, sans-serif");
+      label.setAttribute('font-size', isActive ? '14' : (pop >= 4 ? '13' : '11.5'));
+      label.setAttribute('font-weight', isActive ? '800' : (pop >= 4 ? '700' : '600'));
+      label.setAttribute('font-family', "'Charger', Georgia, 'Times New Roman', serif");
       label.setAttribute('fill', isActive ? '{NAVY}' : '#444');
       label.setAttribute('stroke', '{BG_MAIN}');
       label.setAttribute('stroke-width', '3.5');
       label.setAttribute('paint-order', 'stroke');
       label.setAttribute('pointer-events', 'none');
-      label.textContent = nd.label;
+      label.textContent = displayLabel;
 
       var hitbox = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       hitbox.setAttribute('r', '20'); hitbox.setAttribute('fill', 'transparent');
@@ -1344,7 +1443,7 @@ def render_glossary_html(knowledge_log):
     var catEl = document.getElementById('d-cat');
     catEl.textContent = nd.category;
     catEl.style.color = CAT_COLORS[nd.category] || '{ACCENT}';
-    document.getElementById('d-term').textContent = nd.label;
+    document.getElementById('d-term').textContent = nd.label.charAt(0).toUpperCase() + nd.label.slice(1);
     document.getElementById('d-def').textContent = nd.definition;
 
     var relWrap = document.getElementById('d-related-wrap');
@@ -1361,7 +1460,7 @@ def render_glossary_html(knowledge_log):
       neighbors.forEach(function(ni) {{
         var chip = document.createElement('span');
         chip.className = 'related-chip';
-        chip.textContent = simNodes[ni].data.label;
+        var nl = simNodes[ni].data.label; chip.textContent = nl.charAt(0).toUpperCase() + nl.slice(1);
         chip.style.borderColor = CAT_COLORS[simNodes[ni].data.category] || '{BORDER}';
         chip.addEventListener('click', function() {{ showDetail(ni); }});
         relDiv.appendChild(chip);
@@ -1370,21 +1469,6 @@ def render_glossary_html(knowledge_log):
       relWrap.style.display = 'none';
     }}
 
-    var bcWrap = document.getElementById('d-bc-wrap');
-    var bcDiv = document.getElementById('d-bc');
-    bcDiv.innerHTML = '';
-    if (nd.battlecards && nd.battlecards.length > 0) {{
-      bcWrap.style.display = 'block';
-      nd.battlecards.forEach(function(bc) {{
-        var a = document.createElement('a');
-        a.className = 'bc-link';
-        a.href = 'battlecards.html#bc-' + bc.id;
-        a.innerHTML = bc.name + '<span class="bc-link-arrow">&#8599;</span>';
-        bcDiv.appendChild(a);
-      }});
-    }} else {{
-      bcWrap.style.display = 'none';
-    }}
   }}
 
   // Interaction
@@ -1525,12 +1609,26 @@ def render_glossary_html(knowledge_log):
 
   if (focusTerm) {{
     setTimeout(function() {{
+      var ft = focusTerm.toLowerCase().trim();
+      var norm = function(s) {{ return s.toLowerCase().trim().replace(/s$/, ''); }};
       var found = simNodes.find(function(n) {{
-        return n.data.label.toLowerCase() === focusTerm.toLowerCase();
+        return n.data.label.toLowerCase() === ft;
       }});
+      // Fallback: match ignoring a trailing plural 's' on either side
+      if (!found) {{
+        found = simNodes.find(function(n) {{ return norm(n.data.label) === norm(ft); }});
+      }}
       if (found) showDetail(found.idx);
     }}, 400);
   }}
+
+  document.getElementById('shuffle-btn').addEventListener('click', function() {{
+    var pool = simNodes.filter(function(n) {{ return nodeVisible(n) && n.idx !== activeIdx; }});
+    if (pool.length === 0) pool = simNodes.filter(function(n) {{ return n.idx !== activeIdx; }});
+    if (pool.length === 0) return;
+    var pick = pool[Math.floor(Math.random() * pool.length)];
+    showDetail(pick.idx);
+  }});
 }})();
 </script>
 </body>
@@ -1593,37 +1691,38 @@ def render_battlecards_html():
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Battle Cards — Thought Provoked</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: {BG_MAIN}; font-family: Geist, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
   a {{ color: inherit; text-decoration: none; }}
   {_nav_css()}
   .page-body {{ max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }}
-  .page-title {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 6px; }}
+  .page-title {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 6px; }}
   .page-sub {{ font-size: 14px; color: {MUTED}; margin-bottom: 32px; line-height: 1.6; }}
   .ramsac-diff {{ background: {HERO_GRADIENT}; border-radius: 10px; padding: 28px 88px; margin-bottom: 36px; overflow: hidden; }}
-  .ramsac-diff-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 700; margin-bottom: 8px; }}
+  .ramsac-diff-label {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 700; margin-bottom: 8px; }}
   .ramsac-diff p {{ font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }}
   .bc-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }}
   .bc-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-radius: 10px; overflow: hidden; }}
   .bc-header {{ padding: 20px 20px 16px; background: {BG_CARD}; }}
-  .bc-name {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {NAVY}; }}
+  .bc-name {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 800; color: {NAVY}; }}
   .bc-product {{ font-size: 13px; color: {MUTED}; margin-top: 2px; }}
-  .bc-tagline {{ font-size: 12px; color: {ACCENT}; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; }}
+  .bc-tagline {{ font-size: 12px; color: {ACCENT}; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Charger', Georgia, 'Times New Roman', serif; }}
   .bc-body {{ padding: 0 20px 20px; }}
   .bc-section {{ margin-top: 16px; }}
-  .bc-section-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 6px; }}
+  .bc-section-label {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; margin-bottom: 6px; }}
   .bc-section p {{ font-size: 13px; line-height: 1.65; color: {MUTED}; }}
   .bc-section ul {{ padding-left: 18px; }}
   .bc-section ul li {{ font-size: 13px; line-height: 1.65; color: {MUTED}; margin-bottom: 2px; }}
-  .bc-watch {{ background: #f7efdd; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
-  .bc-watch .bc-section-label {{ color: #c2922f; }}
-  .bc-ramsac {{ background: #f8ece6; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid {ACCENT}; }}
+  .bc-watch {{ background: #F9F0D9; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
+  .bc-watch .bc-section-label {{ color: #B9793A; }}
+  .bc-ramsac {{ background: #F6E6D3; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid {ACCENT}; }}
   .bc-ramsac .bc-section-label {{ color: {ACCENT}; }}
-  .bc-ramsac p {{ color: #41407c; }}
+  .bc-ramsac p {{ color: #41488A; }}
   .bc-terms {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }}
-  .term-chip {{ display: inline-block; background: rgba(191,86,49,0.12); color: #000000; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid {ACCENT}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; cursor: pointer; transition: background 0.15s; }}
+  .term-chip {{ display: inline-block; background: rgba(207,81,43,0.12); color: #0A111A; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid {ACCENT}; font-family: 'Charger', Georgia, 'Times New Roman', serif; cursor: pointer; transition: background 0.15s; }}
   .term-chip:hover {{ background: {ACCENT}; color: {ON_DARK}; }}
 </style>
 </head>
@@ -1675,32 +1774,32 @@ def render_email_html(data, today, date_slug, digest_url):
         <tr>
           <td style="padding:0 0 12px 0">
             <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#ffffff;border-radius:8px;border:1px solid #e6dcc4;border-left:3px solid #bf5631">
+                   style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
               <tr>
                 <td style="padding:20px 22px" bgcolor="#ffffff">
                   <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr>
                       <td width="48" valign="top" style="padding:0 14px 0 0">
                         <table cellpadding="0" cellspacing="0" border="0">
-                          <tr><td width="36" height="36" align="center" bgcolor="#bf5631"
-                                  style="width:36px;height:36px;border-radius:50%;background:#bf5631;text-align:center;line-height:36px">
+                          <tr><td width="36" height="36" align="center" bgcolor="#CF512B"
+                                  style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px">
                             <font color="#ffffff" face="Geist,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
                           </td></tr>
                         </table>
                       </td>
                       <td valign="middle">
-                        <p style="margin:0;font-size:15px;font-weight:700;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;line-height:1.3">
-                          <font color="#10131b"><b>{s['title']}</b></font>
+                        <p style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">
+                          <font color="#0A111A"><b>{s['title']}</b></font>
                         </p>
                         <p style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
-                          <font color="#bf5631">{s['source']}</font>
+                          <font color="#CF512B">{s['source']}</font>
                         </p>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2" style="padding-top:10px">
                         <p style="margin:0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6">
-                          <font color="#5f5a52">{s['glance']}</font>
+                          <font color="#41488A">{s['glance']}</font>
                         </p>
                       </td>
                     </tr>
@@ -1722,29 +1821,29 @@ def render_email_html(data, today, date_slug, digest_url):
 <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
 <style>:root {{ color-scheme: light only; }}</style>
 </head>
-<body style="margin:0;padding:0;background-color:#f8f4e3;font-family:Geist,Arial,Helvetica,sans-serif" bgcolor="#f8f4e3">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8f4e3" style="background-color:#f8f4e3">
-<tr><td align="center" style="padding:32px 16px;background-color:#f8f4e3">
+<body style="margin:0;padding:0;background-color:#FAF7E6;font-family:Geist,Arial,Helvetica,sans-serif" bgcolor="#FAF7E6">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FAF7E6" style="background-color:#FAF7E6">
+<tr><td align="center" style="padding:32px 16px;background-color:#FAF7E6">
   <table width="620" cellpadding="0" cellspacing="0" border="0" style="max-width:620px;width:100%">
 
     <!-- HEADER -->
     <tr>
-      <td style="background:#10131b;border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #bf5631" bgcolor="#10131b">
+      <td style="background:#0A111A;border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #CF512B" bgcolor="#0A111A">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
-              <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-weight:600">
+              <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">
                 <font color="#ffffff">Weekly Briefing &nbsp;·&nbsp; {today}</font>
               </p>
-              <p style="margin:0;font-size:28px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;line-height:1.2">
-                <font color="#ffffff"><b>This Week</b></font><font color="#cccccc"><b> in AI</b></font>
+              <p style="margin:0;font-size:28px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2">
+                <font color="#ffffff"><b>This Week</b></font><font color="#C2CCD5"><b> in AI</b></font>
               </p>
               <p style="margin:12px 0 0 0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6">
-                <font color="#cccccc">{data['intro']}</font>
+                <font color="#C2CCD5">{data['intro']}</font>
               </p>
             </td>
             <td width="80" align="right" valign="top">
-              <p style="margin:0;font-size:13px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em;line-height:1.4">
+              <p style="margin:0;font-size:13px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;line-height:1.4">
                 <font color="#ffffff"><b>Thought<br>Provoked</b></font>
               </p>
             </td>
@@ -1755,12 +1854,12 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- BODY -->
     <tr>
-      <td style="background:#f8f4e3;padding:28px 32px 8px;border-left:1px solid #e6dcc4;border-right:1px solid #e6dcc4" bgcolor="#f8f4e3">
+      <td style="background:#FAF7E6;padding:28px 32px 8px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:28px 0 20px 0;border-top:1px solid #e6dcc4">
-              <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-weight:700">
-                <font color="#bf5631">Top 5 at a Glance — click to read the full edition online</font>
+            <td style="padding:28px 0 20px 0;border-top:1px solid #C2CCD5">
+              <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
+                <font color="#CF512B">Top 5 at a Glance — click to read the full edition online</font>
               </p>
             </td>
           </tr>
@@ -1771,12 +1870,12 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- READ ONLINE BUTTON -->
     <tr>
-      <td style="background:#f8f4e3;padding:0 32px 24px;border-left:1px solid #e6dcc4;border-right:1px solid #e6dcc4" bgcolor="#f8f4e3">
+      <td style="background:#FAF7E6;padding:0 32px 24px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tr>
             <td align="center">
               <a href="{digest_url}" target="_blank"
-                 style="display:inline-block;background:#bf5631;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px">
+                 style="display:inline-block;background:#CF512B;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px">
                 <font color="#ffffff"><b>Read full edition online &rarr;</b></font>
               </a>
             </td>
@@ -1787,23 +1886,23 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- FOOTER -->
     <tr>
-      <td style="background:#10131b;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #10131b" bgcolor="#10131b">
+      <td style="background:#0A111A;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #0A111A" bgcolor="#0A111A">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
-              <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif">
+              <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif">
                 <font color="#ffffff"><b>Stay curious, stay ahead.</b></font>
               </p>
               <p style="margin:0;font-size:13px;font-family:Geist,Arial,sans-serif">
-                <font color="#999999">See you next week.</font>
+                <font color="#8E949D">See you next week.</font>
               </p>
             </td>
             <td align="right">
-              <p style="margin:0;font-size:11px;font-weight:800;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em">
+              <p style="margin:0;font-size:11px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em">
                 <font color="#ffffff"><b>Thought Provoked</b></font>
               </p>
               <p style="margin:2px 0 0 0;font-size:10px;font-family:Geist,Arial,sans-serif">
-                <font color="#666666">Weekly AI Briefing</font>
+                <font color="#545C65">Weekly AI Briefing</font>
               </p>
             </td>
           </tr>
@@ -1902,30 +2001,31 @@ def write_index(directory, html_files):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Austen — AI Briefing Hub by Thought Provoked</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: {BG_MAIN}; font-family: Geist, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
   a {{ color: inherit; text-decoration: none; }}
   {nav_css}
   .page-body {{ max-width: 720px; margin: 0 auto; padding: 32px 16px 60px; }}
-  .section-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; border-top: 1px solid {BORDER}; padding-top: 24px; margin-bottom: 20px; }}
+  .section-label {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ACCENT}; font-weight: 700; border-top: 1px solid {BORDER}; padding-top: 24px; margin-bottom: 20px; }}
   .edition-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
-  .edition-date {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
-  .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
+  .edition-date {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
+  .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
   .view-btn:hover {{ opacity: 0.85; }}
-  .read-prev-btn {{ display: inline-block; color: {ACCENT}; border: 2px solid {ACCENT}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 8px; transition: all 0.15s; }}
+  .read-prev-btn {{ display: inline-block; color: {ACCENT}; border: 2px solid {ACCENT}; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 8px; transition: all 0.15s; }}
   .read-prev-btn:hover {{ background: {ACCENT}; color: {ON_DARK}; }}
   .hub-tile {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; transition: box-shadow 0.15s; }}
-  .hub-tile:hover {{ box-shadow: 0 4px 20px rgba(16,19,27,0.08); }}
-  .hub-tile-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: {ACCENT}; }}
-  .hub-tile-title {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {NAVY}; }}
+  .hub-tile:hover {{ box-shadow: 0 4px 20px rgba(10,17,26,0.08); }}
+  .hub-tile-label {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: {ACCENT}; }}
+  .hub-tile-title {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 16px; font-weight: 800; color: {NAVY}; }}
   .hub-tile-desc {{ font-size: 13px; color: {MUTED}; line-height: 1.6; flex: 1; }}
-  .hub-tile-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }}
+  .hub-tile-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }}
   .hub-tile-btn:hover {{ opacity: 0.85; }}
   .footer {{ background: {NAVY}; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }}
   .footer p {{ font-size: 12px; color: rgba(255,255,255,0.5); font-family: Geist, Arial, sans-serif; }}
-  .footer-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; }}
+  .footer-brand {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; }}
   /* digest-page styles injected below */
   __DIGEST_CSS__
 </style>
@@ -1955,7 +2055,7 @@ def write_index(directory, html_files):
 
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
-    <div class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></div>
+    <a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></a>
   </div>
 </div>
 
@@ -2000,30 +2100,31 @@ def write_archive(directory, html_files):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>All Editions — Thought Provoked AI Briefing</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: {BG_MAIN}; font-family: Geist, Arial, sans-serif; color: {TEXT}; min-height: 100vh; }}
   a {{ color: inherit; text-decoration: none; }}
   {nav_css}
   .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
   .eyebrow-row {{ display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }}
-  .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
-  .pill {{ display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {ACCENT}; border: 1px solid {ACCENT}; border-radius: 999px; padding: 4px 13px; }}
+  .eyebrow-count {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
+  .pill {{ display: inline-block; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {ACCENT}; border: 1px solid {ACCENT}; border-radius: 999px; padding: 4px 13px; }}
   .edition-card {{ background: {BG_CARD}; border: 1px solid {BORDER}; border-left: 3px solid {ACCENT}; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
-  .edition-date {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
-  .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
+  .edition-date {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 14px; font-weight: 700; color: {NAVY}; }}
+  .view-btn {{ display: inline-block; background: {ACCENT}; color: {ON_DARK}; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }}
   .view-btn:hover {{ opacity: 0.85; }}
   .footer {{ background: {NAVY}; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }}
   .footer p {{ font-size: 12px; color: rgba(255,255,255,0.5); font-family: Geist, Arial, sans-serif; }}
-  .footer-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; }}
+  .footer-brand {{ font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; }}
 </style>
 </head>
 <body>
 {nav}
 <div class="page-body">
   <div style="margin-bottom:24px">
-    <a href="index.html" style="display:inline-block;background:{BG_CARD};border:1px solid {BORDER};color:{ACCENT};font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:8px">&larr; Back to Hub</a>
+    <a href="index.html" style="display:inline-block;background:{BG_CARD};border:1px solid {BORDER};color:{ACCENT};font-family:'Charger',Georgia,'Times New Roman',serif;font-size:12px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:8px">&larr; Back to Hub</a>
   </div>
   <div class="eyebrow-row">
     <span class="pill">All Editions</span>
@@ -2032,7 +2133,7 @@ def write_archive(directory, html_files):
 {cards_html}
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
-    <div class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></div>
+    <a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></a>
   </div>
 </div>
 </body>
@@ -2058,6 +2159,10 @@ def publish_to_pages(html_file, date_slug, knowledge_log):
         )
         try:
             shutil.copy(os.path.join(script_dir, html_file), os.path.join(tmp, html_file))
+
+            fonts_src = os.path.join(script_dir, "fonts")
+            if os.path.isdir(fonts_src):
+                shutil.copytree(fonts_src, os.path.join(tmp, "fonts"), dirs_exist_ok=True)
 
             # Regenerate glossary and battlecards with latest data
             glossary_html = render_glossary_html(knowledge_log)
