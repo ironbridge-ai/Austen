@@ -447,8 +447,6 @@ NAVY     = "#0A111A"   # ink — header/footer
 DARK_TEAL = "#0A111A"  # ink — header gradient end
 ON_DARK  = "#ffffff"   # Text/accents on dark surfaces
 
-BUILD_TAG = datetime.now().strftime("%b %d, %H:%M")  # stamped each generation — lets you confirm the live build
-
 # ramsac × Alpha Real signature gradient: cream → orange → red → grey → blue → ink.
 # Used as a thin signature bar.
 GRADIENT_BAR = ("linear-gradient(90deg,#FAF7E6 0%,#F0B976 20%,#CF512B 45%,"
@@ -1062,7 +1060,7 @@ def _nav_html(active):
     brand = (f'<a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" '
              f'class="nav-brand" style="display:flex;align-items:center;gap:7px">'
              f'{TP_MARK}<span>Thought Provoked</span></a>')
-    return f'<nav class="site-nav">{brand}{items}<span class="nav-build"><span class="austen-name">Austen</span> &middot; build {BUILD_TAG}</span></nav><div class="brand-bar"></div>'
+    return f'<nav class="site-nav">{brand}{items}<span class="nav-build"><span class="austen-name">Austen</span></span></nav><div class="brand-bar"></div>'
 
 
 # ─── Glossary constellation renderer ────────────────────────────────────────
