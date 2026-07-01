@@ -4,62 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Battle Cards — Thought Provoked</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #f8f4e3; font-family: Geist, Arial, sans-serif; color: #10131b; min-height: 100vh; }
+  body { background: #FAF7E6; font-family: Geist, Arial, sans-serif; color: #0A111A; min-height: 100vh; }
   a { color: inherit; text-decoration: none; }
   
-  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; position: relative; z-index: 10; }
-  .nav-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
-  .nav-link { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .site-nav { background: #0A111A; padding: 0 24px; display: flex; align-items: center; gap: 0; position: relative; z-index: 10; }
+  .nav-brand { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
   .nav-link:hover { color: #fff; }
-  .nav-link.active { color: #ffffff; border-bottom-color: #bf5631; }
-  .nav-build { margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .nav-link.active { color: #ffffff; border-bottom-color: #CF512B; }
+  .nav-build { margin-left: auto; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
   .austen-name { position: relative; color: rgba(255,255,255,0.75); font-weight: 800; letter-spacing: 0.06em; cursor: help; }
-  .austen-name::after { content: "Named after Jane Austen, English novelist of Pride and Prejudice and Emma. She had a rare gift for making complicated worlds feel clear, urgent, and readable. That is exactly what this digest tries to do for AI."; position: absolute; top: calc(100% + 8px); right: 0; background: #10131b; color: #f8f4e3; padding: 12px 16px; border-radius: 10px; font-size: 12px; font-weight: 400; line-height: 1.6; width: 260px; white-space: normal; opacity: 0; pointer-events: none; transition: opacity 0.2s; border: 1px solid #bf5631; box-shadow: 0 6px 24px rgba(16,19,27,0.5); z-index: 9999; text-transform: none; letter-spacing: 0; }
+  .austen-name::after { content: "Named after Jane Austen, English novelist of Pride and Prejudice and Emma. She had a rare gift for making complicated worlds feel clear, urgent, and readable. That is exactly what this digest tries to do for AI."; position: absolute; top: calc(100% + 8px); right: 0; background: #0A111A; color: #FAF7E6; padding: 12px 16px; border-radius: 10px; font-size: 12px; font-weight: 400; line-height: 1.6; width: 260px; white-space: normal; opacity: 0; pointer-events: none; transition: opacity 0.2s; border: 1px solid #CF512B; box-shadow: 0 6px 24px rgba(10,17,26,0.5); z-index: 9999; text-transform: none; letter-spacing: 0; }
   .austen-name:hover::after { opacity: 1; }
   /* Ironbridge "iron is never one colour" gradient bar */
-  .brand-bar { height: 4px; width: 100%; background: linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,#c2ccd7 68%,#41407c 85%,#10131b 100%); }
+  .brand-bar { height: 4px; width: 100%; background: linear-gradient(90deg,#FAF7E6 0%,#F0B976 20%,#CF512B 45%,#C2CCD5 68%,#41488A 85%,#0A111A 100%); }
   /* hairline divider */
-  .hairline { height: 1px; background: #e6dcc4; border: none; margin: 0; }
+  .hairline { height: 1px; background: #C2CCD5; border: none; margin: 0; }
   /* outlined pill tag */
-  .pill { display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #bf5631; border: 1px solid #bf5631; border-radius: 999px; padding: 4px 13px; }
-  .pill-light { border-color: rgba(248,244,227,0.5); color: #ffffff; }
+  .pill { display: inline-block; font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #CF512B; border: 1px solid #CF512B; border-radius: 999px; padding: 4px 13px; }
+  .pill-light { border-color: rgba(250,247,230,0.5); color: #ffffff; }
   /* eyebrow row: pill on the left, counter on the right */
   .eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
+  .eyebrow-count { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #41488A; }
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket { position: relative; }
   .bracket::before, .bracket::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 72px; width: 40px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
   .bracket::before { left: 18px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
   .bracket::after { right: 18px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
   .page-body { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
-  .page-title { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #10131b; margin-bottom: 6px; }
-  .page-sub { font-size: 14px; color: #5f5a52; margin-bottom: 32px; line-height: 1.6; }
-  .ramsac-diff { background: linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%); border-radius: 10px; padding: 28px 88px; margin-bottom: 36px; overflow: hidden; }
-  .ramsac-diff-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; font-weight: 700; margin-bottom: 8px; }
+  .page-title { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 800; color: #0A111A; margin-bottom: 6px; }
+  .page-sub { font-size: 14px; color: #41488A; margin-bottom: 32px; line-height: 1.6; }
+  .ramsac-diff { background: linear-gradient(150deg,#CF512B 0%,#41488A 52%,#0A111A 100%); border-radius: 10px; padding: 28px 88px; margin-bottom: 36px; overflow: hidden; }
+  .ramsac-diff-label { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; font-weight: 700; margin-bottom: 8px; }
   .ramsac-diff p { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }
   .bc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-  .bc-card { background: #ffffff; border: 1px solid #e6dcc4; border-radius: 10px; overflow: hidden; }
+  .bc-card { background: #ffffff; border: 1px solid #C2CCD5; border-radius: 10px; overflow: hidden; }
   .bc-header { padding: 20px 20px 16px; background: #ffffff; }
-  .bc-name { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: #10131b; }
-  .bc-product { font-size: 13px; color: #5f5a52; margin-top: 2px; }
-  .bc-tagline { font-size: 12px; color: #bf5631; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; }
+  .bc-name { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 800; color: #0A111A; }
+  .bc-product { font-size: 13px; color: #41488A; margin-top: 2px; }
+  .bc-tagline { font-size: 12px; color: #CF512B; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Charger', Georgia, 'Times New Roman', serif; }
   .bc-body { padding: 0 20px 20px; }
   .bc-section { margin-top: 16px; }
-  .bc-section-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #bf5631; font-weight: 700; margin-bottom: 6px; }
-  .bc-section p { font-size: 13px; line-height: 1.65; color: #5f5a52; }
+  .bc-section-label { font-family: 'Charger', Georgia, 'Times New Roman', serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #CF512B; font-weight: 700; margin-bottom: 6px; }
+  .bc-section p { font-size: 13px; line-height: 1.65; color: #41488A; }
   .bc-section ul { padding-left: 18px; }
-  .bc-section ul li { font-size: 13px; line-height: 1.65; color: #5f5a52; margin-bottom: 2px; }
-  .bc-watch { background: #f7efdd; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }
-  .bc-watch .bc-section-label { color: #c2922f; }
-  .bc-ramsac { background: #f8ece6; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid #bf5631; }
-  .bc-ramsac .bc-section-label { color: #bf5631; }
-  .bc-ramsac p { color: #41407c; }
+  .bc-section ul li { font-size: 13px; line-height: 1.65; color: #41488A; margin-bottom: 2px; }
+  .bc-watch { background: #F9F0D9; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }
+  .bc-watch .bc-section-label { color: #B9793A; }
+  .bc-ramsac { background: #F6E6D3; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid #CF512B; }
+  .bc-ramsac .bc-section-label { color: #CF512B; }
+  .bc-ramsac p { color: #41488A; }
   .bc-terms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .term-chip { display: inline-block; background: rgba(191,86,49,0.12); color: #000000; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid #bf5631; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; cursor: pointer; transition: background 0.15s; }
-  .term-chip:hover { background: #bf5631; color: #ffffff; }
+  .term-chip { display: inline-block; background: rgba(207,81,43,0.12); color: #0A111A; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid #CF512B; font-family: 'Charger', Georgia, 'Times New Roman', serif; cursor: pointer; transition: background 0.15s; }
+  .term-chip:hover { background: #CF512B; color: #ffffff; }
 </style>
 </head>
 <body>
@@ -79,7 +80,7 @@
   <div class="bc-grid">
     
 <div class="bc-card" id="bc-anthropic">
-  <div class="bc-header" style="border-left:4px solid #bf5631">
+  <div class="bc-header" style="border-left:4px solid #CF512B">
     <div>
       <div class="bc-name">Anthropic</div>
       <div class="bc-product">Claude</div>
@@ -114,7 +115,7 @@
   </div>
 </div>
 <div class="bc-card" id="bc-openai">
-  <div class="bc-header" style="border-left:4px solid #41407c">
+  <div class="bc-header" style="border-left:4px solid #41488A">
     <div>
       <div class="bc-name">OpenAI</div>
       <div class="bc-product">ChatGPT / GPT-4o</div>
@@ -149,7 +150,7 @@
   </div>
 </div>
 <div class="bc-card" id="bc-microsoft">
-  <div class="bc-header" style="border-left:4px solid #7d8aa0">
+  <div class="bc-header" style="border-left:4px solid #748094">
     <div>
       <div class="bc-name">Microsoft</div>
       <div class="bc-product">Copilot / Azure AI</div>
@@ -184,7 +185,7 @@
   </div>
 </div>
 <div class="bc-card" id="bc-google">
-  <div class="bc-header" style="border-left:4px solid #c2922f">
+  <div class="bc-header" style="border-left:4px solid #B9793A">
     <div>
       <div class="bc-name">Google / DeepMind</div>
       <div class="bc-product">Gemini</div>
@@ -219,7 +220,7 @@
   </div>
 </div>
 <div class="bc-card" id="bc-xai">
-  <div class="bc-header" style="border-left:4px solid #10131b">
+  <div class="bc-header" style="border-left:4px solid #0A111A">
     <div>
       <div class="bc-name">xAI</div>
       <div class="bc-product">Grok</div>
@@ -254,7 +255,7 @@
   </div>
 </div>
 <div class="bc-card" id="bc-meta">
-  <div class="bc-header" style="border-left:4px solid #e2b566">
+  <div class="bc-header" style="border-left:4px solid #F0B976">
     <div>
       <div class="bc-name">Meta AI</div>
       <div class="bc-product">Llama</div>
