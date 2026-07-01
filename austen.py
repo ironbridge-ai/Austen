@@ -1216,7 +1216,7 @@ def render_glossary_html(knowledge_log):
       <div class="trending-bar" id="trending-bar"><span class="pill">Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
     </div>
     <svg id="graph-svg"></svg>
-    <div class="proximity-note">&#9737;&nbsp;<span><b>This map reflects conceptual proximity.</b> Position is not decorative &mdash; related concepts are pulled closer together, so distance on the map mirrors how related two ideas actually are.</span></div>
+    <div class="proximity-note">&#9737;&nbsp;<span><b>This map reflects conceptual proximity.</b> That is literally how an LLM understands meaning: it represents every idea as a vector, a list of numbers, and concepts it treats as related end up with vectors that sit closer together. Distance here mirrors that same closeness.</span></div>
     <button class="shuffle-btn" id="shuffle-btn" title="Pick a random concept">&#9654; Shuffle</button>
   </div>
   <div class="detail-col">
