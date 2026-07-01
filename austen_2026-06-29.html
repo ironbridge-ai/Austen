@@ -96,40 +96,62 @@
     color: #41488A;
     font-family: "Geist", Arial, sans-serif;
   }
-  .scard { cursor: pointer; perspective: 1600px; }
-  .scard-inner {
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,17,26,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal.active { display: flex; }
+  .modal-content {
+    background: #ffffff;
+    border: 1px solid #C2CCD5;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 48px -12px rgba(10,17,26,0.3);
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: #888F95;
+    font-size: 26px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-close:hover { color: #0A111A; }
+  .mflip { perspective: 1600px; }
+  .mflip-inner {
     position: relative;
     transition: transform 0.55s cubic-bezier(.22,.61,.36,1);
     transform-style: preserve-3d;
   }
-  .scard.flipped .scard-inner { transform: rotateY(180deg); }
-  .scard-face {
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 20px 22px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-  .scard-front { border: 1px solid #C2CCD5; border-left: 3px solid #CF512B; }
-  .scard-back {
+  .mflip.flipped .mflip-inner { transform: rotateY(180deg); }
+  .mflip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .mflip-front { position: relative; }
+  .mflip-back {
     position: absolute;
     inset: 0;
     transform: rotateY(180deg);
     background: #F6E6D3;
     border: 1.5px solid #CF512B;
+    border-radius: 10px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
-  }
-  .scard-cue {
-    font-family: 'Charger', Georgia, 'Times New Roman', serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #CF512B;
-    margin-right: 10px;
   }
   .scard-tag {
     display: inline-flex;
@@ -144,7 +166,25 @@
     margin-bottom: 10px;
   }
   .scard-tag::before { content: ''; width: 16px; height: 2px; background: #CF512B; display: inline-block; }
-  .scard-back p { margin: 0; font-size: 14px; color: #0A111A; font-family: Geist, Arial, sans-serif; line-height: 1.6; }
+  .mflip-back p { margin: 0; font-size: 14px; color: #0A111A; font-family: Geist, Arial, sans-serif; line-height: 1.6; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .modal-action-btn, .modal-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    cursor: pointer;
+    border: 1px solid #C2CCD5;
+    border-radius: 6px;
+    color: #CF512B;
+    font-family: 'Charger', Georgia, 'Times New Roman', serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 14px;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .modal-action-btn:hover, .modal-link-btn:hover { border-color: #CF512B; background: rgba(207,81,43,0.08); }
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#FAF7E6 !important;font-family:Geist,Arial,Helvetica,sans-serif;color:#0A111A !important">
@@ -216,162 +256,132 @@
         
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-1" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">1</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">Wired AI / TechCrunch AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Fable 5 Returning, GPT-5.6 Restricted: Governments Are Now Gatekeeping the Most Powerful AI</p>
+                    <p onclick="openModal('modal-1')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Fable 5 Returning, GPT-5.6 Restricted: Governments Are Now Gatekeeping the Most Powerful AI <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">The Trump administration is preparing to lift its ban on Anthropic's Fable 5 within days, while simultaneously asking OpenAI to slow-roll its new GPT-5.6 model to a select group of partners only. Two <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier models</span> held back by government action in the same week is not a coincidence. It is a signal that AI capability has entered a new political era.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Anthropic's <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> Fable 5, taken offline after a jailbreak stripped its safety filters, is close to being reinstated, but only after Pentagon and NSA sign-off, and initially to just over 100 pre-approved US companies and government agencies.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">At the same time, the White House asked OpenAI to delay the public release of GPT-5.6, a next-generation model with stronger coding, science, and cybersecurity capabilities.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">OpenAI pushed back publicly, saying government gatekeeping &#39;keeps the best tools from users, developers, enterprises, cyber defenders, and global partners who need them.&#39;</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Two of the most powerful AI systems ever built are now being managed like controlled substances, a sign these models have crossed a threshold governments can no longer ignore.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-1" onclick="event.stopPropagation();vote(1,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-1" onclick="event.stopPropagation();vote(1,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-1" onclick="vote(1,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-1" onclick="vote(1,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>When governments restrict access to AI on national-security grounds, it's proof serious businesses need an AI strategy now, before restrictions lift and competitors move first.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-2" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">2</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">Google DeepMind</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Google's Gemini 3.5 Flash Can Now Use Your Computer — Not Just Answer Questions About It</p>
+                    <p onclick="openModal('modal-2')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Google's Gemini 3.5 Flash Can Now Use Your Computer — Not Just Answer Questions About It <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google DeepMind has introduced <span class="ai-term" data-def="A capability that lets an AI take direct control of a computer, clicking buttons, typing into fields, opening files, and completing tasks inside real software, rather than just telling a human what to do. Think of it as giving the AI a pair of hands, not just a voice." data-term="computer use">computer use</span> capabilities in Gemini 3.5 Flash, enabling the <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agent</span> to interact directly with software on a computer rather than simply describing what to do.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Google DeepMind has introduced <span class="ai-term" data-def="A capability that lets an AI take direct control of a computer, clicking buttons, typing into fields, opening files, and completing tasks inside real software, rather than just telling a human what to do. Think of it as giving the AI a pair of hands, not just a voice." data-term="computer use">computer use</span> in Gemini 3.5 Flash, letting an <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agent</span> see a screen, move a cursor, click buttons, type into fields, and complete tasks inside real software.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Until now, AI tools answered questions or generated content. Computer use changes that: the AI becomes an operator, not just an advisor.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">A user can instruct Gemini to open a spreadsheet, pull figures from a report, update a dashboard, and send a summary email, and it executes every step without human hand-holding.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The capability is available now, and it works directly with the Microsoft 365 tools businesses already use.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-2" onclick="event.stopPropagation();vote(2,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-2" onclick="event.stopPropagation();vote(2,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-2" onclick="vote(2,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-2" onclick="vote(2,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>Any client doing repetitive computer work now has an AI agent that can do it for them, but deploying agents safely on live business systems needs careful configuration and governance.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-3" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">3</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">TechCrunch AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">A Cancer Patient Fed His Medical Data to Claude — and Got Insights His Doctors Hadn't Considered</p>
+                    <p onclick="openModal('modal-3')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">A Cancer Patient Fed His Medical Data to Claude — and Got Insights His Doctors Hadn't Considered <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Connor Christou, a founder diagnosed with cancer, loaded his blood results, scan data, wearable output, and journal entries into Claude and used it to navigate his treatment. The story is a vivid demonstration of what AI does when someone gives it everything.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Connor Christou, a founder diagnosed with cancer, fed every piece of his health data, including blood results, imaging data, wearable output, and personal journal entries, into Anthropic's Claude.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Claude surfaced patterns, questions, and connections that opened conversations with his medical team that might not have happened otherwise.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The AI did not replace his doctors. It acted as a tireless analytical layer, synthesising more information, faster, than any single human could hold in their head.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-3" onclick="event.stopPropagation();vote(3,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-3" onclick="event.stopPropagation();vote(3,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-3" onclick="vote(3,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-3" onclick="vote(3,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>A powerful, human conversation starter: before AI can deliver insight like this for a business, its data has to be structured, accessible, and secure.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-4" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">4</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">OpenAI Blog / TechCrunch AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">OpenAI and Broadcom Build Jalapeño: A Custom Chip That Could End Big Tech's Nvidia Dependence</p>
+                    <p onclick="openModal('modal-4')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">OpenAI and Broadcom Build Jalapeño: A Custom Chip That Could End Big Tech's Nvidia Dependence <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">OpenAI and Broadcom have unveiled Jalapeño, a custom AI chip built specifically for running large language models at scale. It joins a wave of custom silicon from Google, Apple, and SpaceX, and it signals that the infrastructure powering AI is about to become faster, cheaper, and far more competitive.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The AI industry has run almost entirely on Nvidia's chips for years. That dependency is now being dismantled.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">OpenAI and Broadcom have co-designed Jalapeño, a chip purpose-built for LLM inference, optimised specifically for running large AI models quickly and efficiently.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Google, Apple, and SpaceX are all building their own custom AI silicon too.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Every major AI company is now investing in owning its own hardware layer, aiming for better performance, lower cost, and less reliance on a single supplier.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-4" onclick="event.stopPropagation();vote(4,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-4" onclick="event.stopPropagation();vote(4,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-4" onclick="vote(4,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-4" onclick="vote(4,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>Every major AI company diversifying its hardware mirrors the case for model diversification: don't bet a client's AI strategy on a single vendor.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-5" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">5</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">Ars Technica AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded</p>
+                    <p onclick="openModal('modal-5')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Anthropic has accused Alibaba of using 25,000 accounts to extract data from Claude across 28.8 million exchanges in what it calls the largest <span class="ai-term" data-def="An attack where someone tries to copy an AI model&#39;s intelligence by asking it millions of questions and recording its answers, then using those answers to train a copycat AI, without ever paying to build the original. It is the AI equivalent of reverse-engineering a recipe by ordering the same dish thousands of times." data-term="model cloning">model cloning</span> attack ever attempted.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Anthropic alleges Alibaba systematically used 25,000 fake accounts to query Claude at massive scale, in what it calls <span class="ai-term" data-def="An attack where someone tries to copy an AI model&#39;s intelligence by asking it millions of questions and recording its answers, then using those answers to train a copycat AI, without ever paying to build the original. It is the AI equivalent of reverse-engineering a recipe by ordering the same dish thousands of times." data-term="model cloning">model cloning</span>.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The goal, Anthropic argues, was to extract enough of Claude's behaviour, knowledge, and reasoning patterns through repeated interactions to replicate its capabilities without building them.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">No system was broken into and no password was stolen. The attack vector was the AI model itself, and the weapon was sheer volume: 28.8 million exchanges across 25,000 accounts.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Anthropic says the alleged operation represents a new class of AI-specific threat with no direct equivalent in conventional cybersecurity.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-5" onclick="event.stopPropagation();vote(5,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-5" onclick="event.stopPropagation();vote(5,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-5" onclick="vote(5,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-5" onclick="vote(5,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>Proof that capable AI systems are now targeted at nation-state scale, reinforcing why businesses need a trusted partner monitoring and governing their AI usage.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
         
@@ -417,11 +427,156 @@
 </td></tr>
 </table>
 
+
+<div id="modal-1" class="modal" onclick="if(event.target===this)closeModal('modal-1')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-1')">&times;</button>
+    <div class="mflip" id="mflip-1">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Wired AI / TechCrunch AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Fable 5 Returning, GPT-5.6 Restricted: Governments Are Now Gatekeeping the Most Powerful AI</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Anthropic's <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> Fable 5, taken offline after a jailbreak stripped its safety filters, is close to being reinstated, but only after Pentagon and NSA sign-off, and initially to just over 100 pre-approved US companies and government agencies.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">At the same time, the White House asked OpenAI to delay the public release of GPT-5.6, a next-generation model with stronger coding, science, and cybersecurity capabilities.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">OpenAI pushed back publicly, saying government gatekeeping &#39;keeps the best tools from users, developers, enterprises, cyber defenders, and global partners who need them.&#39;</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Two of the most powerful AI systems ever built are now being managed like controlled substances, a sign these models have crossed a threshold governments can no longer ignore.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-1')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>When governments restrict access to AI on national-security grounds, it's proof serious businesses need an AI strategy now, before restrictions lift and competitors move first.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-1')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-2" class="modal" onclick="if(event.target===this)closeModal('modal-2')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-2')">&times;</button>
+    <div class="mflip" id="mflip-2">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Google DeepMind</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Google's Gemini 3.5 Flash Can Now Use Your Computer — Not Just Answer Questions About It</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google DeepMind has introduced <span class="ai-term" data-def="A capability that lets an AI take direct control of a computer, clicking buttons, typing into fields, opening files, and completing tasks inside real software, rather than just telling a human what to do. Think of it as giving the AI a pair of hands, not just a voice." data-term="computer use">computer use</span> in Gemini 3.5 Flash, letting an <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agent</span> see a screen, move a cursor, click buttons, type into fields, and complete tasks inside real software.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Until now, AI tools answered questions or generated content. Computer use changes that: the AI becomes an operator, not just an advisor.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">A user can instruct Gemini to open a spreadsheet, pull figures from a report, update a dashboard, and send a summary email, and it executes every step without human hand-holding.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The capability is available now, and it works directly with the Microsoft 365 tools businesses already use.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-2')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>Any client doing repetitive computer work now has an AI agent that can do it for them, but deploying agents safely on live business systems needs careful configuration and governance.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-2')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-3" class="modal" onclick="if(event.target===this)closeModal('modal-3')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-3')">&times;</button>
+    <div class="mflip" id="mflip-3">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">TechCrunch AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">A Cancer Patient Fed His Medical Data to Claude — and Got Insights His Doctors Hadn't Considered</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Connor Christou, a founder diagnosed with cancer, fed every piece of his health data, including blood results, imaging data, wearable output, and personal journal entries, into Anthropic's Claude.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Claude surfaced patterns, questions, and connections that opened conversations with his medical team that might not have happened otherwise.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The AI did not replace his doctors. It acted as a tireless analytical layer, synthesising more information, faster, than any single human could hold in their head.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-3')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>A powerful, human conversation starter: before AI can deliver insight like this for a business, its data has to be structured, accessible, and secure.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-3')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-4" class="modal" onclick="if(event.target===this)closeModal('modal-4')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-4')">&times;</button>
+    <div class="mflip" id="mflip-4">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">OpenAI Blog / TechCrunch AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">OpenAI and Broadcom Build Jalapeño: A Custom Chip That Could End Big Tech's Nvidia Dependence</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The AI industry has run almost entirely on Nvidia's chips for years. That dependency is now being dismantled.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">OpenAI and Broadcom have co-designed Jalapeño, a chip purpose-built for LLM inference, optimised specifically for running large AI models quickly and efficiently.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google, Apple, and SpaceX are all building their own custom AI silicon too.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Every major AI company is now investing in owning its own hardware layer, aiming for better performance, lower cost, and less reliance on a single supplier.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-4')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>Every major AI company diversifying its hardware mirrors the case for model diversification: don't bet a client's AI strategy on a single vendor.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-4')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-5" class="modal" onclick="if(event.target===this)closeModal('modal-5')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-5')">&times;</button>
+    <div class="mflip" id="mflip-5">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Ars Technica AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Anthropic alleges Alibaba systematically used 25,000 fake accounts to query Claude at massive scale, in what it calls <span class="ai-term" data-def="An attack where someone tries to copy an AI model&#39;s intelligence by asking it millions of questions and recording its answers, then using those answers to train a copycat AI, without ever paying to build the original. It is the AI equivalent of reverse-engineering a recipe by ordering the same dish thousands of times." data-term="model cloning">model cloning</span>.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The goal, Anthropic argues, was to extract enough of Claude's behaviour, knowledge, and reasoning patterns through repeated interactions to replicate its capabilities without building them.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">No system was broken into and no password was stolen. The attack vector was the AI model itself, and the weapon was sheer volume: 28.8 million exchanges across 25,000 accounts.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Anthropic says the alleged operation represents a new class of AI-specific threat with no direct equivalent in conventional cybersecurity.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-5')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>Proof that capable AI systems are now targeted at nation-state scale, reinforcing why businesses need a trusted partner monitoring and governing their AI usage.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-5')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="ai-tooltip"></div>
 <script>
-  function flipCard(el) {
-    el.classList.toggle('flipped');
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
+  function closeModal(id) {
+    var m = document.getElementById(id);
+    m.classList.remove('active');
+    document.body.style.overflow = '';
+    var mflip = m.querySelector('.mflip');
+    if (mflip) mflip.classList.remove('flipped');
+  }
+  function flipModal(id) {
+    document.getElementById(id).classList.toggle('flipped');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal.active').forEach(function(m) {
+        closeModal(m.id);
+      });
+    }
+  });
   function vote(n, dir) {
     var up = document.getElementById('up-' + n);
     var dn = document.getElementById('dn-' + n);

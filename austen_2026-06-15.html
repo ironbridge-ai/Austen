@@ -96,40 +96,62 @@
     color: #41488A;
     font-family: "Geist", Arial, sans-serif;
   }
-  .scard { cursor: pointer; perspective: 1600px; }
-  .scard-inner {
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,17,26,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal.active { display: flex; }
+  .modal-content {
+    background: #ffffff;
+    border: 1px solid #C2CCD5;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 48px -12px rgba(10,17,26,0.3);
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: #888F95;
+    font-size: 26px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-close:hover { color: #0A111A; }
+  .mflip { perspective: 1600px; }
+  .mflip-inner {
     position: relative;
     transition: transform 0.55s cubic-bezier(.22,.61,.36,1);
     transform-style: preserve-3d;
   }
-  .scard.flipped .scard-inner { transform: rotateY(180deg); }
-  .scard-face {
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 20px 22px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-  .scard-front { border: 1px solid #C2CCD5; border-left: 3px solid #CF512B; }
-  .scard-back {
+  .mflip.flipped .mflip-inner { transform: rotateY(180deg); }
+  .mflip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .mflip-front { position: relative; }
+  .mflip-back {
     position: absolute;
     inset: 0;
     transform: rotateY(180deg);
     background: #F6E6D3;
     border: 1.5px solid #CF512B;
+    border-radius: 10px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
-  }
-  .scard-cue {
-    font-family: 'Charger', Georgia, 'Times New Roman', serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #CF512B;
-    margin-right: 10px;
   }
   .scard-tag {
     display: inline-flex;
@@ -144,7 +166,25 @@
     margin-bottom: 10px;
   }
   .scard-tag::before { content: ''; width: 16px; height: 2px; background: #CF512B; display: inline-block; }
-  .scard-back p { margin: 0; font-size: 14px; color: #0A111A; font-family: Geist, Arial, sans-serif; line-height: 1.6; }
+  .mflip-back p { margin: 0; font-size: 14px; color: #0A111A; font-family: Geist, Arial, sans-serif; line-height: 1.6; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .modal-action-btn, .modal-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    cursor: pointer;
+    border: 1px solid #C2CCD5;
+    border-radius: 6px;
+    color: #CF512B;
+    font-family: 'Charger', Georgia, 'Times New Roman', serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 14px;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .modal-action-btn:hover, .modal-link-btn:hover { border-color: #CF512B; background: rgba(207,81,43,0.08); }
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#FAF7E6 !important;font-family:Geist,Arial,Helvetica,sans-serif;color:#0A111A !important">
@@ -216,162 +256,132 @@
         
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-1" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">1</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">Wired AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Anthropic's Claude Fable 5 So Powerful the White House Ordered It Shut Down</p>
+                    <p onclick="openModal('modal-1')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Anthropic's Claude Fable 5 So Powerful the White House Ordered It Shut Down <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">The Trump administration forced Anthropic to pull its most advanced cybersecurity models, Fable 5 and Mythos 5, citing national security concerns over their hacking capabilities. Dozens of cybersecurity experts protested the ban, arguing these <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> systems are essential for defenders. This is the first time the US government has shut down a commercial AI model for being too capable.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Anthropic released Claude Fable 5 and Mythos 5, models designed to find and exploit software vulnerabilities with skill that alarmed the Department of Commerce, the CIA, and White House science advisor Michael Kratsios.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Officials accused Anthropic of releasing the models without approval under Trump's cyber directive, with one administration source saying &#39;They screwed us.&#39;</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The concern: a jailbroken Fable 5 would be an autonomous hacking tool more capable than most human penetration testers, and the government's position is that no <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> with these offensive capabilities should exist outside controlled environments.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Anthropic leaders flew to Washington for high-level talks, but the two sides remain split on how to manage the risk.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-1" onclick="event.stopPropagation();vote(1,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-1" onclick="event.stopPropagation();vote(1,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-1" onclick="vote(1,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-1" onclick="vote(1,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>The US government just confirmed AI hacking tools are real and powerful enough to warrant a national-security response, meaning every client's threat landscape now includes AI-powered attackers.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-2" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">2</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">The Decoder</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Microsoft Copilot Cowork Shifts to Usage-Based Billing and May Tap DeepSeek</p>
+                    <p onclick="openModal('modal-2')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Microsoft Copilot Cowork Shifts to Usage-Based Billing and May Tap DeepSeek <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Microsoft is restructuring how businesses pay for Copilot Cowork, moving away from flat-rate pricing because token consumption has made it unsustainable. The company is also evaluating DeepSeek V4 as a cheaper model option running beneath Copilot. This signals a fundamental shift in how M365 AI tools will be sold and managed.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Charles Lamanna, Microsoft's head of Copilot, confirmed flat-rate pricing for Copilot Cowork is being replaced with usage-based billing.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Businesses using <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> and multi-step Copilot workflows consume far more tokens than Microsoft's original pricing assumed, and some power users' costs now exceed their subscription fee.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Microsoft is also exploring a fine-tuned version of DeepSeek V4 as an option within Copilot, routing simpler queries to cheaper models and reserving expensive <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> capacity for complex tasks.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">This is part of what the industry calls <span class="ai-term" data-def="Instead of using one single AI brain for everything, a system uses different AI models for different tasks, like having a specialist doctor for complex problems and a GP for routine questions. This lets companies balance quality and cost by routing simple tasks to cheaper models and hard tasks to expensive ones." data-term="multi-model architectures">multi-model architectures</span>: a single product using different AI models depending on the task.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-2" onclick="event.stopPropagation();vote(2,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-2" onclick="event.stopPropagation();vote(2,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-2" onclick="vote(2,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-2" onclick="vote(2,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>Usage-based billing means Copilot costs can spiral without governance; businesses that manage it strategically will pay a fraction of what undisciplined adopters do.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-3" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">3</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">Ars Technica AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Google DeepMind Releases DiffusionGemma: Text Generation 4x Faster</p>
+                    <p onclick="openModal('modal-3')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Google DeepMind Releases DiffusionGemma: Text Generation 4x Faster <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google DeepMind has released DiffusionGemma, a model that uses <span class="ai-term" data-def="A technique where AI creates output by starting with random noise and gradually refining it into a finished result, like a sculptor revealing a statue from a block of marble. Instead of building an answer one word at a time, the AI generates everything at once and sharpens it in a few quick passes. This makes output dramatically faster." data-term="diffusion-based generation">diffusion-based generation</span> to produce text four times faster than traditional approaches. This technique, previously used mainly for image creation, now applies to language. It could dramatically reduce the cost and waiting time for AI-powered business tools.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">DiffusionGemma is a genuine architectural breakthrough. Traditional language models generate text one word at a time; <span class="ai-term" data-def="A technique where AI creates output by starting with random noise and gradually refining it into a finished result, like a sculptor revealing a statue from a block of marble. Instead of building an answer one word at a time, the AI generates everything at once and sharpens it in a few quick passes. This makes output dramatically faster." data-term="Diffusion-based generation">Diffusion-based generation</span> starts with noise and refines the entire output simultaneously, like a photograph developing in a darkroom.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Google DeepMind has proven this approach works for text, not just images, producing complete responses four times faster than conventional methods.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The model runs locally on consumer hardware, so businesses could run AI tools without sending data to the cloud.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Google has released it as an <span class="ai-term" data-def="An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of it like a recipe being made public: you can cook the dish yourself in your own kitchen instead of only buying it at the restaurant." data-term="open-weight model">open-weight model</span>, freely available for developers and companies to build on.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-3" onclick="event.stopPropagation();vote(3,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-3" onclick="event.stopPropagation();vote(3,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-3" onclick="vote(3,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-3" onclick="vote(3,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>Faster, cheaper AI generation strengthens the business case for adoption every quarter; companies that wait risk falling behind competitors who moved earlier.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-4" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">4</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">MIT Technology Review</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Google DeepMind Warns About Millions of <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI Agents</span> Interacting Online</p>
+                    <p onclick="openModal('modal-4')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Google DeepMind Warns About Millions of <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI Agents</span> Interacting Online <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google DeepMind is funding research into the dangers of mass <span class="ai-term" data-def="When multiple AI agents, each built by different companies or teams with different goals, communicate and transact with each other without a human in the middle. Imagine hundreds of personal assistants from different households all trying to book the same restaurant at once, each following their own boss&#39;s instructions but creating chaos together." data-term="multi-agent interaction">multi-agent interaction</span>, where millions of <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> carrying out tasks for different people and companies collide online without human oversight. This is the first major lab to publicly flag this as an imminent safety challenge.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Rohin Shah, who directs AGI safety and alignment research at Google DeepMind, revealed the company is studying what happens when millions of different <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> interact with each other online.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Businesses are already deploying <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> that browse the web, make purchases, send emails, book appointments, and negotiate on their behalf, often with no human oversight in the moment.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Shah's concern is that <span class="ai-term" data-def="When multiple AI agents, each built by different companies or teams with different goals, communicate and transact with each other without a human in the middle. Imagine hundreds of personal assistants from different households all trying to book the same restaurant at once, each following their own boss&#39;s instructions but creating chaos together." data-term="multi-agent interaction">multi-agent interaction</span> at this scale could produce <span class="ai-term" data-def="When a system does something that nobody explicitly programmed it to do, simply because of how its individual parts interact. Like how a traffic jam appears even though no single driver decided to create one. In AI, it means agents or models producing unexpected results that arise from scale and complexity rather than design." data-term="emergent behaviour">emergent behaviour</span> nobody designed or intended, from price manipulation to accidental denial-of-service attacks to <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> deceiving each other in ways that harm the humans they represent.</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-4" onclick="event.stopPropagation();vote(4,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-4" onclick="event.stopPropagation();vote(4,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-4" onclick="vote(4,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-4" onclick="vote(4,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>As competitors deploy AI agents for procurement and sales, businesses need a partner who can deploy agents safely and govern how they behave.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
     <tr>
       <td style="padding:0 0 12px 0">
-        <div class="scard" id="card-5" onclick="flipCard(this)">
-          <div class="scard-inner">
-            <div class="scard-face scard-front">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+          <tr>
+            <td style="padding:20px 22px">
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="48" valign="top" style="padding:0 14px 0 0"><div style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px;font-size:15px;font-weight:700;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif">5</div></td>
                   <td valign="middle">
-                    <p style="margin:0 0 2px 0;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">Ars Technica AI</p>
-                    <p style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Critical Copilot Vulnerability Allowed Hackers to Steal 2FA Codes</p>
+                    <p onclick="openModal('modal-5')" style="margin:0;font-size:15px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;cursor:pointer">Critical Copilot Vulnerability Allowed Hackers to Steal 2FA Codes <span style="font-size:11px;color:#CF512B;opacity:0.8">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
                   <p style="margin:0;font-size:14px;color:#41488A;font-family:Geist,Arial,sans-serif;line-height:1.6">Security researchers disclosed a SearchLeak exploit in Microsoft Copilot that allowed attackers to extract two-factor authentication codes from users through a carefully crafted <span class="ai-term" data-def="A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to do. Think of it like slipping a forged note into a stack of legitimate paperwork so the person processing it follows the fake instructions without realising." data-term="prompt injection">prompt injection</span> attack. The vulnerability demonstrates that AI tools connected to sensitive data require rigorous security management.</p>
-                  <ul style="margin:10px 0 0 0;padding-left:18px"><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The SearchLeak exploit targeted Microsoft Copilot's <span class="ai-term" data-def="When an AI assistant looks through your actual files, emails, and documents to base its answers on real information rather than just its general training knowledge. It is what makes Copilot useful for work, because it answers questions about your specific data rather than giving generic responses." data-term="search-grounding">search-grounding</span> capability, the feature that lets Copilot pull real-time information from a user's emails, files, and messages.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Researchers showed a malicious actor could hide a <span class="ai-term" data-def="A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to do. Think of it like slipping a forged note into a stack of legitimate paperwork so the person processing it follows the fake instructions without realising." data-term="prompt injection">prompt injection</span> inside an innocent-looking document or email. When Copilot processed it, the hidden instructions made it retrieve and exfiltrate the user's 2FA codes to an external server.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">The attack required no special access beyond getting a crafted message into the target's inbox.</li><li style="margin-bottom:6px;font-size:13px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.5">Ars Technica described it as evidence the industry's approach to LLM security &#39;fails over and over.&#39;</li></ul>
                 </td></tr>
-                <tr><td colspan="2" style="padding-top:12px;text-align:right">
-                  <span class="scard-cue">ramsac angle &rarr;</span>
-                  <button class="fb-btn" id="up-5" onclick="event.stopPropagation();vote(5,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
-                  <button class="fb-btn" id="dn-5" onclick="event.stopPropagation();vote(5,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
+                <tr><td colspan="2" style="padding-top:10px;text-align:right">
+                  <button class="fb-btn" id="up-5" onclick="vote(5,'up')" title="Relevant" aria-label="Relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>Relevant</button>
+                  <button class="fb-btn" id="dn-5" onclick="vote(5,'dn')" title="Not relevant" aria-label="Not relevant"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>Not relevant</button>
                 </td></tr>
               </table>
-            </div>
-            <div class="scard-face scard-back">
-              <span class="scard-tag">ramsac angle</span>
-              <p>Not a reason to avoid Copilot, but a reminder that deploying it without professional security configuration is like leaving the front door unlocked.</p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
         
@@ -417,11 +427,156 @@
 </td></tr>
 </table>
 
+
+<div id="modal-1" class="modal" onclick="if(event.target===this)closeModal('modal-1')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-1')">&times;</button>
+    <div class="mflip" id="mflip-1">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Wired AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Anthropic's Claude Fable 5 So Powerful the White House Ordered It Shut Down</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Anthropic released Claude Fable 5 and Mythos 5, models designed to find and exploit software vulnerabilities with skill that alarmed the Department of Commerce, the CIA, and White House science advisor Michael Kratsios.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Officials accused Anthropic of releasing the models without approval under Trump's cyber directive, with one administration source saying &#39;They screwed us.&#39;</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The concern: a jailbroken Fable 5 would be an autonomous hacking tool more capable than most human penetration testers, and the government's position is that no <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> with these offensive capabilities should exist outside controlled environments.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Anthropic leaders flew to Washington for high-level talks, but the two sides remain split on how to manage the risk.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-1')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>The US government just confirmed AI hacking tools are real and powerful enough to warrant a national-security response, meaning every client's threat landscape now includes AI-powered attackers.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-1')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-2" class="modal" onclick="if(event.target===this)closeModal('modal-2')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-2')">&times;</button>
+    <div class="mflip" id="mflip-2">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">The Decoder</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Microsoft Copilot Cowork Shifts to Usage-Based Billing and May Tap DeepSeek</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Charles Lamanna, Microsoft's head of Copilot, confirmed flat-rate pricing for Copilot Cowork is being replaced with usage-based billing.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Businesses using <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> and multi-step Copilot workflows consume far more tokens than Microsoft's original pricing assumed, and some power users' costs now exceed their subscription fee.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Microsoft is also exploring a fine-tuned version of DeepSeek V4 as an option within Copilot, routing simpler queries to cheaper models and reserving expensive <span class="ai-term" data-def="The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again." data-term="frontier model">frontier model</span> capacity for complex tasks.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">This is part of what the industry calls <span class="ai-term" data-def="Instead of using one single AI brain for everything, a system uses different AI models for different tasks, like having a specialist doctor for complex problems and a GP for routine questions. This lets companies balance quality and cost by routing simple tasks to cheaper models and hard tasks to expensive ones." data-term="multi-model architectures">multi-model architectures</span>: a single product using different AI models depending on the task.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-2')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>Usage-based billing means Copilot costs can spiral without governance; businesses that manage it strategically will pay a fraction of what undisciplined adopters do.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-2')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-3" class="modal" onclick="if(event.target===this)closeModal('modal-3')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-3')">&times;</button>
+    <div class="mflip" id="mflip-3">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Ars Technica AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Google DeepMind Releases DiffusionGemma: Text Generation 4x Faster</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">DiffusionGemma is a genuine architectural breakthrough. Traditional language models generate text one word at a time; <span class="ai-term" data-def="A technique where AI creates output by starting with random noise and gradually refining it into a finished result, like a sculptor revealing a statue from a block of marble. Instead of building an answer one word at a time, the AI generates everything at once and sharpens it in a few quick passes. This makes output dramatically faster." data-term="Diffusion-based generation">Diffusion-based generation</span> starts with noise and refines the entire output simultaneously, like a photograph developing in a darkroom.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google DeepMind has proven this approach works for text, not just images, producing complete responses four times faster than conventional methods.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The model runs locally on consumer hardware, so businesses could run AI tools without sending data to the cloud.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Google has released it as an <span class="ai-term" data-def="An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of it like a recipe being made public: you can cook the dish yourself in your own kitchen instead of only buying it at the restaurant." data-term="open-weight model">open-weight model</span>, freely available for developers and companies to build on.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-3')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>Faster, cheaper AI generation strengthens the business case for adoption every quarter; companies that wait risk falling behind competitors who moved earlier.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-3')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-4" class="modal" onclick="if(event.target===this)closeModal('modal-4')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-4')">&times;</button>
+    <div class="mflip" id="mflip-4">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">MIT Technology Review</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Google DeepMind Warns About Millions of <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI Agents</span> Interacting Online</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Rohin Shah, who directs AGI safety and alignment research at Google DeepMind, revealed the company is studying what happens when millions of different <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> interact with each other online.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Businesses are already deploying <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> that browse the web, make purchases, send emails, book appointments, and negotiate on their behalf, often with no human oversight in the moment.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Shah's concern is that <span class="ai-term" data-def="When multiple AI agents, each built by different companies or teams with different goals, communicate and transact with each other without a human in the middle. Imagine hundreds of personal assistants from different households all trying to book the same restaurant at once, each following their own boss&#39;s instructions but creating chaos together." data-term="multi-agent interaction">multi-agent interaction</span> at this scale could produce <span class="ai-term" data-def="When a system does something that nobody explicitly programmed it to do, simply because of how its individual parts interact. Like how a traffic jam appears even though no single driver decided to create one. In AI, it means agents or models producing unexpected results that arise from scale and complexity rather than design." data-term="emergent behaviour">emergent behaviour</span> nobody designed or intended, from price manipulation to accidental denial-of-service attacks to <span class="ai-term" data-def="A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently." data-term="AI agent">AI agents</span> deceiving each other in ways that harm the humans they represent.</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-4')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>As competitors deploy AI agents for procurement and sales, businesses need a partner who can deploy agents safely and govern how they behave.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-4')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-5" class="modal" onclick="if(event.target===this)closeModal('modal-5')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('modal-5')">&times;</button>
+    <div class="mflip" id="mflip-5">
+      <div class="mflip-inner">
+        <div class="mflip-face mflip-front">
+          <p style="margin:0 0 8px 0;font-size:11px;color:#CF512B;font-family:'Charger',Georgia,'Times New Roman',serif;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Ars Technica AI</p>
+          <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#0A111A;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">Critical Copilot Vulnerability Allowed Hackers to Steal 2FA Codes</h2>
+          <ul style="margin:0;padding-left:20px"><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The SearchLeak exploit targeted Microsoft Copilot's <span class="ai-term" data-def="When an AI assistant looks through your actual files, emails, and documents to base its answers on real information rather than just its general training knowledge. It is what makes Copilot useful for work, because it answers questions about your specific data rather than giving generic responses." data-term="search-grounding">search-grounding</span> capability, the feature that lets Copilot pull real-time information from a user's emails, files, and messages.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Researchers showed a malicious actor could hide a <span class="ai-term" data-def="A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to do. Think of it like slipping a forged note into a stack of legitimate paperwork so the person processing it follows the fake instructions without realising." data-term="prompt injection">prompt injection</span> inside an innocent-looking document or email. When Copilot processed it, the hidden instructions made it retrieve and exfiltrate the user's 2FA codes to an external server.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">The attack required no special access beyond getting a crafted message into the target's inbox.</li><li style="margin-bottom:10px;font-size:14px;color:#0A111A;font-family:Geist,Arial,sans-serif;line-height:1.6">Ars Technica described it as evidence the industry's approach to LLM security &#39;fails over and over.&#39;</li></ul>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-5')">Ramsac angle &rarr;</button>
+            
+          </div>
+        </div>
+        <div class="mflip-face mflip-back">
+          <span class="scard-tag">ramsac angle</span>
+          <p>Not a reason to avoid Copilot, but a reminder that deploying it without professional security configuration is like leaving the front door unlocked.</p>
+          <div class="modal-actions">
+            <button class="modal-action-btn" onclick="flipModal('mflip-5')">&larr; Back to story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="ai-tooltip"></div>
 <script>
-  function flipCard(el) {
-    el.classList.toggle('flipped');
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
+  function closeModal(id) {
+    var m = document.getElementById(id);
+    m.classList.remove('active');
+    document.body.style.overflow = '';
+    var mflip = m.querySelector('.mflip');
+    if (mflip) mflip.classList.remove('flipped');
+  }
+  function flipModal(id) {
+    document.getElementById(id).classList.toggle('flipped');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal.active').forEach(function(m) {
+        closeModal(m.id);
+      });
+    }
+  });
   function vote(n, dir) {
     var up = document.getElementById('up-' + n);
     var dn = document.getElementById('dn-' + n);
