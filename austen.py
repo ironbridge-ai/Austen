@@ -911,8 +911,7 @@ def render_html(data, today, date_slug):
     font-family: 'Charger', Georgia, 'Times New Roman', serif;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.06em;
     color: {ACCENT};
     margin-bottom: 10px;
   }}
