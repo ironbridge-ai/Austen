@@ -542,6 +542,8 @@ TERM_CATEGORIES = {
     "agi": "foundation", "mixture of experts": "foundation",
     "distillation": "foundation", "quantization": "deployment",
     "bias": "safety",
+    "gpu": "foundation", "cpu": "foundation", "ram": "foundation",
+    "vram": "foundation", "tpu": "foundation",
 }
 
 GLOSSARY_SEED_TERMS = [
@@ -577,6 +579,11 @@ GLOSSARY_SEED_TERMS = [
     {"term": "Distillation", "definition": "Training a small, fast AI to copy the behaviour of a large, expensive one. The big model is the teacher; the small model is the student that learns to give similar answers at a fraction of the cost. It is how powerful AI gets squeezed onto phones and laptops."},
     {"term": "Quantization", "definition": "Shrinking an AI model by storing its numbers with less precision, so it runs on smaller, cheaper hardware. Like compressing a photo: slightly less detail, far smaller size. It is what lets big models run on a laptop or phone."},
     {"term": "Bias", "definition": "When an AI systematically favours or disadvantages certain groups because of patterns in the data it learned from. If the training data was skewed, the AI inherits that skew. Spotting and reducing bias is central to using AI fairly."},
+    {"term": "GPU", "definition": "Graphics Processing Unit. A type of computer chip originally built to render video game graphics, now the workhorse behind almost all AI training and inference. Unlike a regular processor that handles one task at a time very fast, a GPU does thousands of simple calculations at once, which is exactly the kind of work AI models need."},
+    {"term": "CPU", "definition": "Central Processing Unit. The general-purpose brain of a computer, built to handle a wide variety of everyday tasks one after another, very quickly. It can run AI models too, but far more slowly than a GPU, which is built to do many calculations in parallel instead of one at a time."},
+    {"term": "RAM", "definition": "Random Access Memory. The short-term memory a computer uses to hold whatever it is actively working on, separate from the storage where files live long-term. Running a large AI model needs huge amounts of memory loaded at once, which is one reason AI hardware costs so much more than an everyday laptop."},
+    {"term": "VRAM", "definition": "Video RAM. The memory built directly onto a GPU, used to hold an AI model's data while it is running. It is the number people mean when they say a model 'needs 24GB of VRAM': not ordinary computer memory, but the memory that lives on the graphics chip itself."},
+    {"term": "TPU", "definition": "Tensor Processing Unit. Google's own custom-built chip, designed specifically to run AI calculations faster and cheaper than general-purpose hardware. It is Google's answer to Nvidia's GPUs, part of a wider trend of tech giants building their own AI-specific chips instead of only buying off-the-shelf ones."},
 ]
 
 GLOSSARY_EDGES = [
@@ -631,6 +638,12 @@ GLOSSARY_EDGES = [
     ["tool use", "AI agent"], ["tool use", "function calling"],
     ["grounding", "RAG"], ["grounding", "Hallucination"],
     ["model collapse", "Fine-tuning"], ["model collapse", "synthetic data"],
+    # Hardware terms
+    ["GPU", "CPU"], ["GPU", "VRAM"], ["GPU", "TPU"],
+    ["GPU", "Inference"], ["GPU", "Quantization"],
+    ["RAM", "VRAM"], ["RAM", "CPU"],
+    ["VRAM", "Parameters"],
+    ["TPU", "Neural Network"],
 ]
 
 # ─── Battle card data ────────────────────────────────────────────────────────
