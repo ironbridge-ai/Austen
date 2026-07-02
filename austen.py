@@ -786,7 +786,7 @@ def story_modal(n, story):
           <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{NAVY};font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">{story['title']}</h2>
           <ul style="margin:0;padding-left:20px">{bullets_html}</ul>
           <div class="modal-actions">
-            <button class="modal-action-btn" onclick="flipModal('mflip-{n}')">Ramsac angle &rarr;</button>
+            <button class="modal-action-btn" onclick="flipModal('mflip-{n}')">ramsac angle &rarr;</button>
             {read_original}
           </div>
         </div>
