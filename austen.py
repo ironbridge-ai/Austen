@@ -310,7 +310,7 @@ def build_user_prompt(articles, knowledge_log):
         '      "source": "<publication name>",',
         '      "glance": "<1-2 sentence concise summary of what happened, no sales framing>",',
         '      "bullets": ["<concise fact: who/what>", "<concise fact: what it can do>", "<concise fact: what makes it remarkable>", "<optional concise fact: what to watch next>"],',
-        '      "ramsac_angle": "<2-3 sentences written FOR a sales rep to USE with a client: a conversation opener, a question to ask, or a reassurance to give. Include a quotable line the rep could say verbatim. Not an abstract observation about the market.>",',
+        '      "ramsac_angle": "<2-3 sentences that ARE the talking point itself, not instructions about it. Do NOT prefix with labels like \'Ask your client:\', \'Open with:\', \'The line for clients:\'. Just write the question or observation directly, as a sentence someone outside ramsac could read and still get the point, while it stays usable verbatim by a rep in a client conversation.>",',
         '      "source_index": <the [N] number of the article below this story is based on, so the link back to the original can be resolved automatically>',
         '    }',
         '  ],',
