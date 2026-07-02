@@ -1247,7 +1247,7 @@ def render_glossary_html(knowledge_log):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Glossary — Thought Provoked</title>
+<title>Austen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
@@ -1813,7 +1813,7 @@ def render_battlecards_html():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Battle Cards — Thought Provoked</title>
+<title>Austen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
@@ -2224,7 +2224,7 @@ def write_archive(directory, html_files):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>All Editions — Thought Provoked AI Briefing</title>
+<title>Austen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @font-face{{font-family:'Charger';src:url('fonts/ChargerV2Condensed.ttf') format('truetype');font-weight:400;font-display:swap}}
