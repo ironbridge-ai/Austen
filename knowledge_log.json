@@ -5,14 +5,7 @@
       "definition": "A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently.",
       "first_seen": "2026-06-17",
       "story": "Salesforce Acquires AI Customer Service Platform Fin for $3.6 Billion",
-      "teach_count": 2
-    },
-    {
-      "term": "Data isolation",
-      "definition": "The principle that different users' information should be kept completely separate within a system, so one person's data can never accidentally appear in another person's results. Like having separate locked filing cabinets rather than one shared drawer. AI models struggle with this because they process everything through the same underlying system.",
-      "first_seen": "2026-06-17",
-      "story": "Critical Copilot Vulnerability Let Hackers Steal Two-Factor Authentication Codes",
-      "teach_count": 2
+      "teach_count": 4
     },
     {
       "term": "prompt injection",
@@ -40,21 +33,7 @@
       "definition": "The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again.",
       "first_seen": "2026-06-17",
       "story": "Anthropic's Claude Fable 5 So Capable the US Government Ordered It Offline",
-      "teach_count": 2
-    },
-    {
-      "term": "token consumption",
-      "definition": "A measure of how much AI processing you use. AI models break text into small pieces called tokens, roughly one token per word. Every question you ask and answer you receive costs tokens. Token consumption is like a meter running on your AI usage, and it determines your bill under usage-based pricing.",
-      "first_seen": "2026-06-17",
-      "story": "Microsoft Copilot Cowork Shifts to Usage-Based Billing and Eyes DeepSeek Integration",
-      "teach_count": 1
-    },
-    {
-      "term": "SearchLeak",
-      "definition": "The name given to a specific security flaw in Microsoft Copilot that allowed attackers to trick the AI assistant into revealing sensitive information like login codes. Think of it like a con artist asking a helpful receptionist just the right question to get them to hand over confidential files without realising.",
-      "first_seen": "2026-06-17",
-      "story": "Critical Copilot Vulnerability Let Hackers Steal Two-Factor Codes",
-      "teach_count": 2
+      "teach_count": 4
     },
     {
       "term": "multi-model architectures",
@@ -85,13 +64,6 @@
       "teach_count": 1
     },
     {
-      "term": "DiffusionGemma",
-      "definition": "A specific AI model from Google DeepMind that generates text using a technique borrowed from image creation. Instead of writing one word at a time like traditional AI, it refines the entire answer all at once, like developing a photograph. The result is text produced four times faster than normal.",
-      "first_seen": "2026-06-17",
-      "story": "Google DeepMind Releases DiffusionGemma: Text Generation 4x Faster",
-      "teach_count": 1
-    },
-    {
       "term": "AI agent governance",
       "definition": "The rules and monitoring a business puts in place to control what its AI agents are allowed to do on their own. It answers questions like: can this agent spend money, send emails, or share data without a human approving first? Think of it as setting boundaries for a new employee who works at superhuman speed.",
       "first_seen": "2026-06-17",
@@ -99,17 +71,17 @@
       "teach_count": 1
     },
     {
-      "term": "model diversification",
-      "definition": "The practice of using multiple AI models from different providers rather than relying on a single one. It is like buying insurance from several companies instead of one. If one model goes down, gets too expensive, or gets banned, your business keeps running on the others.",
-      "first_seen": "2026-06-22",
-      "story": "Sakana AI's Fugu Orchestrates Multiple LLMs Into a Single System That Rivals the Best",
+      "term": "computer use",
+      "definition": "A capability that lets an AI take direct control of a computer — clicking buttons, typing into fields, opening files, and completing tasks inside real software — rather than just telling a human what to do. Think of it as giving the AI a pair of hands, not just a voice.",
+      "first_seen": "2026-06-29",
+      "story": "Google's Gemini 3.5 Flash Can Now Use Your Computer — Not Just Answer Questions About It",
       "teach_count": 1
     },
     {
-      "term": "Record and Replay",
-      "definition": "A feature where AI watches you perform a task on your computer once, learns the steps, and then repeats that exact task on its own whenever you ask. Think of it as showing a new employee how to do something once, except the employee has perfect memory and never gets bored.",
-      "first_seen": "2026-06-22",
-      "story": "OpenAI's Codex Watches You Work Once and Repeats the Task Forever",
+      "term": "model cloning",
+      "definition": "An attack where someone tries to copy an AI model's intelligence by asking it millions of questions and recording its answers, then using those answers to train a copycat AI — without ever paying to build the original. It is the AI equivalent of reverse-engineering a recipe by ordering the same dish thousands of times.",
+      "first_seen": "2026-06-29",
+      "story": "Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded",
       "teach_count": 1
     }
   ]

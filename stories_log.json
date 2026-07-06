@@ -59,6 +59,36 @@
       "title": "Critical Copilot Vulnerability Let Hackers Steal 2FA Codes from Users",
       "source": "Ars Technica AI",
       "topic": "SearchLeak exploit in Microsoft Copilot allowed attackers to steal 2FA codes via prompt injection through search-grounding feature. Patched."
+    },
+    {
+      "date": "2026-06-29",
+      "title": "Fable 5 Returning, GPT-5.6 Restricted: Governments Are Now Gatekeeping the Most Powerful AI",
+      "source": "Wired AI / TechCrunch AI",
+      "topic": "The Trump administration is preparing to lift its ban on Anthropic's Fable 5 within days, while simultaneously asking OpenAI to slow-roll its new GPT-5.6 model to a select group of partners only. Two "
+    },
+    {
+      "date": "2026-06-29",
+      "title": "Google's Gemini 3.5 Flash Can Now Use Your Computer — Not Just Answer Questions About It",
+      "source": "Google DeepMind",
+      "topic": "Google DeepMind has introduced <span class=\"ai-term\" data-def=\"A capability that lets an AI take direct control of a computer — clicking buttons, typing into fields, opening files, and completing task"
+    },
+    {
+      "date": "2026-06-29",
+      "title": "A Cancer Patient Fed His Medical Data to Claude — and Got Insights His Doctors Hadn't Considered",
+      "source": "TechCrunch AI",
+      "topic": "Connor Christou, a founder diagnosed with cancer, loaded his blood results, scan data, wearable output, and journal entries into Claude and used it to navigate his treatment. The story is a vivid demo"
+    },
+    {
+      "date": "2026-06-29",
+      "title": "OpenAI and Broadcom Build Jalapeño: A Custom Chip That Could End Big Tech's Nvidia Dependence",
+      "source": "OpenAI Blog / TechCrunch AI",
+      "topic": "OpenAI and Broadcom have unveiled Jalapeño, a custom AI chip built specifically for running large language models at scale. It joins a wave of custom silicon from Google, Apple, and SpaceX — and it si"
+    },
+    {
+      "date": "2026-06-29",
+      "title": "Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded",
+      "source": "Ars Technica AI",
+      "topic": "Anthropic has accused Alibaba of using 25,000 accounts to extract data from Claude across 28.8 million exchanges in what it calls the largest <span class=\"ai-term\" data-def=\"An attack where someone tr"
     }
   ]
 }
