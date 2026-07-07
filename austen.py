@@ -1907,7 +1907,7 @@ def render_email_html(data, today, date_slug, digest_url):
     def story_rows(stories, digest_url):
         rows = []
         for i, s in enumerate(stories, 1):
-            title_href = s.get("url") or digest_url
+            source_href = s.get("url") or digest_url
             rows.append(f"""
         <tr>
           <td style="padding:0 0 12px 0">
@@ -1927,7 +1927,7 @@ def render_email_html(data, today, date_slug, digest_url):
                       </td>
                       <td valign="middle">
                         <p class="em-text-navy" style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;color:#0A111A !important">
-                          <a href="{title_href}" target="_blank" rel="noopener" style="text-decoration:none;color:#0A111A !important"><span style="color:#0A111A !important;font-weight:700">{s['title']}</span></a>
+                          <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#0A111A !important"><span style="color:#0A111A !important;font-weight:700">{s['title']}</span></a>
                         </p>
                         <p class="em-text-orange" style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;color:#CF512B !important">
                           <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#CF512B !important"><span style="color:#CF512B !important">{s['source']}</span></a>
@@ -1939,6 +1939,14 @@ def render_email_html(data, today, date_slug, digest_url):
                         <p class="em-text-indigo" style="margin:0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6;color:#41488A !important">
                           <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;display:block;color:#41488A !important"><span style="color:#41488A !important">{s['glance']}</span></a>
                         </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" align="right" style="padding-top:12px">
+                        <a href="{source_href}" target="_blank" rel="noopener" class="em-bg-orange"
+                           style="display:inline-block;padding:7px 16px;background:#CF512B !important;border-radius:6px;text-align:center;text-decoration:none;color:#ffffff !important;font-family:Geist,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.04em">
+                          <span class="em-text-white" style="color:#ffffff !important;font-weight:700">Open original &rarr;</span>
+                        </a>
                       </td>
                     </tr>
                   </table>
@@ -2037,7 +2045,7 @@ def render_email_html(data, today, date_slug, digest_url):
           <tr>
             <td style="padding:28px 0 20px 0;border-top:1px solid #C2CCD5">
               <p class="em-text-orange" style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700;color:#CF512B !important">
-                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#CF512B !important"><span style="color:#CF512B !important">Top 5 at a Glance (click a title for the source, anywhere else for the full edition)</span></a>
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#CF512B !important"><span style="color:#CF512B !important">Top 5 at a Glance (Open original for the source report, anywhere else opens Austen)</span></a>
               </p>
             </td>
           </tr>
