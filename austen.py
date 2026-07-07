@@ -1951,10 +1951,25 @@ def render_email_html(data, today, date_slug, digest_url):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="light only">
-<meta name="supported-color-schemes" content="light only">
+<meta name="color-scheme" content="only light">
+<meta name="supported-color-schemes" content="only light">
 <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
-<style>:root {{ color-scheme: light only; }}</style>
+<style>
+  :root {{ color-scheme: only light; }}
+  @media (prefers-color-scheme: dark) {{
+    [bgcolor="#FAF7E6"] {{ background-color: #FAF7E6 !important; }}
+    [bgcolor="#ffffff"] {{ background-color: #ffffff !important; }}
+    [bgcolor="#0A111A"] {{ background-color: #0A111A !important; }}
+    [bgcolor="#CF512B"] {{ background-color: #CF512B !important; }}
+    font[color="#ffffff"] {{ color: #ffffff !important; }}
+    font[color="#0A111A"] {{ color: #0A111A !important; }}
+    font[color="#CF512B"] {{ color: #CF512B !important; }}
+    font[color="#41488A"] {{ color: #41488A !important; }}
+    font[color="#8E949D"] {{ color: #8E949D !important; }}
+    font[color="#545C65"] {{ color: #545C65 !important; }}
+    font[color="#C2CCD5"] {{ color: #C2CCD5 !important; }}
+  }}
+</style>
 </head>
 <body style="margin:0;padding:0;background-color:#FAF7E6;font-family:Geist,Arial,Helvetica,sans-serif" bgcolor="#FAF7E6">
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FAF7E6" style="background-color:#FAF7E6">
