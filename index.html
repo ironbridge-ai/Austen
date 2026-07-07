@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Austen — AI Briefing Hub by RAMSAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f8f4e3; font-family: Geist, Arial, sans-serif; color: #10131b; min-height: 100vh; }
+  a { color: inherit; text-decoration: none; }
+  
+  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; }
+  .nav-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .nav-link:hover { color: #fff; }
+  .nav-link.active { color: #ffffff; border-bottom-color: #bf5631; }
+  .nav-build { margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  /* Ironbridge "iron is never one colour" gradient bar */
+  .brand-bar { height: 4px; width: 100%; background: linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,#c2ccd7 68%,#41407c 85%,#10131b 100%); }
+  /* hairline divider */
+  .hairline { height: 1px; background: #e6dcc4; border: none; margin: 0; }
+  /* outlined pill tag */
+  .pill { display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #bf5631; border: 1px solid #bf5631; border-radius: 999px; padding: 4px 13px; }
+  .pill-light { border-color: rgba(248,244,227,0.5); color: #ffffff; }
+  /* eyebrow row: pill on the left, counter on the right */
+  .eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
+  /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
+  .bracket { position: relative; }
+  .bracket::before, .bracket::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 72px; width: 40px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
+  .bracket::before { left: 18px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
+  .bracket::after { right: 18px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
+  .page-body { max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }
+  .hub-hero { background: linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%); border-radius: 12px; padding: 44px 92px 40px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; overflow: hidden; }
+  .hub-hero h1 { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }
+  .hub-hero h1 span { color: #ffffff; border-bottom: 3px solid #bf5631; padding-bottom: 2px; }
+  .hub-hero-sub { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; font-weight: 600; margin-bottom: 8px; }
+  .hub-hero-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: -0.03em; }
+  .hub-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .hub-tile { background: #ffffff; border: 1px solid #e6dcc4; border-left: 3px solid #bf5631; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; transition: box-shadow 0.15s; }
+  .hub-tile:hover { box-shadow: 0 4px 20px rgba(16,19,27,0.08); }
+  .hub-tile-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: #bf5631; }
+  .hub-tile-title { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #10131b; }
+  .hub-tile-desc { font-size: 13px; color: #5f5a52; line-height: 1.6; flex: 1; }
+  .hub-tile-btn { display: inline-block; background: #bf5631; color: #ffffff; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; align-self: flex-start; transition: opacity 0.15s; }
+  .hub-tile-btn:hover { opacity: 0.85; }
+  .section-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #bf5631; font-weight: 700; border-top: 1px solid #e6dcc4; padding-top: 24px; margin-bottom: 20px; }
+  .edition-card { background: #ffffff; border: 1px solid #e6dcc4; border-left: 3px solid #bf5631; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .edition-date { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 14px; font-weight: 700; color: #10131b; }
+  .view-btn { display: inline-block; background: #bf5631; color: #ffffff; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: opacity 0.15s; }
+  .view-btn:hover { opacity: 0.85; }
+  .footer { background: #10131b; border-radius: 10px; padding: 22px 32px; margin-top: 32px; display: flex; align-items: center; justify-content: space-between; }
+  .footer p { font-size: 12px; color: rgba(255,255,255,0.5); font-family: Geist, Arial, sans-serif; }
+  .footer-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link active">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 29, 10:30</span></nav><div class="brand-bar"></div>
+<div class="page-body">
+  <div class="hub-hero bracket">
+    <div>
+      <p style="margin:0 0 14px 0"><span class="pill pill-light">Austen &middot; AI Knowledge Hub</span></p>
+      <h1><span>This Week</span> in AI</h1>
+    </div>
+    <div class="hub-hero-brand">ramsac</div>
+  </div>
+  <div class="hub-tiles">
+    <a class="hub-tile" href="glossary.html">
+      <span class="pill">Explore</span>
+      <div class="hub-tile-title">AI Glossary</div>
+      <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
+      <span class="hub-tile-btn">Open glossary &rarr;</span>
+    </a>
+    <a class="hub-tile" href="battlecards.html">
+      <span class="pill">Know your landscape</span>
+      <div class="hub-tile-title">Battle Cards</div>
+      <div class="hub-tile-desc">Understand the major AI players, what they offer, and how RAMSAC positions against them in client conversations.</div>
+      <span class="hub-tile-btn">View battle cards &rarr;</span>
+    </a>
+  </div>
+  <hr class="hairline" style="margin:36px 0 20px">
+  <div class="eyebrow-row" style="margin-bottom:20px">
+    <span class="pill">All Editions</span>
+    <span class="eyebrow-count">3 editions</span>
+  </div>
+    <div class="edition-card">
+      <div class="edition-date">June 29, 2026</div>
+      <a class="view-btn" href="austen_2026-06-29.html">View &rarr;</a>
+    </div>
+    <div class="edition-card">
+      <div class="edition-date">June 22, 2026</div>
+      <a class="view-btn" href="austen_2026-06-22.html">View &rarr;</a>
+    </div>
+    <div class="edition-card">
+      <div class="edition-date">June 17, 2026</div>
+      <a class="view-btn" href="austen_2026-06-17.html">View &rarr;</a>
+    </div>
+  <div class="footer">
+    <p>Stay curious, stay ahead.</p>
+    <div class="footer-brand">ramsac</div>
+  </div>
+</div>
+</body>
+</html>

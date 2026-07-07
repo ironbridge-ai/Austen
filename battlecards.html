@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Battle Cards — RAMSAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f8f4e3; font-family: Geist, Arial, sans-serif; color: #10131b; min-height: 100vh; }
+  a { color: inherit; text-decoration: none; }
+  
+  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; }
+  .nav-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .nav-link:hover { color: #fff; }
+  .nav-link.active { color: #ffffff; border-bottom-color: #bf5631; }
+  .nav-build { margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  /* Ironbridge "iron is never one colour" gradient bar */
+  .brand-bar { height: 4px; width: 100%; background: linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,#c2ccd7 68%,#41407c 85%,#10131b 100%); }
+  /* hairline divider */
+  .hairline { height: 1px; background: #e6dcc4; border: none; margin: 0; }
+  /* outlined pill tag */
+  .pill { display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #bf5631; border: 1px solid #bf5631; border-radius: 999px; padding: 4px 13px; }
+  .pill-light { border-color: rgba(248,244,227,0.5); color: #ffffff; }
+  /* eyebrow row: pill on the left, counter on the right */
+  .eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
+  /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
+  .bracket { position: relative; }
+  .bracket::before, .bracket::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 72px; width: 40px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
+  .bracket::before { left: 18px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M0%2010%20A10%2010%200%200%201%2010%200%20L90%200%20A10%2010%200%200%201%20100%2010%20L100%2030%20A70%2070%200%200%200%20100%20170%20L100%20190%20A10%2010%200%200%201%2090%20200%20L10%20200%20A10%2010%200%200%201%200%20190%20Z%27/%3E%3C/svg%3E"); }
+  .bracket::after { right: 18px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20200%27%20fill%3D%27%23f8f4e3%27%3E%3Cpath%20d%3D%27M100%2010%20A10%2010%200%200%200%2090%200%20L10%200%20A10%2010%200%200%200%200%2010%20L0%2030%20A70%2070%200%200%201%200%20170%20L0%20190%20A10%2010%200%200%200%2010%20200%20L90%20200%20A10%2010%200%200%200%20100%20190%20Z%27/%3E%3C/svg%3E"); }
+  .page-body { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+  .page-title { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #10131b; margin-bottom: 6px; }
+  .page-sub { font-size: 14px; color: #5f5a52; margin-bottom: 32px; line-height: 1.6; }
+  .ramsac-diff { background: linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%); border-radius: 10px; padding: 28px 88px; margin-bottom: 36px; overflow: hidden; }
+  .ramsac-diff-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; font-weight: 700; margin-bottom: 8px; }
+  .ramsac-diff p { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+  .bc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  .bc-card { background: #ffffff; border: 1px solid #e6dcc4; border-radius: 10px; overflow: hidden; }
+  .bc-header { padding: 20px 20px 16px; background: #ffffff; }
+  .bc-name { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 18px; font-weight: 800; color: #10131b; }
+  .bc-product { font-size: 13px; color: #5f5a52; margin-top: 2px; }
+  .bc-tagline { font-size: 12px; color: #bf5631; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; }
+  .bc-body { padding: 0 20px 20px; }
+  .bc-section { margin-top: 16px; }
+  .bc-section-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #bf5631; font-weight: 700; margin-bottom: 6px; }
+  .bc-section p { font-size: 13px; line-height: 1.65; color: #5f5a52; }
+  .bc-section ul { padding-left: 18px; }
+  .bc-section ul li { font-size: 13px; line-height: 1.65; color: #5f5a52; margin-bottom: 2px; }
+  .bc-watch { background: #f7efdd; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }
+  .bc-watch .bc-section-label { color: #c2922f; }
+  .bc-ramsac { background: #f8ece6; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid #bf5631; }
+  .bc-ramsac .bc-section-label { color: #bf5631; }
+  .bc-ramsac p { color: #41407c; }
+  .bc-terms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .term-chip { display: inline-block; background: rgba(191,86,49,0.12); color: #000000; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 10px; border: 1px solid #bf5631; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; cursor: pointer; transition: background 0.15s; }
+  .term-chip:hover { background: #bf5631; color: #ffffff; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link active">Battle Cards</a><span class="nav-build">build Jun 26, 14:38</span></nav><div class="brand-bar"></div>
+<div class="page-body">
+  <div class="eyebrow-row" style="margin-bottom:14px">
+    <span class="pill">Know your landscape</span>
+    <span class="eyebrow-count">6 providers</span>
+  </div>
+  <div class="page-title">AI Battle Cards</div>
+  <p class="page-sub">Understand each major AI provider, what they offer, and how RAMSAC positions against them.</p>
+  <hr class="hairline" style="margin:24px 0 28px">
+  <div class="ramsac-diff bracket">
+    <div class="ramsac-diff-label">Our differentiation</div>
+    <p>RAMSAC is model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others — selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
+  </div>
+  <div class="bc-grid">
+    
+<div class="bc-card" id="bc-anthropic">
+  <div class="bc-header" style="border-left:4px solid #bf5631">
+    <div>
+      <div class="bc-name">Anthropic</div>
+      <div class="bc-product">Claude</div>
+      <div class="bc-tagline">Safety-first frontier AI</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>Anthropic is an AI safety company founded by former OpenAI researchers. Their flagship product is Claude — a family of AI models (Opus, Sonnet, Haiku) known for being exceptionally safe, accurate, and capable of handling long, complex documents. Claude powers many enterprise AI applications behind the scenes.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul><li>Claude Opus (most capable)</li><li>Claude Sonnet (balanced)</li><li>Claude Haiku (fastest, cheapest)</li></ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul><li>Highest-rated for accuracy and instruction-following</li><li>Best-in-class for long document analysis</li><li>Strong safety record with enterprise clients</li><li>Excellent at coding and technical reasoning</li></ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>Available primarily via API — no standalone consumer app with wide adoption yet. Anthropic focuses on the model layer, not the application layer.</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>Claude is one of the models RAMSAC can deploy and wrap for clients. Because we are model-agnostic, we can use Anthropic's strengths — accuracy, safety, long-context — for the right use cases without locking clients into a single vendor.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms"><a href="glossary.html?focus=frontier+model" class="term-chip">frontier model</a><a href="glossary.html?focus=AI+agent" class="term-chip">AI agent</a><a href="glossary.html?focus=Context+Window" class="term-chip">Context Window</a><a href="glossary.html?focus=Alignment" class="term-chip">Alignment</a><a href="glossary.html?focus=RLHF" class="term-chip">RLHF</a></div>
+    </div>
+  </div>
+</div>
+<div class="bc-card" id="bc-openai">
+  <div class="bc-header" style="border-left:4px solid #41407c">
+    <div>
+      <div class="bc-name">OpenAI</div>
+      <div class="bc-product">ChatGPT / GPT-4o</div>
+      <div class="bc-tagline">The brand that made AI mainstream</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>OpenAI created ChatGPT, the product that brought AI to 200 million users. Their GPT-4o model powers ChatGPT and is embedded in thousands of third-party products. OpenAI also makes Codex (code generation), DALL-E (images), and Operator (web browsing agent).</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul><li>ChatGPT (consumer + enterprise)</li><li>GPT-4o API</li><li>Codex (coding)</li><li>Operator (agentic web browsing)</li></ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul><li>Largest user base and brand recognition</li><li>Strong ecosystem of integrations</li><li>Broad multimodal capability (text, images, audio, video)</li><li>Fastest at shipping new features</li></ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>Quality can be inconsistent across versions. Microsoft has exclusive cloud rights, meaning Azure OpenAI Service is the enterprise path — which ties clients to Microsoft pricing and infrastructure.</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>Most clients will already have heard of ChatGPT. RAMSAC can build on that familiarity while offering something they cannot get alone: proper deployment, governance, and the ability to switch to a better model when OpenAI is not the right fit.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms"><a href="glossary.html?focus=LLM" class="term-chip">LLM</a><a href="glossary.html?focus=Multimodal" class="term-chip">Multimodal</a><a href="glossary.html?focus=Agentic+workflow" class="term-chip">Agentic workflow</a><a href="glossary.html?focus=Autoregressive+model" class="term-chip">Autoregressive model</a><a href="glossary.html?focus=frontier+model" class="term-chip">frontier model</a></div>
+    </div>
+  </div>
+</div>
+<div class="bc-card" id="bc-microsoft">
+  <div class="bc-header" style="border-left:4px solid #7d8aa0">
+    <div>
+      <div class="bc-name">Microsoft</div>
+      <div class="bc-product">Copilot / Azure AI</div>
+      <div class="bc-tagline">AI baked into tools your clients already pay for</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>Microsoft has embedded AI across its entire product stack. Copilot appears in Word, Excel, Outlook, Teams, and SharePoint. Azure OpenAI Service gives enterprises access to GPT-4 through Microsoft's cloud. Copilot Studio lets businesses build custom AI agents without writing code.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul><li>Microsoft 365 Copilot (Office AI)</li><li>Azure OpenAI Service</li><li>Copilot Studio (custom agents)</li><li>Security Copilot</li></ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul><li>Already inside tools clients pay for — no new vendor</li><li>Deep integration with M365 data (emails, Teams, SharePoint)</li><li>Enterprise-grade compliance and data residency</li><li>Security Copilot for threat intelligence</li></ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>Copilot licensing adds cost on top of existing M365 subscriptions. Some features require specific licence tiers. Privacy and data handling policies have been a concern for regulated industries.</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>This is core RAMSAC territory. As an M365 specialist, we are the natural partner for Copilot deployment, governance, and training. We understand which clients are ready, what data needs preparing, and how to get ROI — something Microsoft's own sales team cannot deliver at the SME level.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms"><a href="glossary.html?focus=Agentic+workflow" class="term-chip">Agentic workflow</a><a href="glossary.html?focus=search-grounding" class="term-chip">search-grounding</a><a href="glossary.html?focus=prompt+injection" class="term-chip">prompt injection</a><a href="glossary.html?focus=Data+isolation" class="term-chip">Data isolation</a><a href="glossary.html?focus=multi-model+architectures" class="term-chip">multi-model architectures</a></div>
+    </div>
+  </div>
+</div>
+<div class="bc-card" id="bc-google">
+  <div class="bc-header" style="border-left:4px solid #c2922f">
+    <div>
+      <div class="bc-name">Google / DeepMind</div>
+      <div class="bc-product">Gemini</div>
+      <div class="bc-tagline">The multimodal powerhouse</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind — Google's research arm — also produces breakthrough research models like AlphaFold and DiffusionGemma.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul><li>Gemini Ultra / Pro / Flash</li><li>Google Workspace AI</li><li>NotebookLM (document intelligence)</li><li>Google Cloud Vertex AI</li></ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul><li>Best multimodal capabilities (text, image, audio, video, code)</li><li>Deep integration with Google Workspace</li><li>Real-time web search grounding built in</li><li>Strong research pedigree from DeepMind</li></ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>Gemini's consumer reputation has suffered from high-profile errors at launch. Enterprise adoption is growing but still behind Microsoft. Google Cloud customers are the natural target, not M365 shops.</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>Most RAMSAC clients are in the Microsoft ecosystem, not Google. But Gemini's multimodal strengths and research pace mean it is a model worth including in any multi-model deployment strategy — especially for image, video, or search-heavy workflows.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms"><a href="glossary.html?focus=Multimodal" class="term-chip">Multimodal</a><a href="glossary.html?focus=diffusion-based+generation" class="term-chip">diffusion-based generation</a><a href="glossary.html?focus=frontier+model" class="term-chip">frontier model</a><a href="glossary.html?focus=search-grounding" class="term-chip">search-grounding</a><a href="glossary.html?focus=RAG" class="term-chip">RAG</a></div>
+    </div>
+  </div>
+</div>
+<div class="bc-card" id="bc-xai">
+  <div class="bc-header" style="border-left:4px solid #10131b">
+    <div>
+      <div class="bc-name">xAI</div>
+      <div class="bc-product">Grok</div>
+      <div class="bc-tagline">Elon Musk's unfiltered AI</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>xAI is Elon Musk's AI company, launched in 2023. Grok is its flagship model, integrated into X (formerly Twitter) and available as a standalone API. Grok 3 is positioned as a frontier model competing directly with GPT-4 and Claude. Aurora is xAI's image generation model.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul><li>Grok 3 (frontier model)</li><li>Grok API</li><li>Aurora (image generation)</li><li>X/Twitter integration</li></ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul><li>Real-time access to X/Twitter data</li><li>Fewer content restrictions than competitors</li><li>Growing model quality — Grok 3 benchmarks are competitive</li><li>Strong coding capabilities</li></ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>Brand association with Elon Musk and X creates reputational risk for enterprise clients. Data privacy policies are less mature than established providers. Not a natural fit for regulated industries.</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>Grok is unlikely to be the right choice for RAMSAC clients in regulated or professional services sectors. Worth knowing about because clients will ask. In a model-agnostic architecture, it could serve specific use cases where real-time social data or fewer content restrictions matter.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms"><a href="glossary.html?focus=LLM" class="term-chip">LLM</a><a href="glossary.html?focus=frontier+model" class="term-chip">frontier model</a><a href="glossary.html?focus=open-weight+model" class="term-chip">open-weight model</a><a href="glossary.html?focus=Multimodal" class="term-chip">Multimodal</a></div>
+    </div>
+  </div>
+</div>
+<div class="bc-card" id="bc-meta">
+  <div class="bc-header" style="border-left:4px solid #e2b566">
+    <div>
+      <div class="bc-name">Meta AI</div>
+      <div class="bc-product">Llama</div>
+      <div class="bc-tagline">Open-weight AI anyone can run</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-section">
+      <div class="bc-section-label">What it is</div>
+      <p>Meta releases its Llama model family as open-weight — anyone can download and run the models on their own hardware. Llama 3 and 3.1 are among the most capable open models available. Meta AI is also the assistant embedded in WhatsApp, Instagram, and Facebook.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Key products</div>
+      <ul><li>Llama 3.x (open-weight models)</li><li>Meta AI (consumer assistant)</li><li>Llama API (hosted inference)</li></ul>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Strengths</div>
+      <ul><li>Open-weight means clients can run models on-premise with no data leaving their environment</li><li>No per-token cost when self-hosted</li><li>Strong community of fine-tuned variants for specific industries</li><li>Competitive quality, especially for code and instruction-following</li></ul>
+    </div>
+    <div class="bc-section bc-watch">
+      <div class="bc-section-label">Watch out for</div>
+      <p>Running Llama requires technical infrastructure — it is not plug-and-play for most SMEs. Meta's consumer products (WhatsApp AI) are separate from enterprise Llama deployments. Meta does not provide enterprise support.</p>
+    </div>
+    <div class="bc-section bc-ramsac">
+      <div class="bc-section-label">RAMSAC angle</div>
+      <p>Llama is the clearest illustration of why model-agnostic matters. Some clients in legal, finance, or healthcare need AI that never touches an external server. RAMSAC can deploy Llama on the client's own infrastructure — something no single-vendor AI provider will ever offer.</p>
+    </div>
+    <div class="bc-section">
+      <div class="bc-section-label">Related concepts</div>
+      <div class="bc-terms"><a href="glossary.html?focus=open-weight+model" class="term-chip">open-weight model</a><a href="glossary.html?focus=LLM" class="term-chip">LLM</a><a href="glossary.html?focus=model+diversification" class="term-chip">model diversification</a><a href="glossary.html?focus=frontier+model" class="term-chip">frontier model</a></div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+<script>
+  var SEARCH_URL = "https://dev-rvelasquez.tailc35de4.ts.net";
+  function logView(name) {
+    if (!SEARCH_URL) return;
+    fetch(SEARCH_URL + '/api/search', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({term: name, page: 'battlecards', ts: Date.now() / 1000})
+    }).catch(function(){});
+  }
+  document.querySelectorAll('.bc-card').forEach(function(card) {
+    logView(card.querySelector('.bc-name').textContent);
+  });
+</script>
+</body>
+</html>
