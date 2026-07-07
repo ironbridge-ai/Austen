@@ -1902,9 +1902,10 @@ def render_battlecards_html():
 def render_email_html(data, today, date_slug, digest_url):
     """Render a fully inline-styled, Outlook dark-mode-safe email HTML."""
 
-    def story_rows(stories):
+    def story_rows(stories, digest_url):
         rows = []
         for i, s in enumerate(stories, 1):
+            title_href = s.get("url") or digest_url
             rows.append(f"""
         <tr>
           <td style="padding:0 0 12px 0">
@@ -1924,7 +1925,9 @@ def render_email_html(data, today, date_slug, digest_url):
                       </td>
                       <td valign="middle">
                         <p class="em-text-navy" style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">
-                          <font color="#0A111A"><b>{s['title']}</b></font>
+                          <a href="{title_href}" target="_blank" rel="noopener" style="text-decoration:none">
+                            <font color="#0A111A"><b>{s['title']}</b></font>
+                          </a>
                         </p>
                         <p class="em-text-orange" style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
                           <font color="#CF512B">{s['source']}</font>
@@ -2037,7 +2040,7 @@ def render_email_html(data, today, date_slug, digest_url):
               </p>
             </td>
           </tr>
-          {story_rows(data['stories'])}
+          {story_rows(data['stories'], digest_url)}
         </table>
       </td>
     </tr>
