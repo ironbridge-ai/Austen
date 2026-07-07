@@ -5,6 +5,7 @@ import os
 import sys
 import json
 import re
+import time
 import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
@@ -1901,6 +1902,7 @@ def render_battlecards_html():
 
 def render_email_html(data, today, date_slug, digest_url):
     """Render a fully inline-styled, Outlook dark-mode-safe email HTML."""
+    home_url = f"{PAGES_BASE_URL}/"
 
     def story_rows(stories, digest_url):
         rows = []
@@ -1910,34 +1912,32 @@ def render_email_html(data, today, date_slug, digest_url):
         <tr>
           <td style="padding:0 0 12px 0">
             <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
+                   style="background:#ffffff !important;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
               <tr>
-                <td class="em-bg-white" style="padding:20px 22px" bgcolor="#ffffff">
+                <td class="em-bg-white" style="padding:20px 22px;background:#ffffff !important" bgcolor="#ffffff">
                   <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr>
                       <td width="48" valign="top" style="padding:0 14px 0 0">
                         <table cellpadding="0" cellspacing="0" border="0">
                           <tr><td width="36" height="36" align="center" bgcolor="#CF512B" class="em-bg-orange"
-                                  style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px">
-                            <font class="em-text-white" color="#ffffff" face="Geist,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
+                                  style="width:36px;height:36px;border-radius:50%;background:#CF512B !important;text-align:center;line-height:36px">
+                            <a href="{home_url}" target="_blank" rel="noopener" style="display:block;width:36px;height:36px;line-height:36px;text-decoration:none;color:#ffffff !important"><span class="em-text-white" style="color:#ffffff !important;font-family:Geist,Arial,sans-serif;font-size:15px;font-weight:700">{i}</span></a>
                           </td></tr>
                         </table>
                       </td>
                       <td valign="middle">
-                        <p class="em-text-navy" style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">
-                          <a href="{title_href}" target="_blank" rel="noopener" style="text-decoration:none">
-                            <font color="#0A111A"><b>{s['title']}</b></font>
-                          </a>
+                        <p class="em-text-navy" style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3;color:#0A111A !important">
+                          <a href="{title_href}" target="_blank" rel="noopener" style="text-decoration:none;color:#0A111A !important"><span style="color:#0A111A !important;font-weight:700">{s['title']}</span></a>
                         </p>
-                        <p class="em-text-orange" style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
-                          <font color="#CF512B">{s['source']}</font>
+                        <p class="em-text-orange" style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;color:#CF512B !important">
+                          <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#CF512B !important"><span style="color:#CF512B !important">{s['source']}</span></a>
                         </p>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2" style="padding-top:10px">
-                        <p class="em-text-indigo" style="margin:0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6">
-                          <font color="#41488A">{s['glance']}</font>
+                        <p class="em-text-indigo" style="margin:0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6;color:#41488A !important">
+                          <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;display:block;color:#41488A !important"><span style="color:#41488A !important">{s['glance']}</span></a>
                         </p>
                       </td>
                     </tr>
@@ -1954,23 +1954,24 @@ def render_email_html(data, today, date_slug, digest_url):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="only light">
-<meta name="supported-color-schemes" content="only light">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
 <style>
   :root {{ color-scheme: only light; }}
+  a {{ text-decoration: none; }}
   @media (prefers-color-scheme: dark) {{
     [bgcolor="#FAF7E6"] {{ background-color: #FAF7E6 !important; }}
     [bgcolor="#ffffff"] {{ background-color: #ffffff !important; }}
     [bgcolor="#0A111A"] {{ background-color: #0A111A !important; }}
     [bgcolor="#CF512B"] {{ background-color: #CF512B !important; }}
-    font[color="#ffffff"] {{ color: #ffffff !important; }}
-    font[color="#0A111A"] {{ color: #0A111A !important; }}
-    font[color="#CF512B"] {{ color: #CF512B !important; }}
-    font[color="#41488A"] {{ color: #41488A !important; }}
-    font[color="#8E949D"] {{ color: #8E949D !important; }}
-    font[color="#545C65"] {{ color: #545C65 !important; }}
-    font[color="#C2CCD5"] {{ color: #C2CCD5 !important; }}
+    .em-text-white, .em-text-white span {{ color: #ffffff !important; }}
+    .em-text-navy, .em-text-navy span, .em-text-navy a {{ color: #0A111A !important; }}
+    .em-text-orange, .em-text-orange span, .em-text-orange a {{ color: #CF512B !important; }}
+    .em-text-indigo, .em-text-indigo span, .em-text-indigo a {{ color: #41488A !important; }}
+    .em-text-gray1, .em-text-gray1 span, .em-text-gray1 a {{ color: #8E949D !important; }}
+    .em-text-gray2, .em-text-gray2 span, .em-text-gray2 a {{ color: #545C65 !important; }}
+    .em-text-silver, .em-text-silver span {{ color: #C2CCD5 !important; }}
   }}
   /* New Outlook / Outlook.com apply their own dark-mode repaint driven by
      [data-ogsc]/[data-ogsb] attributes on <html>/<body> — they ignore
@@ -1989,27 +1990,27 @@ def render_email_html(data, today, date_slug, digest_url):
   [data-ogsc] .em-text-silver, [data-ogsc] .em-text-silver * {{ color: #C2CCD5 !important; }}
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#FAF7E6;font-family:Geist,Arial,Helvetica,sans-serif" bgcolor="#FAF7E6">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FAF7E6" style="background-color:#FAF7E6">
-<tr><td align="center" style="padding:32px 16px;background-color:#FAF7E6">
+<body style="margin:0;padding:0;background-color:#FAF7E6 !important;font-family:Geist,Arial,Helvetica,sans-serif" bgcolor="#FAF7E6">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FAF7E6" style="background-color:#FAF7E6 !important">
+<tr><td align="center" style="padding:32px 16px;background-color:#FAF7E6 !important">
   <table width="620" cellpadding="0" cellspacing="0" border="0" style="max-width:620px;width:100%">
 
     <!-- HEADER: fixed masthead (date, title, brand) -->
     <tr>
-      <td class="em-bg-navy" style="background:#0A111A;border-radius:12px 12px 0 0;padding:40px 36px 32px" bgcolor="#0A111A">
+      <td class="em-bg-navy" style="background:#0A111A !important;border-radius:12px 12px 0 0;padding:40px 36px 32px" bgcolor="#0A111A">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
-              <p class="em-text-white" style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">
-                <font color="#ffffff">{today}</font>
+              <p class="em-text-white" style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600;color:#ffffff !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#ffffff !important"><span style="color:#ffffff !important">{today}</span></a>
               </p>
-              <p style="margin:0;font-size:28px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2">
-                <font class="em-text-white" color="#ffffff"><b>This Week</b></font><font class="em-text-silver" color="#C2CCD5"><b> in AI</b></font>
+              <p style="margin:0;font-size:28px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2;color:#ffffff !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#ffffff !important"><span class="em-text-white" style="color:#ffffff !important;font-weight:800">This Week</span><span class="em-text-silver" style="color:#C2CCD5 !important;font-weight:800"> in AI</span></a>
               </p>
             </td>
             <td width="80" align="right" valign="top">
-              <p class="em-text-white" style="margin:0;font-size:13px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;line-height:1.4">
-                <font color="#ffffff"><b>Thought<br>Provoked</b></font>
+              <p class="em-text-white" style="margin:0;font-size:13px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;line-height:1.4;color:#ffffff !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#ffffff !important"><span style="color:#ffffff !important;font-weight:800">Thought<br>Provoked</span></a>
               </p>
             </td>
           </tr>
@@ -2019,24 +2020,24 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- THIS EDITION'S HEADLINE: changes every week -->
     <tr>
-      <td class="em-bg-white" style="background:#ffffff;padding:18px 36px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5;border-top:3px solid #CF512B" bgcolor="#ffffff">
-        <p class="em-text-orange" style="margin:0 0 6px 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
-          <font color="#CF512B">This week</font>
+      <td class="em-bg-white" style="background:#ffffff !important;padding:18px 36px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5;border-top:3px solid #CF512B" bgcolor="#ffffff">
+        <p class="em-text-orange" style="margin:0 0 6px 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700;color:#CF512B !important">
+          <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#CF512B !important"><span style="color:#CF512B !important">This week</span></a>
         </p>
-        <p class="em-text-navy" style="margin:0;font-size:16px;font-weight:600;font-family:Geist,Arial,sans-serif;line-height:1.5">
-          <font color="#0A111A">{data['intro']}</font>
+        <p class="em-text-navy" style="margin:0;font-size:16px;font-weight:600;font-family:Geist,Arial,sans-serif;line-height:1.5;color:#0A111A !important">
+          <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;display:block;color:#0A111A !important"><span style="color:#0A111A !important">{data['intro']}</span></a>
         </p>
       </td>
     </tr>
 
     <!-- BODY -->
     <tr>
-      <td class="em-bg-cream" style="background:#FAF7E6;padding:28px 32px 8px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
+      <td class="em-bg-cream" style="background:#FAF7E6 !important;padding:28px 32px 8px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td style="padding:28px 0 20px 0;border-top:1px solid #C2CCD5">
-              <p class="em-text-orange" style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
-                <font color="#CF512B">Top 5 at a Glance (click to read the full edition online)</font>
+              <p class="em-text-orange" style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700;color:#CF512B !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#CF512B !important"><span style="color:#CF512B !important">Top 5 at a Glance (click a title for the source, anywhere else for the full edition)</span></a>
               </p>
             </td>
           </tr>
@@ -2047,22 +2048,14 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- READ ONLINE BUTTON -->
     <tr>
-      <td class="em-bg-cream" style="background:#FAF7E6;padding:0 32px 24px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
+      <td class="em-bg-cream" style="background:#FAF7E6 !important;padding:0 32px 24px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tr>
             <td align="center">
-              <!--[if mso]>
-              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{digest_url}" style="height:44px;v-text-anchor:middle;width:260px;" arcsize="18%" stroke="f" fillcolor="#CF512B">
-              <w:anchorlock/>
-              <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;">Read full edition online &rarr;</center>
-              </v:roundrect>
-              <![endif]-->
-              <!--[if !mso]><!-->
-              <a href="{digest_url}" target="_blank" class="em-bg-orange"
-                 style="display:inline-block;background:#CF512B;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px;mso-hide:all">
-                <font class="em-text-white" color="#ffffff"><b>Read full edition online &rarr;</b></font>
+              <a href="{digest_url}" target="_blank" rel="noopener" class="em-bg-orange"
+                 style="display:block;width:260px;margin:0 auto;padding:13px 0;background:#CF512B !important;border-radius:8px;text-align:center;text-decoration:none;color:#ffffff !important;font-family:'Charger',Georgia,'Times New Roman',serif;font-size:13px;font-weight:700">
+                <span class="em-text-white" style="color:#ffffff !important;font-weight:700">Read full edition online &rarr;</span>
               </a>
-              <!--<![endif]-->
             </td>
           </tr>
         </table>
@@ -2071,23 +2064,23 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- FOOTER -->
     <tr>
-      <td class="em-bg-navy" style="background:#0A111A;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #0A111A" bgcolor="#0A111A">
+      <td class="em-bg-navy" style="background:#0A111A !important;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #0A111A" bgcolor="#0A111A">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
-              <p class="em-text-white" style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif">
-                <font color="#ffffff"><b>Stay curious, stay ahead.</b></font>
+              <p class="em-text-white" style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;color:#ffffff !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#ffffff !important"><span style="color:#ffffff !important;font-weight:700">Stay curious, stay ahead.</span></a>
               </p>
-              <p class="em-text-gray1" style="margin:0;font-size:13px;font-family:Geist,Arial,sans-serif">
-                <font color="#8E949D">See you next week.</font>
+              <p class="em-text-gray1" style="margin:0;font-size:13px;font-family:Geist,Arial,sans-serif;color:#8E949D !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#8E949D !important"><span style="color:#8E949D !important">See you next week.</span></a>
               </p>
             </td>
             <td align="right">
-              <p class="em-text-white" style="margin:0;font-size:11px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em">
-                <font color="#ffffff"><b>Thought Provoked</b></font>
+              <p class="em-text-white" style="margin:0;font-size:11px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;color:#ffffff !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#ffffff !important"><span style="color:#ffffff !important;font-weight:800">Thought Provoked</span></a>
               </p>
-              <p class="em-text-gray2" style="margin:2px 0 0 0;font-size:10px;font-family:Geist,Arial,sans-serif">
-                <font color="#545C65">Weekly AI Briefing</font>
+              <p class="em-text-gray2" style="margin:2px 0 0 0;font-size:10px;font-family:Geist,Arial,sans-serif;color:#545C65 !important">
+                <a href="{home_url}" target="_blank" rel="noopener" style="text-decoration:none;color:#545C65 !important"><span style="color:#545C65 !important">Weekly AI Briefing</span></a>
               </p>
             </td>
           </tr>
@@ -2113,6 +2106,93 @@ def render_applescript(subject, html):
     open newMessage
 end tell
 '''
+
+
+# ─── Microsoft Graph sender ─────────────────────────────────────────────────
+# The AppleScript/Outlook-compose path is destructive: Outlook's editor strips
+# the <head> (color-scheme metas + the entire <style> block) and drops <font>
+# text colors before sending, so recipients get an email with no dark-mode
+# defenses and Outlook repaints it freely. Sending through the Graph API
+# preserves the rendered HTML byte-for-byte, like any real newsletter.
+
+GRAPH_TOKEN_CACHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".graph_token.json")
+GRAPH_LOGIN = "https://login.microsoftonline.com/organizations/oauth2/v2.0"
+# Microsoft's first-party "Microsoft Graph Command Line Tools" public client;
+# override with a dedicated app registration via AUSTEN_GRAPH_CLIENT_ID.
+GRAPH_CLIENT_ID_DEFAULT = "14d82eec-204b-4c2f-b7e8-296a70dab67e"
+GRAPH_SCOPE = "https://graph.microsoft.com/Mail.Send offline_access"
+
+
+def _graph_client_id():
+    return os.environ.get("AUSTEN_GRAPH_CLIENT_ID", GRAPH_CLIENT_ID_DEFAULT)
+
+
+def _graph_save_tokens(tok):
+    tok["expires_at"] = time.time() + int(tok.get("expires_in", 3600)) - 60
+    with open(GRAPH_TOKEN_CACHE, "w", encoding="utf-8") as f:
+        json.dump(tok, f)
+    os.chmod(GRAPH_TOKEN_CACHE, 0o600)
+
+
+def graph_get_token():
+    """Return a Graph access token from cache/refresh, or run device-code login."""
+    if os.path.exists(GRAPH_TOKEN_CACHE):
+        with open(GRAPH_TOKEN_CACHE, encoding="utf-8") as f:
+            tok = json.load(f)
+        if time.time() < tok.get("expires_at", 0):
+            return tok["access_token"]
+        if tok.get("refresh_token"):
+            resp = requests.post(f"{GRAPH_LOGIN}/token", data={
+                "grant_type": "refresh_token",
+                "client_id": _graph_client_id(),
+                "refresh_token": tok["refresh_token"],
+                "scope": GRAPH_SCOPE,
+            }, timeout=15)
+            if resp.ok:
+                tok = resp.json()
+                _graph_save_tokens(tok)
+                return tok["access_token"]
+
+    resp = requests.post(f"{GRAPH_LOGIN}/devicecode", data={
+        "client_id": _graph_client_id(), "scope": GRAPH_SCOPE}, timeout=15)
+    resp.raise_for_status()
+    dc = resp.json()
+    print(f"\n>>> One-time sign-in: open {dc['verification_uri']} and enter code {dc['user_code']}")
+    print(">>> (waiting for you to complete the sign-in...)\n")
+    deadline = time.time() + int(dc.get("expires_in", 900))
+    while time.time() < deadline:
+        time.sleep(int(dc.get("interval", 5)))
+        resp = requests.post(f"{GRAPH_LOGIN}/token", data={
+            "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
+            "client_id": _graph_client_id(),
+            "device_code": dc["device_code"],
+        }, timeout=15)
+        body = resp.json()
+        if resp.ok:
+            _graph_save_tokens(body)
+            return body["access_token"]
+        if body.get("error") not in ("authorization_pending", "slow_down"):
+            raise RuntimeError(f"Device-code auth failed: {body.get('error_description', body)}")
+    raise RuntimeError("Device-code auth timed out — run again to get a fresh code.")
+
+
+def send_via_graph(subject, html, recipients):
+    """Send the digest as HTML email via Microsoft Graph (preserves head/style)."""
+    token = graph_get_token()
+    payload = {
+        "message": {
+            "subject": subject,
+            "body": {"contentType": "HTML", "content": html},
+            "toRecipients": [{"emailAddress": {"address": a}} for a in recipients],
+        },
+        "saveToSentItems": True,
+    }
+    resp = requests.post("https://graph.microsoft.com/v1.0/me/sendMail",
+                         headers={"Authorization": f"Bearer {token}"},
+                         json=payload, timeout=30)
+    if resp.status_code != 202:
+        raise RuntimeError(f"Graph sendMail failed ({resp.status_code}): {resp.text[:500]}")
+    print(f"--- Sent via Microsoft Graph to: {', '.join(recipients)}")
 
 
 # ─── GitHub Pages publisher ─────────────────────────────────────────────────
@@ -2580,6 +2660,9 @@ def main():
 
     digest_url = f"{PAGES_BASE_URL}/{html_file}"
     email_html = render_email_html(data, today, date_slug, digest_url)
+    email_file = f"austen_{date_slug}_email.html"
+    with open(email_file, "w", encoding="utf-8") as f:
+        f.write(f"<!-- subject: {data['subject']} -->\n{email_html}")
     script = render_applescript(data["subject"], email_html)
     cmd = f'#!/bin/bash\nosascript << \'APPLESCRIPT\'\n{script}\nAPPLESCRIPT\n'
     with open(cmd_file, "w", encoding="utf-8") as f:
@@ -2590,13 +2673,57 @@ def main():
     print(f"\n--- Text saved to {txt_file}")
     print(f"--- HTML saved to {html_file}")
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"--- Email HTML:   {email_file}")
     print(f"--- Email ready:  {cmd_file}")
-    print(f"\n    To open in Outlook, run this on your Mac (avoids quarantine):")
-    print(f"    scp rvelasquez@dev-rvelasquez:{script_dir}/{cmd_file} ~/Desktop/ && open ~/Desktop/{cmd_file}")
+
+    send_to = _cli_recipients("--send-to") or _env_recipients()
+    if send_to:
+        send_via_graph(data["subject"], email_html, send_to)
+    else:
+        print(f"\n    To send with correct colors/links (recommended):")
+        print(f"    python3 austen.py --resend-to you@example.com")
+        print(f"\n    Or to open a draft in Outlook on your Mac (colors WILL break in dark mode):")
+        print(f"    scp rvelasquez@dev-rvelasquez:{script_dir}/{cmd_file} ~/Desktop/ && open ~/Desktop/{cmd_file}")
 
     publish_to_pages(html_file, date_slug, knowledge_log)
     publish_command_to_main(cmd_file, date_slug)
 
 
+def _cli_recipients(flag):
+    if flag in sys.argv:
+        i = sys.argv.index(flag)
+        if i + 1 < len(sys.argv):
+            return [a.strip() for a in sys.argv[i + 1].split(",") if a.strip()]
+        print(f"Error: {flag} requires an email address (comma-separate for several).")
+        sys.exit(1)
+    return None
+
+
+def _env_recipients():
+    return [a.strip() for a in os.environ.get("AUSTEN_SEND_TO", "").split(",") if a.strip()]
+
+
+def resend_latest(recipients):
+    """Send the most recently rendered email HTML without regenerating the digest."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = sorted(f for f in os.listdir(script_dir)
+                        if re.fullmatch(r"austen_\d{4}-\d{2}-\d{2}_email\.html", f))
+    if not candidates:
+        print("Error: no austen_*_email.html found — run austen.py once to generate a digest first.")
+        sys.exit(1)
+    path = os.path.join(script_dir, candidates[-1])
+    with open(path, encoding="utf-8") as f:
+        content = f.read()
+    m = re.match(r"<!-- subject: (.*?) -->\n", content)
+    subject = m.group(1) if m else "This Week in AI"
+    html = content[m.end():] if m else content
+    print(f"--- Resending {candidates[-1]}")
+    send_via_graph(subject, html, recipients)
+
+
 if __name__ == "__main__":
-    main()
+    resend = _cli_recipients("--resend-to")
+    if resend:
+        resend_latest(resend)
+    else:
+        main()
