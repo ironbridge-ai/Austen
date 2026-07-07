@@ -1911,29 +1911,29 @@ def render_email_html(data, today, date_slug, digest_url):
             <table width="100%" cellpadding="0" cellspacing="0" border="0"
                    style="background:#ffffff;border-radius:8px;border:1px solid #C2CCD5;border-left:3px solid #CF512B">
               <tr>
-                <td style="padding:20px 22px" bgcolor="#ffffff">
+                <td class="em-bg-white" style="padding:20px 22px" bgcolor="#ffffff">
                   <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr>
                       <td width="48" valign="top" style="padding:0 14px 0 0">
                         <table cellpadding="0" cellspacing="0" border="0">
-                          <tr><td width="36" height="36" align="center" bgcolor="#CF512B"
+                          <tr><td width="36" height="36" align="center" bgcolor="#CF512B" class="em-bg-orange"
                                   style="width:36px;height:36px;border-radius:50%;background:#CF512B;text-align:center;line-height:36px">
-                            <font color="#ffffff" face="Geist,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
+                            <font class="em-text-white" color="#ffffff" face="Geist,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
                           </td></tr>
                         </table>
                       </td>
                       <td valign="middle">
-                        <p style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">
+                        <p class="em-text-navy" style="margin:0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.3">
                           <font color="#0A111A"><b>{s['title']}</b></font>
                         </p>
-                        <p style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
+                        <p class="em-text-orange" style="margin:4px 0 0 0;font-size:11px;font-family:Geist,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
                           <font color="#CF512B">{s['source']}</font>
                         </p>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2" style="padding-top:10px">
-                        <p style="margin:0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6">
+                        <p class="em-text-indigo" style="margin:0;font-size:14px;font-family:Geist,Arial,sans-serif;line-height:1.6">
                           <font color="#41488A">{s['glance']}</font>
                         </p>
                       </td>
@@ -1969,6 +1969,21 @@ def render_email_html(data, today, date_slug, digest_url):
     font[color="#545C65"] {{ color: #545C65 !important; }}
     font[color="#C2CCD5"] {{ color: #C2CCD5 !important; }}
   }}
+  /* New Outlook / Outlook.com apply their own dark-mode repaint driven by
+     [data-ogsc]/[data-ogsb] attributes on <html>/<body> — they ignore
+     color-scheme and prefers-color-scheme entirely, so every color has to
+     be re-asserted via these selectors too. */
+  [data-ogsc] .em-bg-navy, [data-ogsb] .em-bg-navy {{ background-color: #0A111A !important; }}
+  [data-ogsc] .em-bg-white, [data-ogsb] .em-bg-white {{ background-color: #ffffff !important; }}
+  [data-ogsc] .em-bg-cream, [data-ogsb] .em-bg-cream {{ background-color: #FAF7E6 !important; }}
+  [data-ogsc] .em-bg-orange, [data-ogsb] .em-bg-orange {{ background-color: #CF512B !important; }}
+  [data-ogsc] .em-text-white, [data-ogsc] .em-text-white * {{ color: #ffffff !important; }}
+  [data-ogsc] .em-text-navy, [data-ogsc] .em-text-navy * {{ color: #0A111A !important; }}
+  [data-ogsc] .em-text-orange, [data-ogsc] .em-text-orange * {{ color: #CF512B !important; }}
+  [data-ogsc] .em-text-indigo, [data-ogsc] .em-text-indigo * {{ color: #41488A !important; }}
+  [data-ogsc] .em-text-gray1, [data-ogsc] .em-text-gray1 * {{ color: #8E949D !important; }}
+  [data-ogsc] .em-text-gray2, [data-ogsc] .em-text-gray2 * {{ color: #545C65 !important; }}
+  [data-ogsc] .em-text-silver, [data-ogsc] .em-text-silver * {{ color: #C2CCD5 !important; }}
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#FAF7E6;font-family:Geist,Arial,Helvetica,sans-serif" bgcolor="#FAF7E6">
@@ -1978,19 +1993,19 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- HEADER: fixed masthead (date, title, brand) -->
     <tr>
-      <td style="background:#0A111A;border-radius:12px 12px 0 0;padding:40px 36px 32px" bgcolor="#0A111A">
+      <td class="em-bg-navy" style="background:#0A111A;border-radius:12px 12px 0 0;padding:40px 36px 32px" bgcolor="#0A111A">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
-              <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">
+              <p class="em-text-white" style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:600">
                 <font color="#ffffff">{today}</font>
               </p>
               <p style="margin:0;font-size:28px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;line-height:1.2">
-                <font color="#ffffff"><b>This Week</b></font><font color="#C2CCD5"><b> in AI</b></font>
+                <font class="em-text-white" color="#ffffff"><b>This Week</b></font><font class="em-text-silver" color="#C2CCD5"><b> in AI</b></font>
               </p>
             </td>
             <td width="80" align="right" valign="top">
-              <p style="margin:0;font-size:13px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;line-height:1.4">
+              <p class="em-text-white" style="margin:0;font-size:13px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;line-height:1.4">
                 <font color="#ffffff"><b>Thought<br>Provoked</b></font>
               </p>
             </td>
@@ -2001,11 +2016,11 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- THIS EDITION'S HEADLINE: changes every week -->
     <tr>
-      <td style="background:#ffffff;padding:18px 36px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5;border-top:3px solid #CF512B" bgcolor="#ffffff">
-        <p style="margin:0 0 6px 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
+      <td class="em-bg-white" style="background:#ffffff;padding:18px 36px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5;border-top:3px solid #CF512B" bgcolor="#ffffff">
+        <p class="em-text-orange" style="margin:0 0 6px 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
           <font color="#CF512B">This week</font>
         </p>
-        <p style="margin:0;font-size:16px;font-weight:600;font-family:Geist,Arial,sans-serif;line-height:1.5">
+        <p class="em-text-navy" style="margin:0;font-size:16px;font-weight:600;font-family:Geist,Arial,sans-serif;line-height:1.5">
           <font color="#0A111A">{data['intro']}</font>
         </p>
       </td>
@@ -2013,11 +2028,11 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- BODY -->
     <tr>
-      <td style="background:#FAF7E6;padding:28px 32px 8px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
+      <td class="em-bg-cream" style="background:#FAF7E6;padding:28px 32px 8px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td style="padding:28px 0 20px 0;border-top:1px solid #C2CCD5">
-              <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
+              <p class="em-text-orange" style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'Charger',Georgia,'Times New Roman',serif;font-weight:700">
                 <font color="#CF512B">Top 5 at a Glance (click to read the full edition online)</font>
               </p>
             </td>
@@ -2029,14 +2044,22 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- READ ONLINE BUTTON -->
     <tr>
-      <td style="background:#FAF7E6;padding:0 32px 24px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
+      <td class="em-bg-cream" style="background:#FAF7E6;padding:0 32px 24px;border-left:1px solid #C2CCD5;border-right:1px solid #C2CCD5" bgcolor="#FAF7E6">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tr>
             <td align="center">
-              <a href="{digest_url}" target="_blank"
-                 style="display:inline-block;background:#CF512B;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px">
-                <font color="#ffffff"><b>Read full edition online &rarr;</b></font>
+              <!--[if mso]>
+              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{digest_url}" style="height:44px;v-text-anchor:middle;width:260px;" arcsize="18%" stroke="f" fillcolor="#CF512B">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;">Read full edition online &rarr;</center>
+              </v:roundrect>
+              <![endif]-->
+              <!--[if !mso]><!-->
+              <a href="{digest_url}" target="_blank" class="em-bg-orange"
+                 style="display:inline-block;background:#CF512B;color:#ffffff;font-family:'Charger',Georgia,'Times New Roman',serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px;mso-hide:all">
+                <font class="em-text-white" color="#ffffff"><b>Read full edition online &rarr;</b></font>
               </a>
+              <!--<![endif]-->
             </td>
           </tr>
         </table>
@@ -2045,22 +2068,22 @@ def render_email_html(data, today, date_slug, digest_url):
 
     <!-- FOOTER -->
     <tr>
-      <td style="background:#0A111A;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #0A111A" bgcolor="#0A111A">
+      <td class="em-bg-navy" style="background:#0A111A;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #0A111A" bgcolor="#0A111A">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td>
-              <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif">
+              <p class="em-text-white" style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:'Charger',Georgia,'Times New Roman',serif">
                 <font color="#ffffff"><b>Stay curious, stay ahead.</b></font>
               </p>
-              <p style="margin:0;font-size:13px;font-family:Geist,Arial,sans-serif">
+              <p class="em-text-gray1" style="margin:0;font-size:13px;font-family:Geist,Arial,sans-serif">
                 <font color="#8E949D">See you next week.</font>
               </p>
             </td>
             <td align="right">
-              <p style="margin:0;font-size:11px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em">
+              <p class="em-text-white" style="margin:0;font-size:11px;font-weight:800;font-family:'Charger',Georgia,'Times New Roman',serif;letter-spacing:-0.01em">
                 <font color="#ffffff"><b>Thought Provoked</b></font>
               </p>
-              <p style="margin:2px 0 0 0;font-size:10px;font-family:Geist,Arial,sans-serif">
+              <p class="em-text-gray2" style="margin:2px 0 0 0;font-size:10px;font-family:Geist,Arial,sans-serif">
                 <font color="#545C65">Weekly AI Briefing</font>
               </p>
             </td>
