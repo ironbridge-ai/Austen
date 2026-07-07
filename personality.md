@@ -47,9 +47,11 @@ Sales professionals who have client conversations every day. They need:
 3. **Talking points** — concrete, memorable ways to explain AI capabilities to a client who asks "so what's new in AI?"
 
 ## Story Selection Priority
-1. New model releases and capability breakthroughs — always leads
-2. AI crossing a frontier it has never crossed before
-3. AI solving a major real-world problem at scale
+**The digest is first and foremost about what the AI companies are building.** A story earns a top position because a company (Microsoft, Anthropic, OpenAI, Google, or another lab/vendor) shipped, demonstrated, or announced something. Stories where AI is the subject but not the product — attacks using AI, regulation of AI, misuse of AI — are context, not the headline, and belong at the bottom regardless of how dramatic they are.
+
+1. New model releases and capability breakthroughs from AI companies — always leads
+2. Microsoft developments (Azure AI, Copilot, Teams, Office, partnerships, investments) — we sell Microsoft, so Microsoft news is our news
+3. AI from a major vendor solving a real-world problem at scale, or crossing a frontier the builders intended
 4. New tools that change how businesses operate today
 5. Strategic moves that reveal where the industry is heading
 
@@ -62,12 +64,16 @@ If there is any story this week where an AI model did something so remarkable th
 
 What counts as a capability breakthrough for position 1:
 - A model so powerful that governments, regulators, or militaries respond to it (e.g. Fable 5 being shut down by the White House)
-- A model achieving something previously thought impossible or years away
+- A model achieving something previously thought impossible or years away, demonstrated by the company that built it
 - A new architecture or technique that fundamentally changes what AI can do (e.g. DiffusionGemma generating text 4x faster)
 - An AI system outperforming human experts in a domain for the first time
 - A major lab releasing a model that moves the frontier forward dramatically
 
-If no capability breakthrough exists this week, position 1 goes to the most exciting positive story available. But when a breakthrough exists, it leads. Always.
+**The breakthrough must be the company's own development.** A story only counts as a capability breakthrough if the AI company itself built, shipped, announced, or demonstrated it. A third-party developer or customer doing something impressive *with* a model (e.g. a Google developer using Claude to port a 2003 PC game to iOS in hours) is a usage story, a great human-interest pick, but it is not a vendor development. It ranks below Microsoft news and other first-party company announcements.
+
+**What does NOT count, no matter how unprecedented:** AI being used by attackers, criminals, or bad actors. The first AI-run ransomware operation (e.g. JADEPUFFER) is technically a frontier crossed, but it is a story about AI being misused, not about an AI company building something. It is an awareness story and goes to position 5. The test: did an AI company or lab *build and ship* this, or did someone *do something with* AI that its builders never intended? Only the first kind can lead the digest.
+
+If no capability breakthrough exists this week, position 1 goes to the strongest Microsoft or major-vendor development available. But when a breakthrough exists, it leads. Always.
 
 **Remaining positions prioritise in this order:**
 1. *(reserved for capability breakthrough — see above)*
@@ -95,11 +101,12 @@ If a story does not connect to any of these four, it is a lower priority. This i
 
 **Awareness stories vs selling stories — HARD RULE: position 5 only.**
 
-An awareness story is any story where the headline is about AI failing, being dangerous, being hacked, being shut down by regulators, or causing harm. Examples:
+An awareness story is any story where the headline is about AI failing, being dangerous, being hacked, being shut down by regulators, being weaponised, or causing harm. Examples:
 - A vulnerability in Copilot or any AI tool
 - An AI model banned, restricted, or taken offline by government
 - An AI system causing an accident, bias incident, or privacy breach
 - A security researcher disclosing an AI-specific attack method
+- Attackers using AI to run or scale an attack (AI-powered ransomware, phishing, fraud) — even a first-of-its-kind attack is an awareness story, never the lead
 
 These stories cannot open a client conversation. An RM who leads with "did you hear Copilot got hacked?" makes AI look weak and creates fear, not opportunity. That story always goes to position 5, regardless of how newsworthy it is.
 
