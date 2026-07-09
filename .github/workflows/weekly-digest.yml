@@ -1,0 +1,26 @@
+name: weekly-digest
+
+# Runs the Austen digest generator every Monday morning and publishes the
+# result to GitHub Pages + main. Requires the self-hosted runner on
+# dev-rvelasquez (label: austen-dev-host), since it's the only host with
+# network access to the internal LiteLLM proxy and the script's .env.
+#
+# Email sending is not wired up here — AUSTEN_SEND_TO is unset on that
+# host, so austen.py skips the send step and only generates + publishes.
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'  # Monday 07:00 UTC (runner host timezone is UTC)
+  workflow_dispatch: {}
+
+concurrency:
+  group: weekly-digest
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: [self-hosted, austen-dev-host]
+    steps:
+      - name: Run Austen digest
+        working-directory: /var/home/rvelasquez/workspace/ai-news-digest
+        run: python3 austen.py
