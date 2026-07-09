@@ -78,6 +78,13 @@
       "teach_count": 1
     },
     {
+      "term": "Fable 5",
+      "definition": "Anthropic's codename for one of its frontier Claude model releases. Like other frontier models, it represents the cutting edge of what Anthropic's AI can do at the time of release, before being succeeded by the next generation.",
+      "first_seen": "2026-07-09",
+      "story": "Anthropic's Claude Fable 5 So Capable the US Government Ordered It Offline",
+      "teach_count": 0
+    },
+    {
       "term": "model cloning",
       "definition": "An attack where someone tries to copy an AI model's intelligence by asking it millions of questions and recording its answers, then using those answers to train a copycat AI — without ever paying to build the original. It is the AI equivalent of reverse-engineering a recipe by ordering the same dish thousands of times.",
       "first_seen": "2026-06-29",
