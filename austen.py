@@ -1195,9 +1195,8 @@ def _nav_html(active):
     for href, label in links:
         cls = "nav-link active" if label.lower().replace(" ", "") == active.lower().replace(" ", "") else "nav-link"
         items += f'<a href="{href}" class="{cls}">{label}</a>'
-    brand = (f'<a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" '
-             f'class="nav-brand" style="display:flex;align-items:center;gap:7px">'
-             f'{TP_MARK}<span>Thought Provoked</span></a>')
+    brand = (f'<span class="nav-brand" style="display:flex;align-items:center;gap:7px">'
+             f'{TP_MARK}<span>Thought Provoked</span></span>')
     return f'<nav class="site-nav">{brand}{items}<span class="nav-build"><span class="austen-name">Austen</span></span></nav><div class="brand-bar"></div>'
 
 
@@ -2323,7 +2322,7 @@ def write_index(directory, html_files):
 
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
-    <a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></a>
+    <span class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></span>
   </div>
 </div>
 
@@ -2399,7 +2398,7 @@ def write_archive(directory, html_files):
 {cards_html}
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
-    <a href="https://thoughtprovoked.co.uk" target="_blank" rel="noopener" class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></a>
+    <span class="footer-brand" style="display:flex;align-items:center;gap:8px">{TP_MARK}<span>Thought Provoked</span></span>
   </div>
 </div>
 </body>
