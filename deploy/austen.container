@@ -1,0 +1,18 @@
+[Unit]
+Description=Austen — AI News Digest feedback/search API + static site
+After=network-online.target
+
+[Container]
+ContainerName=austen
+Image=ghcr.io/ironbridge-ai/austen:main
+Network=apps.network
+
+Environment=PORT=8080
+
+[Service]
+Restart=always
+CPUQuota=50%
+MemoryMax=256M
+
+[Install]
+WantedBy=default.target

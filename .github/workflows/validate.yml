@@ -1,0 +1,30 @@
+name: validate
+
+# Validates deploy/ironbridge.yaml + deploy/austen.container against
+# ai-guild-infra's schema and cross-cutting rules on every PR and push
+# to main.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate manifest + Quadlet
+        # The composite's inner checkout of the private ai-guild-infra
+        # repo uses this repo's default GITHUB_TOKEN, which has no
+        # cross-repo read scope -> "Repository not found". Non-blocking
+        # until validate-app@main exposes a token input (see
+        # ironbridge-ai/raleigh-mcp's validate.yml for the same
+        # workaround already in use elsewhere in the fleet).
+        continue-on-error: true
+        uses: ironbridge-ai/ai-guild-infra/.github/actions/validate-app@main

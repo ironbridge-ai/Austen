@@ -1,0 +1,33 @@
+name: build-and-push
+
+# Builds and pushes the austen image to ghcr.io on every merge to main.
+# The reusable composite action under ai-guild-infra handles the build,
+# push, and digest-pin write-back into deploy/austen.container.
+#
+# Pushed image tags:
+#   ghcr.io/ironbridge-ai/austen:main          (rolling)
+#   ghcr.io/ironbridge-ai/austen:main-<sha>    (immutable — for rollback)
+#   ghcr.io/ironbridge-ai/austen@sha256:...    (digest, written to Quadlet)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'deploy/*.container'
+  workflow_dispatch:
+
+concurrency:
+  group: build-and-push-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ironbridge-ai/ai-guild-infra/.github/actions/build-and-push-app@main
+        with:
+          image-name: austen
