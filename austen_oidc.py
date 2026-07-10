@@ -120,8 +120,12 @@ class VerifyError(Exception):
 
 
 def enabled():
-    """True only when a client_id is configured AND deps are importable."""
-    return _DEPS_OK and bool(CLIENT_ID)
+    """True only when deps are importable AND both the client_id and the client
+    secret are configured. Requiring the SECRET (not just the id) means the
+    non-secret OIDC_CLIENT_ID can be committed to the Quadlet while OIDC stays
+    dormant — it activates on its own once austen_oidc_client_secret lands in
+    ai-guild-infra. So a half-configured deploy never gates users out."""
+    return _DEPS_OK and bool(CLIENT_ID) and bool(CLIENT_SECRET)
 
 
 def status_line():
@@ -129,6 +133,9 @@ def status_line():
         return "Entra OIDC: deps missing (PyJWT/requests) — login DISABLED"
     if not CLIENT_ID:
         return "Entra OIDC: dormant (set OIDC_CLIENT_ID to enable in-app login)"
+    if not CLIENT_SECRET:
+        return (f"Entra OIDC: client_id set but client secret MISSING — dormant. "
+                f"Add austen_oidc_client_secret (ai-guild-infra secrets) to activate.")
     key_note = "ephemeral session key" if _SESSION_EPHEMERAL else "configured session key"
     return (
         f"Entra OIDC: ENABLED — tenant {TENANT_ID}, redirect {REDIRECT_URI}, "
