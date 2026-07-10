@@ -1,13 +1,24 @@
 name: build-and-push
 
-# Builds and pushes the austen image to ghcr.io on every merge to main.
-# The reusable composite action under ai-guild-infra handles the build,
-# push, and digest-pin write-back into deploy/austen.container.
+# Builds the austen image from the Containerfile and pushes it to ghcr.io on
+# every merge to main.
 #
-# Pushed image tags:
-#   ghcr.io/ironbridge-ai/austen:main          (rolling)
+# SELF-CONTAINED — same rationale as validate.yml: the ai-guild-infra composite
+# `build-and-push-app@main` lives in a PRIVATE repo the default GITHUB_TOKEN
+# can't resolve, so the job died at "Prepare all required actions" during job
+# setup and NO image was ever published (the ghcr package didn't exist, so the
+# reconcile had nothing to pull). This builds + pushes with the built-in
+# GITHUB_TOKEN (packages: write) instead — no cross-repo/private dependency.
+#
+# Pushed tags:
+#   ghcr.io/ironbridge-ai/austen:main          (rolling — referenced by the Quadlet)
 #   ghcr.io/ironbridge-ai/austen:main-<sha>    (immutable — for rollback)
-#   ghcr.io/ironbridge-ai/austen@sha256:...    (digest, written to Quadlet)
+#
+# The digest write-back into deploy/austen.container that the composite did is
+# skipped; the Quadlet's :main tag + ib-build-apps pulling on digest-move is the
+# supported reconcile path. If this repo is later added to the
+# INTERNAL_REPOS_TOKEN access list (or the composite accepts a token input),
+# this can swap back to the composite to regain digest pinning.
 
 on:
   push:
@@ -24,10 +35,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       packages: write
     steps:
       - uses: actions/checkout@v6
-      - uses: ironbridge-ai/ai-guild-infra/.github/actions/build-and-push-app@main
-        with:
-          image-name: austen
+
+      - name: Log in to ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and push
+        run: |
+          set -euo pipefail
+          IMAGE=ghcr.io/ironbridge-ai/austen
+          SHA_TAG="main-$(echo "${GITHUB_SHA}" | cut -c1-7)"
+          docker build -f Containerfile -t "$IMAGE:main" -t "$IMAGE:$SHA_TAG" .
+          docker push "$IMAGE:main"
+          docker push "$IMAGE:$SHA_TAG"
+          echo "Pushed $IMAGE:main and $IMAGE:$SHA_TAG"
