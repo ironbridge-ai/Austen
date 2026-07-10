@@ -11,6 +11,10 @@ Required env vars for email:
   SMTP_PASSWORD     your M365 password or app password
   DIGEST_SEND_TIME  HH:MM in 24h format to send the daily email (default 17:00)
 
+Optional:
+  PORT   port to listen on (default 4097)
+  HOST   address to bind (default 0.0.0.0; set 127.0.0.1 for loopback-only)
+
 Usage:
   SMTP_USER=you@ironbridgesg.com SMTP_PASSWORD=xxx python3 feedback_server.py
 """
@@ -154,7 +158,14 @@ class DigestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path.startswith("/api/trending"):
+        if self.path.startswith("/healthz"):
+            body = b'{"status":"ok"}'
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        elif self.path.startswith("/api/trending"):
             trending = get_trending()
             body = json.dumps({"trending": trending}).encode()
             self.send_response(200)
@@ -245,13 +256,14 @@ class DigestHandler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 4097
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else int(os.environ.get("PORT", 4097))
+    host = os.environ.get("HOST", "0.0.0.0")
     os.chdir(SCRIPT_DIR)  # serve files from the digest directory
     smtp_ready = bool(os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASSWORD"))
-    print(f"Digest server on 127.0.0.1:{port}  →  https://dev-rvelasquez.tailc35de4.ts.net/")
+    print(f"Digest server listening on {host}:{port}")
     print(f"Email: {'daily summary at ' + SEND_TIME + ' → ' + RECIPIENT if smtp_ready else 'NOT configured (set SMTP_USER + SMTP_PASSWORD)'}")
 
     sender = threading.Thread(target=_daily_sender_loop, daemon=True)
     sender.start()
 
-    HTTPServer(("127.0.0.1", port), DigestHandler).serve_forever()
+    HTTPServer((host, port), DigestHandler).serve_forever()

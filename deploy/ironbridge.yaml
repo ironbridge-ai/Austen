@@ -1,0 +1,27 @@
+name: austen
+tenant_id: ramsac
+hostname: ramsac-austen.ironbridge.tech
+upstream:
+  port: 8080
+  health_check: /healthz
+
+deploy:
+  strategy: direct
+  startup_timeout: 30s
+
+expose:
+  via: public
+
+# Cloudflare Access gates the route; Access is configured with Entra
+# as the identity provider for both IdPs below (see ai-guild-infra
+# ops/app-repo.md). Ironbridge engineers always get the `ironbridge`
+# IdP; `ramsac` covers Ramsac's own tenant, since Austen serves
+# ramsac's salesforce.
+auth:
+  mode: access
+  idps: [ironbridge, ramsac]
+  rules:
+    - decision: allow
+      include:
+        - email_domain: ironbridge.tech
+        - email_domain: ramsac.com

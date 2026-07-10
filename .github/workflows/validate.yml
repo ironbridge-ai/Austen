@@ -1,0 +1,41 @@
+name: validate
+
+# PR-time sanity check of deploy/ironbridge.yaml + deploy/*.container against
+# ai-guild-infra's documented app-repo pre-flight checklist (ops/app-repo.md).
+#
+# This is intentionally SELF-CONTAINED. The authoritative `cue vet` +
+# `ib validate` live in the private ai-guild-infra repo and run at
+# reconcile-time on the VM; invoking them from here needs the private composite
+# action `ironbridge-ai/ai-guild-infra/.github/actions/validate-app@main`, which
+# the default GITHUB_TOKEN cannot resolve — it fails at *job setup*, before any
+# step runs, so a step-level `continue-on-error` can't make the job green (the
+# form previously used here, and still in raleigh-mcp, is red for exactly this
+# reason). Rather than depend on an org PAT this repo may not be granted, we run
+# the checks that need no cross-repo access. Once validate-app@main accepts a
+# token input, this job can swap back to the composite.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PyYAML
+        run: python -m pip install --quiet pyyaml
+
+      - name: Preflight validate deploy/ (manifest + Quadlet)
+        run: python3 .github/validate-preflight.py
