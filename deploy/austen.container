@@ -22,12 +22,12 @@ Environment=OIDC_TENANT_ID=c1b2eeb7-ce57-4609-9faf-e693d22956eb
 # (the single-tenant pin already restricts logins to Ramsac regardless):
 # Environment=OIDC_ALLOWED_EMAIL_DOMAINS=ramsac.com
 #
-# ACTIVATE: (1) add austen_oidc_client_secret + austen_session_secret to
-# ai-guild-infra deployment/secrets.enc.yaml (sops), THEN (2) uncomment the two
-# Secret= lines below. Order matters — a Secret= line that references a
-# not-yet-existing podman secret stops the container from starting.
-# Secret=austen_oidc_client_secret,type=env,target=OIDC_CLIENT_SECRET
-# Secret=austen_session_secret,type=env,target=SESSION_SECRET
+# Secrets live in ai-guild-infra deployment/secrets.enc.yaml (see infra PR #54).
+# MERGE ORDER: infra #54 must be merged BEFORE this PR reaches main — a Secret=
+# line referencing a podman secret that doesn't exist yet stops the container
+# from starting.
+Secret=austen_oidc_client_secret,type=env,target=OIDC_CLIENT_SECRET
+Secret=austen_session_secret,type=env,target=SESSION_SECRET
 #
 # CUTOVER: only after a test login succeeds, flip ironbridge.yaml auth.mode to
 # `app` and add the Cloudflare Access bypass (see that file's comment).
