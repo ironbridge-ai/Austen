@@ -447,7 +447,12 @@ TOOLTIP_CSS = """
     font-family: "Geist", Arial, sans-serif;
   }"""
 
-FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "https://dev-rvelasquez.tailc35de4.ts.net")
+# Base URL the generated pages call for /api/search + /api/trending. Empty by
+# default so the pages fall back to window.location.origin (same-origin as
+# whatever host serves them — the deployed container at ramsac-austen, or a
+# local feedback_server in dev). Set FEEDBACK_SERVER_URL only to point the
+# pages at a different origin than the one serving them.
+FEEDBACK_SERVER_URL = os.environ.get("FEEDBACK_SERVER_URL", "")
 
 # ramsac × Alpha Real brand palette (cream / ink / blue / orange / red / grey).
 ACCENT   = "#CF512B"   # red — primary accent
@@ -1355,7 +1360,7 @@ def render_glossary_html(knowledge_log):
   var NODES = {nodes_json};
   var EDGES = {edges_json};
   var CAT_COLORS = {cat_colors_json};
-  var SEARCH_URL = "{FEEDBACK_SERVER_URL}";
+  var SEARCH_URL = "{FEEDBACK_SERVER_URL}" || window.location.origin;
   var POPULARITY = {{
     'llm': 5, 'generative ai': 5, 'hallucination': 5, 'agi': 5,
     'prompt': 4, 'ai agent': 4, 'frontier model': 4, 'reasoning model': 4,
@@ -1881,7 +1886,7 @@ def render_battlecards_html():
   </div>
 </div>
 <script>
-  var SEARCH_URL = "{FEEDBACK_SERVER_URL}";
+  var SEARCH_URL = "{FEEDBACK_SERVER_URL}" || window.location.origin;
   function logView(name) {{
     if (!SEARCH_URL) return;
     fetch(SEARCH_URL + '/api/search', {{

@@ -260,7 +260,7 @@ if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
     os.chdir(SCRIPT_DIR)  # serve files from the digest directory
     smtp_ready = bool(os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASSWORD"))
-    print(f"Digest server on {host}:{port}  →  https://dev-rvelasquez.tailc35de4.ts.net/")
+    print(f"Digest server listening on {host}:{port}")
     print(f"Email: {'daily summary at ' + SEND_TIME + ' → ' + RECIPIENT if smtp_ready else 'NOT configured (set SMTP_USER + SMTP_PASSWORD)'}")
 
     sender = threading.Thread(target=_daily_sender_loop, daemon=True)

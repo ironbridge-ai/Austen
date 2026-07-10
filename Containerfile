@@ -1,5 +1,9 @@
 FROM python:3.11-slim
 
+# Unbuffered stdout/stderr so container logs stream to Loki in real time
+# instead of sitting in Python's block buffer until the process exits.
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
 COPY feedback_server.py .
