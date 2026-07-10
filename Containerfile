@@ -6,7 +6,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY feedback_server.py .
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY feedback_server.py austen_oidc.py ./
 COPY index.html glossary.html battlecards.html ./
 COPY fonts/ fonts/
 

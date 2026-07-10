@@ -29,6 +29,9 @@ from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from http.server import SimpleHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse, parse_qs
+
+import austen_oidc as oidc  # in-app Entra login; dormant unless OIDC_CLIENT_ID set
 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 FEEDBACK_LOG = os.path.join(SCRIPT_DIR, "feedback_log.json")
@@ -158,14 +161,36 @@ class DigestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path.startswith("/healthz"):
+        parsed = urlparse(self.path)
+        path = parsed.path
+
+        # Entra OIDC login routes (inert unless OIDC_CLIENT_ID is set).
+        if path == "/auth/microsoft":
+            oidc.handle_login(self)
+            return
+        if path == "/auth/microsoft/callback":
+            params = {k: v[0] for k, v in parse_qs(parsed.query).items()}
+            oidc.handle_callback(self, params)
+            return
+        if path == "/auth/logout":
+            oidc.handle_logout(self)
+            return
+
+        # Health gate must stay unauthenticated — the platform probes it from
+        # inside the apps network, before any user identity exists.
+        if path.startswith("/healthz"):
             body = b'{"status":"ok"}'
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
-        elif self.path.startswith("/api/trending"):
+            return
+
+        if not oidc.require_signed_in(self, path):
+            return
+
+        if path.startswith("/api/trending"):
             trending = get_trending()
             body = json.dumps({"trending": trending}).encode()
             self.send_response(200)
@@ -178,9 +203,12 @@ class DigestHandler(SimpleHTTPRequestHandler):
             super().do_GET()
 
     def do_POST(self):
-        if self.path.startswith("/api/search"):
+        path = urlparse(self.path).path
+        if not oidc.require_signed_in(self, path):
+            return
+        if path.startswith("/api/search"):
             self._handle_search()
-        elif self.path.startswith("/api/feedback"):
+        elif path.startswith("/api/feedback"):
             self._handle_feedback()
         else:
             self.send_response(404)
@@ -200,6 +228,7 @@ class DigestHandler(SimpleHTTPRequestHandler):
             event = {
                 "term":  term,
                 "page":  data.get("page", ""),
+                "user":  oidc.current_user(self),
                 "ts":    datetime.now().timestamp(),
                 "at":    datetime.now().isoformat(timespec="seconds"),
             }
@@ -226,6 +255,7 @@ class DigestHandler(SimpleHTTPRequestHandler):
         entry = {
             "submitted_at": datetime.now().isoformat(timespec="seconds"),
             "digest_date":  data.get("digest_date", ""),
+            "user":         oidc.current_user(self),
             "votes":        data.get("votes", {}),
             "text":         data.get("text", "").strip(),
             "emailed":      False,
@@ -262,6 +292,7 @@ if __name__ == "__main__":
     smtp_ready = bool(os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASSWORD"))
     print(f"Digest server listening on {host}:{port}")
     print(f"Email: {'daily summary at ' + SEND_TIME + ' → ' + RECIPIENT if smtp_ready else 'NOT configured (set SMTP_USER + SMTP_PASSWORD)'}")
+    print(f"Auth:  {oidc.status_line()}")
 
     sender = threading.Thread(target=_daily_sender_loop, daemon=True)
     sender.start()

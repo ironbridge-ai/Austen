@@ -9,6 +9,29 @@ Network=apps.network
 
 Environment=PORT=8080
 
+# --- Microsoft Entra in-app OIDC login (single-tenant: Ramsac) --------------
+# client_id + tenant are non-secret and set here (Ramsac app registration).
+# OIDC stays DORMANT until the client SECRET is also present (see
+# austen_oidc.enabled) — so committing these two lines is safe: the site keeps
+# running behind Cloudflare Access, and in-app login activates on its own once
+# the secret lands. AUTHORITY / JWKS / tenant allowlist all derive from the
+# tenant in austen_oidc.py.
+Environment=OIDC_CLIENT_ID=f7fa5eff-a55b-4309-bc7d-b3864936675d
+Environment=OIDC_TENANT_ID=c1b2eeb7-ce57-4609-9faf-e693d22956eb
+# Optional but recommended once you've confirmed Ramsac UPNs are @ramsac.com
+# (the single-tenant pin already restricts logins to Ramsac regardless):
+# Environment=OIDC_ALLOWED_EMAIL_DOMAINS=ramsac.com
+#
+# Secrets live in ai-guild-infra deployment/secrets.enc.yaml (see infra PR #54).
+# MERGE ORDER: infra #54 must be merged BEFORE this PR reaches main — a Secret=
+# line referencing a podman secret that doesn't exist yet stops the container
+# from starting.
+Secret=austen_oidc_client_secret,type=env,target=OIDC_CLIENT_SECRET
+Secret=austen_session_secret,type=env,target=SESSION_SECRET
+#
+# CUTOVER: only after a test login succeeds, flip ironbridge.yaml auth.mode to
+# `app` and add the Cloudflare Access bypass (see that file's comment).
+
 [Service]
 Restart=always
 CPUQuota=50%
