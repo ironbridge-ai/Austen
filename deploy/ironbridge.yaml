@@ -17,6 +17,16 @@ expose:
 # ops/app-repo.md). Ironbridge engineers always get the `ironbridge`
 # IdP; `ramsac` covers Ramsac's own tenant, since Austen serves
 # ramsac's salesforce.
+#
+# PLANNED CUTOVER (see deploy/austen.container + PR description): this PR adds
+# in-app Entra OIDC (single-tenant Ramsac). Once OIDC is configured and a test
+# login succeeds, cut this block over to app-owned auth and add a Cloudflare
+# Access bypass for ramsac-austen.ironbridge.tech, so users authenticate ONCE
+# (in the app) against Ramsac only:
+#     auth:
+#       mode: app
+# Do the manifest flip and the Cloudflare bypass together, AFTER OIDC is live —
+# flipping to `app` while OIDC is dormant would leave the route ungated.
 auth:
   mode: access
   idps: [ironbridge, ramsac]

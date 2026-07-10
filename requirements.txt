@@ -1,0 +1,5 @@
+# Runtime deps for feedback_server.py.
+# Only needed once in-app Entra OIDC login is enabled (austen_oidc.py); the
+# static-site + feedback/search server itself is pure stdlib.
+PyJWT[crypto]==2.9.0   # RS256 id_token verification (pulls in `cryptography`)
+requests==2.32.3       # token exchange + JWKS fetch
