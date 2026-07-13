@@ -5,7 +5,7 @@
       "definition": "A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently.",
       "first_seen": "2026-06-17",
       "story": "Salesforce Acquires AI Customer Service Platform Fin for $3.6 Billion",
-      "teach_count": 4
+      "teach_count": 5
     },
     {
       "term": "prompt injection",
@@ -19,7 +19,7 @@
       "definition": "When multiple AI agents, each built by different companies or teams with different goals, communicate and transact with each other without a human in the middle. Imagine hundreds of personal assistants from different households all trying to book the same restaurant at once, each following their own boss's instructions but creating chaos together.",
       "first_seen": "2026-06-17",
       "story": "DeepMind Warns Millions of Interacting AI Agents Could Create Systemic Risks",
-      "teach_count": 2
+      "teach_count": 3
     },
     {
       "term": "emergent behaviour",
@@ -33,7 +33,7 @@
       "definition": "The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again.",
       "first_seen": "2026-06-17",
       "story": "Anthropic's Claude Fable 5 So Capable the US Government Ordered It Offline",
-      "teach_count": 4
+      "teach_count": 5
     },
     {
       "term": "multi-model architectures",
@@ -78,17 +78,17 @@
       "teach_count": 1
     },
     {
-      "term": "Fable 5",
-      "definition": "Anthropic's codename for one of its frontier Claude model releases. Like other frontier models, it represents the cutting edge of what Anthropic's AI can do at the time of release, before being succeeded by the next generation.",
-      "first_seen": "2026-07-09",
-      "story": "Anthropic's Claude Fable 5 So Capable the US Government Ordered It Offline",
-      "teach_count": 0
-    },
-    {
       "term": "model cloning",
       "definition": "An attack where someone tries to copy an AI model's intelligence by asking it millions of questions and recording its answers, then using those answers to train a copycat AI — without ever paying to build the original. It is the AI equivalent of reverse-engineering a recipe by ordering the same dish thousands of times.",
       "first_seen": "2026-06-29",
       "story": "Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded",
+      "teach_count": 1
+    },
+    {
+      "term": "Jacobian lens",
+      "definition": "The Jacobian lens is a tool Anthropic built to look inside an AI model while it works through a problem, similar to how a brain scan shows what is happening inside someone's head instead of just listening to what they say out loud.",
+      "first_seen": "2026-07-13",
+      "story": "Anthropic Finds a Hidden Space Where Claude 'Thinks' Before It Answers",
       "teach_count": 1
     }
   ]

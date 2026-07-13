@@ -89,6 +89,36 @@
       "title": "Anthropic Accuses Alibaba of Running the Largest AI Model Cloning Attack Ever Recorded",
       "source": "Ars Technica AI",
       "topic": "Anthropic has accused Alibaba of using 25,000 accounts to extract data from Claude across 28.8 million exchanges in what it calls the largest <span class=\"ai-term\" data-def=\"An attack where someone tr"
+    },
+    {
+      "date": "2026-07-13",
+      "title": "OpenAI's GPT-5.6 Sol Ultra Solves a 50-Year-Old Math Problem in Under an Hour",
+      "source": "The Decoder",
+      "topic": "OpenAI's new GPT-5.6 Sol Ultra model produced a full proof of the Cycle Double Cover Conjecture in under an hour, closing a problem mathematicians had worked on for five decades."
+    },
+    {
+      "date": "2026-07-13",
+      "title": "OpenAI Confirms GPT-5.6 Stays the 'Preferred Model' Behind Microsoft Copilot 365",
+      "source": "TechCrunch AI",
+      "topic": "OpenAI confirmed its new GPT-5.6 model family will keep powering Microsoft Copilot 365, quieting recent speculation about strain between the two companies."
+    },
+    {
+      "date": "2026-07-13",
+      "title": "Anthropic: Half of All Claude Cowork Usage Is Just Getting Office Work Done",
+      "source": "The Decoder",
+      "topic": "Anthropic reviewed 1.2 million Claude Cowork sessions across more than 600,000 organizations and found that roughly half of all usage goes toward routine business processes and writing."
+    },
+    {
+      "date": "2026-07-13",
+      "title": "Anthropic Finds a Hidden Space Where Claude 'Thinks' Before It Answers",
+      "source": "MIT Technology Review",
+      "topic": "Anthropic built a new tool called the <span class=\"ai-term\" data-def=\"The Jacobian lens is a tool Anthropic built to look inside an AI model while it works through a problem, similar to how a brain sc"
+    },
+    {
+      "date": "2026-07-13",
+      "title": "Cambridge Study: Terrorist Groups Are Using Every Major AI Chatbot for Attack Planning",
+      "source": "The Decoder",
+      "topic": "A Cambridge study found groups including Boko Haram and ISIS operatives have used mainstream AI chatbots such as ChatGPT, Claude, and Gemini to help plan attacks and maintain weapons."
     }
   ]
 }
