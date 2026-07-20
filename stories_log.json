@@ -119,6 +119,36 @@
       "title": "Cambridge Study: Terrorist Groups Are Using Every Major AI Chatbot for Attack Planning",
       "source": "The Decoder",
       "topic": "A Cambridge study found groups including Boko Haram and ISIS operatives have used mainstream AI chatbots such as ChatGPT, Claude, and Gemini to help plan attacks and maintain weapons."
+    },
+    {
+      "date": "2026-07-20",
+      "title": "Alibaba's Qwen 3.8 Claims the Number Two Spot Behind Fable 5",
+      "source": "The Decoder",
+      "topic": "Alibaba released Qwen 3.8, an <span class=\"ai-term\" data-def=\"An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of it like a re"
+    },
+    {
+      "date": "2026-07-20",
+      "title": "DeepMind Says Video Generators Already Understand the Physical World",
+      "source": "The Decoder",
+      "topic": "Google DeepMind argues that today's video generation models have quietly built internal <span class=\"ai-term\" data-def=\"A world model is an AI system&#39;s internal sense of how things behave, like kn"
+    },
+    {
+      "date": "2026-07-20",
+      "title": "Prompt Injection Attacks Are Now Being Used to Stop AI Hacking Agents",
+      "source": "Wired AI",
+      "topic": "Security researchers found that <span class=\"ai-term\" data-def=\"A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to "
+    },
+    {
+      "date": "2026-07-20",
+      "title": "OpenAI's CFO Wants Businesses to Stop Measuring AI by the Hype",
+      "source": "OpenAI Blog",
+      "topic": "OpenAI CFO Sarah Friar introduced a practical scorecard for measuring whether AI is actually paying off, built around useful work completed, cost per successful task, dependability, and return on the "
+    },
+    {
+      "date": "2026-07-20",
+      "title": "Freely Available AI Models Now Match Frontier Cyber Capability From Months Ago",
+      "source": "The Decoder",
+      "topic": "The UK's AI Security Institute found that <span class=\"ai-term\" data-def=\"An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of "
     }
   ]
 }

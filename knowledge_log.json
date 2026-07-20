@@ -5,14 +5,14 @@
       "definition": "A piece of AI software that can carry out multi-step tasks on its own without a human guiding every click. Unlike a chatbot that just answers questions, an agent can take actions: send emails, look up records, process refunds, or schedule meetings. Think of it as a digital employee that follows instructions and gets things done independently.",
       "first_seen": "2026-06-17",
       "story": "Salesforce Acquires AI Customer Service Platform Fin for $3.6 Billion",
-      "teach_count": 5
+      "teach_count": 6
     },
     {
       "term": "prompt injection",
       "definition": "A type of attack where someone hides instructions inside text that an AI reads, tricking it into doing something it was not supposed to do. Think of it like slipping a forged note into a stack of legitimate paperwork so the person processing it follows the fake instructions without realising.",
       "first_seen": "2026-06-17",
       "story": "Critical Copilot Vulnerability Let Hackers Steal Two-Factor Authentication Codes",
-      "teach_count": 1
+      "teach_count": 2
     },
     {
       "term": "multi-agent interaction",
@@ -33,7 +33,7 @@
       "definition": "The most advanced AI model available at any given time, pushing the boundary of what AI can do. It is the cutting edge, the model that defines the current limit of AI capability before the next breakthrough moves the line forward again.",
       "first_seen": "2026-06-17",
       "story": "Anthropic's Claude Fable 5 So Capable the US Government Ordered It Offline",
-      "teach_count": 5
+      "teach_count": 6
     },
     {
       "term": "multi-model architectures",
@@ -61,7 +61,7 @@
       "definition": "An AI model where the creator publishes the inner workings so anyone can download and run it on their own computers. Think of it like a recipe being made public: you can cook the dish yourself in your own kitchen instead of only buying it at the restaurant.",
       "first_seen": "2026-06-17",
       "story": "Microsoft Copilot Cowork Shifts to Usage-Based Billing and Eyes DeepSeek Integration",
-      "teach_count": 1
+      "teach_count": 2
     },
     {
       "term": "AI agent governance",
@@ -89,6 +89,27 @@
       "definition": "The Jacobian lens is a tool Anthropic built to look inside an AI model while it works through a problem, similar to how a brain scan shows what is happening inside someone's head instead of just listening to what they say out loud.",
       "first_seen": "2026-07-13",
       "story": "Anthropic Finds a Hidden Space Where Claude 'Thinks' Before It Answers",
+      "teach_count": 1
+    },
+    {
+      "term": "multimodal",
+      "definition": "Multimodal means an AI system can work with more than one kind of information at once, like reading text, looking at a picture, and listening to audio all in the same conversation. Think of it like a person who can read a recipe, look at a photo of the finished dish, and taste a sample, then use all three to answer a question about it.",
+      "first_seen": "2026-07-20",
+      "story": "Alibaba's Qwen 3.8 Claims the Number Two Spot Behind Fable 5",
+      "teach_count": 1
+    },
+    {
+      "term": "world model",
+      "definition": "A world model is an AI system's internal sense of how things behave, like knowing that a dropped glass will fall and break before it actually happens. It works the same way a person predicts what happens next when they see someone start to trip. Researchers care about this because an AI with a working world model can plan ahead instead of just reacting to what it already saw.",
+      "first_seen": "2026-07-20",
+      "story": "DeepMind Says Video Generators Already Understand the Physical World",
+      "teach_count": 1
+    },
+    {
+      "term": "context bombing",
+      "definition": "Context bombing is a defense trick where you flood a misbehaving AI system with so many confusing or contradictory instructions that it gives up and stops acting, instead of causing harm. It works a bit like overwhelming a telemarketer with so many off topic questions that they just hang up.",
+      "first_seen": "2026-07-20",
+      "story": "Prompt Injection Attacks Are Now Being Used to Stop AI Hacking Agents",
       "teach_count": 1
     }
   ]
