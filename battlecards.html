@@ -292,7 +292,7 @@
   </div>
 </div>
 <script>
-  var SEARCH_URL = "https://dev-rvelasquez.tailc35de4.ts.net";
+  var SEARCH_URL = "" || window.location.origin;
   function logView(name) {
     if (!SEARCH_URL) return;
     fetch(SEARCH_URL + '/api/search', {
